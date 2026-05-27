@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="check-circle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="7.5" />
+    <path d="m8.8 12.3 2.1 2.1 4.5-4.8" />
+  </symbol>
+</svg>

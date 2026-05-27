@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="document-simple" viewBox="0 0 24 24">
+    <path d="M7 4h10v16H7z" />
+    <path d="M9.5 8h5" />
+    <path d="M9.5 12h5" />
+    <path d="M9.5 16h3" />
+  </symbol>
+</svg>

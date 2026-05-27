@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="bell" viewBox="0 0 24 24">
+    <path d="M6.5 16.8h11" />
+    <path d="M8.2 16.8v-5.1a3.9 3.9 0 0 1 7.8 0v5.1" />
+    <path d="M10.3 19.2a2 2 0 0 0 3.4 0" />
+  </symbol>
+</svg>

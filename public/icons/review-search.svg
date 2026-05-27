@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="review-search" viewBox="0 0 24 24">
+    <path d="M7 4h10v16H7z" />
+    <circle cx="12" cy="11" r="2.2" />
+    <path d="m15.3 15.3 2 2" />
+  </symbol>
+</svg>
