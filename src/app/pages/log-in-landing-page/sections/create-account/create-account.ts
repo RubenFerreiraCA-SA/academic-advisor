@@ -6,6 +6,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Auth } from '../../../../services/auth/auth';
 
 @Component({
@@ -28,6 +29,7 @@ export class CreateAccount {
   constructor(
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly auth: Auth,
+    private readonly router: Router,
   ) {
     this.createAccountForm = this.formBuilder.group(
       {
@@ -71,6 +73,7 @@ export class CreateAccount {
         persistence: 'local',
       });
       this.successMessage.set('Account created successfully.');
+      await this.navigateToPlatform();
     } catch (error) {
       this.errorMessage.set(this.getAuthErrorMessage(error));
     } finally {
@@ -85,6 +88,7 @@ export class CreateAccount {
     try {
       await this.auth.signInWithGoogle('local');
       this.successMessage.set('Account created successfully.');
+      await this.navigateToPlatform();
     } catch (error) {
       this.errorMessage.set(this.getAuthErrorMessage(error));
     } finally {
@@ -102,6 +106,10 @@ export class CreateAccount {
   private clearMessages(): void {
     this.errorMessage.set('');
     this.successMessage.set('');
+  }
+
+  private navigateToPlatform(): Promise<boolean> {
+    return this.router.navigate(['/platform', 'dashboard']);
   }
 
   private getValidationMessage(): string {

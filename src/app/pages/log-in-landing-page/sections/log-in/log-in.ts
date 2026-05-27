@@ -1,5 +1,6 @@
 import { Component, output, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Auth } from '../../../../services/auth/auth';
 
 @Component({
@@ -21,6 +22,7 @@ export class LogIn {
   constructor(
     private readonly formBuilder: NonNullableFormBuilder,
     private readonly auth: Auth,
+    private readonly router: Router,
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,6 +52,7 @@ export class LogIn {
         persistence: rememberMe ? 'local' : 'session',
       });
       this.successMessage.set('Signed in successfully.');
+      await this.navigateToPlatform();
     } catch (error) {
       this.errorMessage.set(await this.getEmailSignInErrorMessage(email, error));
     } finally {
@@ -64,6 +67,7 @@ export class LogIn {
     try {
       await this.auth.signInWithGoogle(this.loginForm.controls.rememberMe.value ? 'local' : 'session');
       this.successMessage.set('Signed in successfully.');
+      await this.navigateToPlatform();
     } catch (error) {
       this.errorMessage.set(this.getAuthErrorMessage(error));
     } finally {
@@ -97,6 +101,10 @@ export class LogIn {
   private clearMessages(): void {
     this.errorMessage.set('');
     this.successMessage.set('');
+  }
+
+  private navigateToPlatform(): Promise<boolean> {
+    return this.router.navigate(['/platform', 'dashboard']);
   }
 
   private getAuthErrorMessage(error: unknown): string {
