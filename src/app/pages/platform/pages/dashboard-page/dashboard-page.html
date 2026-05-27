@@ -1,70 +1,22 @@
 <section class="dashboard-page" aria-label="Paper dashboard">
   <div class="stats-grid" aria-label="Paper status summary">
-    <article class="stat-card total">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-lines.svg#document-lines"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Total Papers</span>
-      <strong>24</strong>
-      <small><b>↗</b> 3 this month</small>
-    </article>
-
-    <article class="stat-card drafting">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-pencil.svg#document-pencil"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Drafting</span>
-      <strong>7</strong>
-      <small>29% of total</small>
-    </article>
-
-    <article class="stat-card review">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/review-search.svg#review-search"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Under Review</span>
-      <strong>5</strong>
-      <small>21% of total</small>
-    </article>
-
-    <article class="stat-card revision">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-status.svg#document-status"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Revision</span>
-      <strong>6</strong>
-      <small>25% of total</small>
-    </article>
-
-    <article class="stat-card submitted">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-simple.svg#document-simple"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Submitted</span>
-      <strong>3</strong>
-      <small>13% of total</small>
-    </article>
-
-    <article class="stat-card complete">
-      <span class="stat-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/check-circle.svg#check-circle"></use>
-        </svg>
-      </span>
-      <span class="stat-label">Completed</span>
-      <strong>3</strong>
-      <small>12% of total</small>
-    </article>
+    @for (stat of stats; track stat.label) {
+      <article [class]="'stat-card ' + stat.tone">
+        <span class="stat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use [attr.href]="'/icons/' + stat.icon + '.svg#' + stat.icon"></use>
+          </svg>
+        </span>
+        <span class="stat-label">{{ stat.label }}</span>
+        <strong>{{ stat.value }}</strong>
+        <small>
+          @if (stat.trendIcon) {
+            <b>{{ stat.trendIcon }}</b>
+          }
+          {{ stat.detail }}
+        </small>
+      </article>
+    }
   </div>
 
   <section class="paper-panel" aria-label="Papers">
@@ -116,111 +68,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <strong>Synthetic Intelligence and Origination <span class="star">★</span></strong>
-              <small>AI · Creativity · Cognition</small>
-            </td>
-            <td><span class="stage revision">Revision</span></td>
-            <td>
-              <div class="progress"><span style="width: 73%"></span></div>
-              <em>73%</em>
-            </td>
-            <td><time datetime="2024-06-28">Jun 28, 2024</time><small class="danger">5 days left</small></td>
-            <td><span class="avatars"><i>AL</i><i>RN</i><i>MK</i><b>+2</b></span></td>
-            <td><time datetime="2024-05-23T10:42">May 23, 10:42 AM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Deep Learning for Medical Imaging</strong>
-              <small>AI · Medical Imaging · CNN</small>
-            </td>
-            <td><span class="stage drafting">Drafting</span></td>
-            <td>
-              <div class="progress blue"><span style="width: 65%"></span></div>
-              <em>65%</em>
-            </td>
-            <td><time datetime="2024-05-31">May 31, 2024</time><small class="danger">8 days left</small></td>
-            <td><span class="avatars"><i>SK</i><i>JM</i><i>AT</i><b>+3</b></span></td>
-            <td><time datetime="2024-05-22T15:15">May 22, 3:15 PM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Climate Change Policy Review</strong>
-              <small>Climate · Policy · Environment</small>
-            </td>
-            <td><span class="stage review">Review</span></td>
-            <td>
-              <div class="progress"><span style="width: 48%"></span></div>
-              <em>48%</em>
-            </td>
-            <td><time datetime="2024-06-10">Jun 10, 2024</time><small>21 days left</small></td>
-            <td><span class="avatars"><i>EV</i><i>BW</i><i>NO</i><b>+1</b></span></td>
-            <td><time datetime="2024-05-21T09:05">May 21, 9:05 AM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Quantum Networks Survey</strong>
-              <small>Quantum · Networks · Security</small>
-            </td>
-            <td><span class="stage outline">Outline</span></td>
-            <td>
-              <div class="progress green"><span style="width: 28%"></span></div>
-              <em>28%</em>
-            </td>
-            <td><time datetime="2024-07-01">Jul 1, 2024</time><small>42 days left</small></td>
-            <td><span class="avatars"><i>QC</i><i>LD</i><i>TS</i><b>+2</b></span></td>
-            <td><time datetime="2024-05-16T16:23">May 16, 4:23 PM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Federated Learning in Healthcare</strong>
-              <small>AI · Privacy · Healthcare</small>
-            </td>
-            <td><span class="stage drafting">Drafting</span></td>
-            <td>
-              <div class="progress blue"><span style="width: 35%"></span></div>
-              <em>35%</em>
-            </td>
-            <td><time datetime="2024-06-18">Jun 18, 2024</time><small>31 days left</small></td>
-            <td><span class="avatars"><i>HP</i><i>MA</i><i>JL</i><b>+1</b></span></td>
-            <td><time datetime="2024-05-18T13:10">May 18, 1:10 PM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Robust Optimization for Supply Chains</strong>
-              <small>Operations · Optimization</small>
-            </td>
-            <td><span class="stage submitted">Submitted</span></td>
-            <td>
-              <div class="progress cyan"><span style="width: 100%"></span></div>
-              <em>100%</em>
-            </td>
-            <td><time datetime="2024-05-10">May 10, 2024</time><small class="success">Submitted</small></td>
-            <td><span class="avatars"><i>OS</i><i>KV</i><i>TR</i><b>+4</b></span></td>
-            <td><time datetime="2024-05-10T10:20">May 10, 10:20 AM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Explainable AI: A Systematic Review</strong>
-              <small>AI · Explainability · Survey</small>
-            </td>
-            <td><span class="stage complete">Complete</span></td>
-            <td>
-              <div class="progress green"><span style="width: 100%"></span></div>
-              <em>100%</em>
-            </td>
-            <td><time datetime="2024-04-20">Apr 20, 2024</time><small class="success">Published</small></td>
-            <td><span class="avatars"><i>XA</i><i>SP</i><i>NU</i><b>+5</b></span></td>
-            <td><time datetime="2024-04-20T14:45">Apr 20, 2:45 PM</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
+          @for (paper of papers; track paper.title) {
+            <tr>
+              <td>
+                <strong>
+                  {{ paper.title }}
+                  @if (paper.featured) {
+                    <span class="star">★</span>
+                  }
+                </strong>
+                <small>{{ paper.topic }}</small>
+              </td>
+              <td><span [class]="'stage ' + paper.stage.tone">{{ paper.stage.label }}</span></td>
+              <td>
+                <div [class]="paper.progress.tone ? 'progress ' + paper.progress.tone : 'progress'">
+                  <span [style.width.%]="paper.progress.value"></span>
+                </div>
+                <em>{{ paper.progress.value }}%</em>
+              </td>
+              <td>
+                <time [attr.datetime]="paper.deadline.datetime">{{ paper.deadline.date }}</time>
+                <small [class]="paper.deadline.tone ?? ''">{{ paper.deadline.status }}</small>
+              </td>
+              <td>
+                <span class="avatars">
+                  @for (initials of paper.collaborators.initials; track initials) {
+                    <i>{{ initials }}</i>
+                  }
+                  <b>{{ paper.collaborators.extra }}</b>
+                </span>
+              </td>
+              <td><time [attr.datetime]="paper.updated.datetime">{{ paper.updated.label }}</time></td>
+              <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
