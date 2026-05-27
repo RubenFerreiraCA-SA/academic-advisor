@@ -16,7 +16,7 @@
       <p>Sign in to your research workspace.</p>
     </header>
 
-    <form class="login-form" aria-label="Sign in form">
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signIn()" aria-label="Sign in form">
       <label class="field">
         <span>Email address</span>
         <span class="input-wrap">
@@ -24,7 +24,12 @@
             <path d="M4 6.5h16v11H4z" />
             <path d="m4.8 7.4 7.2 5.5 7.2-5.5" />
           </svg>
-          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" />
+          <input
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+          />
         </span>
       </label>
 
@@ -38,7 +43,7 @@
           </svg>
           <input
             [type]="passwordVisible ? 'text' : 'password'"
-            name="password"
+            formControlName="password"
             autocomplete="current-password"
             placeholder="Enter your password"
           />
@@ -58,18 +63,28 @@
 
       <div class="form-row">
         <label class="remember">
-          <input type="checkbox" checked />
+          <input type="checkbox" formControlName="rememberMe" />
           <span>Remember me</span>
         </label>
-        <a href="#" aria-label="Reset your password">Forgot password?</a>
+        <button class="link-button" type="button" (click)="sendPasswordReset()" aria-label="Reset your password">
+          Forgot password?
+        </button>
       </div>
 
-      <button class="primary-action" type="submit">Sign In</button>
+      @if (errorMessage || successMessage) {
+        <p class="form-message" [class.success]="successMessage">
+          {{ errorMessage || successMessage }}
+        </p>
+      }
+
+      <button class="primary-action" type="submit" [disabled]="loading">
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
     </form>
 
     <div class="divider"><span>or continue with</span></div>
 
-    <button class="google-action" type="button">
+    <button class="google-action" type="button" (click)="signInWithGoogle()" [disabled]="loading">
       <span class="google-mark" aria-hidden="true">G</span>
       <span>Continue with Google</span>
     </button>

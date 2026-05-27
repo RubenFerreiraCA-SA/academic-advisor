@@ -14,7 +14,8 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+a:hover,
+.link-button:hover {
   color: #71a9ff;
 }
 
@@ -191,6 +192,15 @@ input::placeholder {
   font-size: 13px;
 }
 
+.link-button {
+  border: 0;
+  padding: 0;
+  color: #3f8dff;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
 .remember {
   display: inline-flex;
   align-items: center;
@@ -225,8 +235,27 @@ input::placeholder {
   box-shadow: 0 14px 34px rgba(45, 103, 245, 0.23);
 }
 
-.primary-action:hover {
+.primary-action:hover,
+.google-action:hover {
   filter: brightness(1.06);
+}
+
+.primary-action:disabled,
+.google-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.form-message {
+  margin: -4px 0 0;
+  color: #ff8f9a;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.form-message.success {
+  color: #43d68d;
 }
 
 .divider {
