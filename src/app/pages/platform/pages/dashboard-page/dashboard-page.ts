@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CustomDynamicTable, PaperRow } from '../../components/custom-dynamic-table/custom-dynamic-table';
 
 type DashboardStat = {
   label: string;
@@ -9,39 +10,12 @@ type DashboardStat = {
   trendIcon?: string;
 };
 
-type PaperRow = {
-  title: string;
-  featured?: boolean;
-  topic: string;
-  stage: {
-    label: string;
-    tone: 'revision' | 'drafting' | 'review' | 'outline' | 'submitted' | 'complete';
-  };
-  progress: {
-    value: number;
-    tone?: 'blue' | 'green' | 'cyan';
-  };
-  deadline: {
-    date: string;
-    datetime: string;
-    status: string;
-    tone?: 'danger' | 'success';
-  };
-  collaborators: {
-    initials: string[];
-    extra: string;
-  };
-  updated: {
-    label: string;
-    datetime: string;
-  };
-};
-
 @Component({
   selector: 'app-dashboard-page',
-  imports: [],
+  imports: [CustomDynamicTable],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardPage {
   protected readonly stats: DashboardStat[] = [
