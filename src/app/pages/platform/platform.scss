@@ -1,4 +1,481 @@
 :host {
   display: block;
-  min-height: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #eaf2ff;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.platform-shell {
+  display: grid;
+  grid-template-columns: 242px minmax(0, 1fr);
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 84% 3%, rgba(76, 64, 226, 0.3), transparent 28%),
+    linear-gradient(135deg, #071b35 0%, #041327 100%);
+}
+
+.side-nav {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(12px, 2.4vh, 20px) 14px clamp(12px, 2.2vh, 18px);
+  border-right: 1px solid rgba(111, 151, 213, 0.2);
+  background:
+    linear-gradient(180deg, rgba(6, 21, 43, 0.97), rgba(4, 18, 39, 0.98)),
+    #06162f;
+  box-shadow: 16px 0 40px rgba(0, 0, 0, 0.22);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: #edf4ff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.brand svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.workspace-switch {
+  display: grid;
+  grid-template-columns: 34px 1fr 18px;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 58px;
+  margin: clamp(10px, 2.2vh, 18px) 0 clamp(8px, 1.6vh, 12px);
+  border: 1px solid rgba(91, 128, 184, 0.22);
+  border-radius: 8px;
+  padding: 8px;
+  color: #d9e5f8;
+  background: rgba(9, 31, 64, 0.72);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.workspace-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: #39a6ff;
+  background: rgba(46, 123, 255, 0.16);
+}
+
+.workspace-switch svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.workspace-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.workspace-switch strong,
+.workspace-switch small {
+  display: block;
+  line-height: 1.2;
+}
+
+.workspace-switch strong {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.workspace-switch small {
+  margin-top: 3px;
+  color: #8ea0bc;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.chevron {
+  width: 16px;
+  height: 16px;
+  color: #8da1c2;
+}
+
+.nav-list {
+  display: grid;
+  flex: 0 1 auto;
+  gap: clamp(4px, 0.9vh, 8px);
+  min-height: 0;
+}
+
+.nav-list a,
+.support-card a {
+  text-decoration: none;
+}
+
+.nav-list a {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: clamp(30px, 4.7vh, 39px);
+  border-radius: 7px;
+  padding: 0 10px;
+  color: #a7b6cf;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.nav-list a:hover {
+  color: #e4ecfb;
+  background: rgba(79, 116, 182, 0.12);
+}
+
+.nav-list a.active {
+  color: #9fb3ff;
+  background: linear-gradient(90deg, rgba(105, 64, 255, 0.46), rgba(60, 93, 205, 0.28));
+}
+
+.nav-list svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.nav-list em,
+.nav-list b {
+  min-width: 26px;
+  border-radius: 999px;
+  padding: 3px 7px;
+  color: #a9b9d0;
+  background: rgba(111, 136, 178, 0.18);
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1;
+  text-align: center;
+}
+
+.nav-list b {
+  color: #e5b4ff;
+  background: rgba(155, 76, 255, 0.36);
+}
+
+.nav-spacer {
+  flex: 1 1 auto;
+  min-height: clamp(6px, 1.6vh, 16px);
+}
+
+.storage-card,
+.support-card {
+  border: 1px solid rgba(91, 128, 184, 0.24);
+  border-radius: 8px;
+  background: rgba(8, 29, 60, 0.66);
+}
+
+.storage-card {
+  padding: 15px 14px;
+}
+
+.storage-card h2,
+.support-card h2 {
+  margin: 0;
+  color: #d9e4f8;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.storage-card p {
+  margin: 8px 0 10px;
+  color: #96a6bf;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.meter {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(97, 125, 174, 0.22);
+}
+
+.meter span {
+  display: block;
+  width: 32%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #337dff, #8f3bdf);
+}
+
+.storage-card button {
+  width: 100%;
+  min-height: 32px;
+  margin-top: 12px;
+  border: 1px solid rgba(84, 132, 255, 0.32);
+  border-radius: 6px;
+  color: #7ea7ff;
+  background: rgba(20, 43, 82, 0.44);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.support-card {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.support-card a {
+  color: #9fafc6;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.support-card a:hover {
+  color: #e2ebfb;
+}
+
+.support-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  margin-top: clamp(10px, 5vh, 86px);
+  border: 0;
+  padding: 0;
+  color: #9fafc6;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.support-card button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.platform-content {
+  min-width: 0;
+  height: 100vh;
+  min-height: 0;
+  padding: 28px;
+  overflow: auto;
+}
+
+@media (max-width: 860px) {
+  .platform-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(111, 151, 213, 0.2);
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .storage-card,
+  .support-card {
+    display: none;
+  }
+}
+
+@media (min-width: 861px) and (max-height: 780px) {
+  .side-nav {
+    padding: 14px 12px;
+  }
+
+  .brand {
+    min-height: 30px;
+    font-size: 18px;
+  }
+
+  .brand svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .workspace-switch {
+    min-height: 50px;
+    margin: 12px 0 9px;
+  }
+
+  .nav-list {
+    gap: 4px;
+  }
+
+  .nav-list a {
+    min-height: 30px;
+    gap: 10px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+
+  .nav-list svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .nav-spacer {
+    min-height: 8px;
+  }
+
+  .storage-card {
+    padding: 12px;
+  }
+
+  .storage-card p {
+    margin: 6px 0 8px;
+  }
+
+  .storage-card button {
+    min-height: 28px;
+    margin-top: 9px;
+  }
+
+  .support-card {
+    gap: 9px;
+    margin-top: 10px;
+    padding: 12px;
+  }
+
+  .support-card button {
+    margin-top: 18px;
+  }
+}
+
+@media (min-width: 861px) and (max-height: 660px) {
+  .side-nav {
+    padding: 10px;
+  }
+
+  .brand {
+    min-height: 26px;
+    font-size: 16px;
+  }
+
+  .brand svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .workspace-switch {
+    grid-template-columns: 30px 1fr 14px;
+    gap: 8px;
+    min-height: 42px;
+    margin: 8px 0 6px;
+    padding: 6px;
+  }
+
+  .workspace-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .workspace-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .workspace-switch strong {
+    font-size: 10px;
+  }
+
+  .workspace-switch small {
+    font-size: 9px;
+  }
+
+  .nav-list {
+    gap: 3px;
+  }
+
+  .nav-list a {
+    min-height: 27px;
+    gap: 8px;
+    font-size: 10px;
+  }
+
+  .nav-list svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .nav-list em,
+  .nav-list b {
+    min-width: 22px;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+
+  .storage-card {
+    padding: 9px;
+  }
+
+  .storage-card h2,
+  .support-card h2 {
+    font-size: 10px;
+  }
+
+  .storage-card p,
+  .support-card a,
+  .storage-card button {
+    font-size: 9px;
+  }
+
+  .storage-card button {
+    min-height: 24px;
+    margin-top: 7px;
+  }
+
+  .support-card {
+    gap: 7px;
+    margin-top: 8px;
+    padding: 9px;
+  }
+
+  .support-card button {
+    margin-top: 6px;
+    font-size: 10px;
+  }
 }
