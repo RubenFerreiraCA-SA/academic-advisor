@@ -1,106 +1,101 @@
-<section class="paper-panel" aria-label="Papers">
-  <header class="paper-toolbar">
-    <nav class="paper-tabs" aria-label="Paper filters">
-      @for (tab of tabs; track tab.id) {
+@if (tabs().length) {
+  <section class="paper-panel" aria-label="Table">
+    <header class="paper-toolbar">
+      <nav class="paper-tabs" aria-label="Table filters">
+        @for (tab of tabsWithCounts(); track tab.id) {
+          <button
+            type="button"
+            [class.active]="isActive(tab.id)"
+            [attr.aria-current]="isActive(tab.id) ? 'true' : null"
+            (click)="selectTab(tab.id)"
+          >
+            {{ tab.label }} <span>{{ tab.count }}</span>
+          </button>
+        }
+      </nav>
+    </header>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            @for (col of columns(); track col.key()) {
+              <th scope="col">
+                @if (col.srOnly()) {
+                  <span class="sr-only">{{ col.header() }}</span>
+                } @else {
+                  {{ col.header() }}
+                }
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of paginatedData(); track $index) {
+            <tr>
+              @for (col of columns(); track col.key()) {
+                <td>
+                  <ng-container
+                    [ngTemplateOutlet]="col.templateRef"
+                    [ngTemplateOutletContext]="{ $implicit: row }"
+                  />
+                </td>
+              }
+            </tr>
+          }
+          @for (_ of emptyRows(); track $index) {
+            <tr class="empty-row" aria-hidden="true">
+              @for (col of columns(); track col.key()) {
+                <td></td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="paper-footer">
+      <span>Showing {{ pageInfo().from }}–{{ pageInfo().to }} of {{ pageInfo().total }} rows</span>
+      <nav class="pagination" aria-label="Table pages">
         <button
           type="button"
-          [class.active]="activeTab() === tab.id"
-          [attr.aria-current]="activeTab() === tab.id ? 'true' : null"
-          (click)="selectTab(tab.id)"
-        >
-          {{ tab.label }} <span>{{ tabCounts()[tab.id] }}</span>
-        </button>
-      }
-    </nav>
+          aria-label="First page"
+          [disabled]="currentPage() === 1"
+          (click)="goToPage(1)"
+        >≪</button>
+        <button
+          type="button"
+          aria-label="Previous page"
+          [disabled]="currentPage() === 1"
+          (click)="goToPage(currentPage() - 1)"
+        >‹</button>
 
-    <div class="paper-tools">
-      <button type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/filter-sliders.svg#filter-sliders"></use>
-        </svg>
-        Filter
-      </button>
-      <button type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/sort-arrows.svg#sort-arrows"></use>
-        </svg>
-        Sort: Last Updated
-      </button>
-      <button class="icon-tool" type="button" aria-label="Grid view">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/grid-view.svg#grid-view"></use>
-        </svg>
-      </button>
-      <button class="icon-tool" type="button" aria-label="List view">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/list-view.svg#list-view"></use>
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Paper / Topic</th>
-          <th scope="col">Stage</th>
-          <th scope="col">Progress</th>
-          <th scope="col">Deadline</th>
-          <th scope="col">Collaborators</th>
-          <th scope="col">Last Updated</th>
-          <th scope="col"><span class="sr-only">Actions</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (paper of filteredPapers(); track paper.title) {
-          <tr>
-            <td>
-              <strong>
-                {{ paper.title }}
-                @if (paper.featured) {
-                  <span class="star">★</span>
-                }
-              </strong>
-              <small>{{ paper.topic }}</small>
-            </td>
-            <td><span [class]="'stage ' + paper.stage.tone">{{ paper.stage.label }}</span></td>
-            <td>
-              <div [class]="paper.progress.tone ? 'progress ' + paper.progress.tone : 'progress'">
-                <span [style.width.%]="paper.progress.value"></span>
-              </div>
-              <em>{{ paper.progress.value }}%</em>
-            </td>
-            <td>
-              <time [attr.datetime]="paper.deadline.datetime">{{ paper.deadline.date }}</time>
-              <small [class]="paper.deadline.tone ?? ''">{{ paper.deadline.status }}</small>
-            </td>
-            <td>
-              <span class="avatars">
-                @for (initials of paper.collaborators.initials; track initials) {
-                  <i>{{ initials }}</i>
-                }
-                <b>{{ paper.collaborators.extra }}</b>
-              </span>
-            </td>
-            <td><time [attr.datetime]="paper.updated.datetime">{{ paper.updated.label }}</time></td>
-            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
-          </tr>
+        @for (page of visiblePages(); track $index) {
+          @if (page === 'ellipsis') {
+            <span class="page-ellipsis" aria-hidden="true">…</span>
+          } @else {
+            <button
+              type="button"
+              [class.active]="page === currentPage()"
+              [attr.aria-current]="page === currentPage() ? 'page' : null"
+              (click)="goToPage(page)"
+            >{{ page }}</button>
+          }
         }
-      </tbody>
-    </table>
-  </div>
 
-  <footer class="paper-footer">
-    <span>Showing 1 to {{ filteredPapers().length }} of {{ filteredPapers().length }} papers</span>
-    <nav class="pagination" aria-label="Paper pages">
-      <button type="button" aria-label="First page">≪</button>
-      <button class="active" type="button">1</button>
-      <button type="button">2</button>
-      <button type="button">3</button>
-      <button type="button">4</button>
-      <button type="button" aria-label="Next page">›</button>
-      <button type="button" aria-label="Last page">≫</button>
-    </nav>
-  </footer>
-</section>
+        <button
+          type="button"
+          aria-label="Next page"
+          [disabled]="currentPage() === totalPages()"
+          (click)="goToPage(currentPage() + 1)"
+        >›</button>
+        <button
+          type="button"
+          aria-label="Last page"
+          [disabled]="currentPage() === totalPages()"
+          (click)="goToPage(totalPages())"
+        >≫</button>
+      </nav>
+    </footer>
+  </section>
+}
