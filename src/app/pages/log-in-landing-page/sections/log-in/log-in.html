@@ -1,0 +1,94 @@
+<section class="login-shell" aria-labelledby="login-title">
+  <section class="login-card">
+    <div class="brand" aria-label="AcaPublish">
+      <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+        <path d="M7.4 31.6h6.4l8.2-22.1 8.2 22.1h6.4" />
+        <path d="M17.7 31.6h8.6" />
+        <path d="M14 25.4h5.5" />
+        <path d="M24.5 25.4H30" />
+        <path d="M18.3 19.7 22 9.5l3.7 10.2" />
+      </svg>
+      <span>AcaPublish</span>
+    </div>
+
+    <header class="login-header">
+      <h1 id="login-title">Welcome back</h1>
+      <p>Sign in to your research workspace.</p>
+    </header>
+
+    <form class="login-form" aria-label="Sign in form">
+      <label class="field">
+        <span>Email address</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6.5h16v11H4z" />
+            <path d="m4.8 7.4 7.2 5.5 7.2-5.5" />
+          </svg>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" />
+        </span>
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10.5V8.2a5 5 0 0 1 10 0v2.3" />
+            <path d="M6.3 10.5h11.4v8.7H6.3z" />
+            <path d="M12 14.2v2" />
+          </svg>
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            name="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+          <button
+            class="icon-button"
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.8 12s2.8-5 8.2-5 8.2 5 8.2 5-2.8 5-8.2 5-8.2-5-8.2-5Z" />
+              <circle cx="12" cy="12" r="2.4" />
+            </svg>
+          </button>
+        </span>
+      </label>
+
+      <div class="form-row">
+        <label class="remember">
+          <input type="checkbox" checked />
+          <span>Remember me</span>
+        </label>
+        <a href="#" aria-label="Reset your password">Forgot password?</a>
+      </div>
+
+      <button class="primary-action" type="submit">Sign In</button>
+    </form>
+
+    <div class="divider"><span>or continue with</span></div>
+
+    <button class="google-action" type="button">
+      <span class="google-mark" aria-hidden="true">G</span>
+      <span>Continue with Google</span>
+    </button>
+
+    <p class="signup-copy">
+      New here?
+      <a href="#">Create an account</a>
+    </p>
+  </section>
+
+  <footer class="login-footer">
+    <span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 10.5V8a5 5 0 0 1 10 0v2.5" />
+        <path d="M6 10.5h12v9H6z" />
+      </svg>
+      Your data is secure and encrypted
+    </span>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+  </footer>
+</section>
