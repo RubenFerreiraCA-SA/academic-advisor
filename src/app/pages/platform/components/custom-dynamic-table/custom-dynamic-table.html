@@ -1,10 +1,16 @@
 <section class="paper-panel" aria-label="Papers">
   <header class="paper-toolbar">
     <nav class="paper-tabs" aria-label="Paper filters">
-      <button class="active" type="button">All Papers <span>24</span></button>
-      <button type="button">Mine <span>12</span></button>
-      <button type="button">Shared <span>9</span></button>
-      <button type="button">Archived <span>3</span></button>
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          [class.active]="activeTab() === tab.id"
+          [attr.aria-current]="activeTab() === tab.id ? 'true' : null"
+          (click)="selectTab(tab.id)"
+        >
+          {{ tab.label }} <span>{{ tabCounts()[tab.id] }}</span>
+        </button>
+      }
     </nav>
 
     <div class="paper-tools">
@@ -47,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (paper of papers(); track paper.title) {
+        @for (paper of filteredPapers(); track paper.title) {
           <tr>
             <td>
               <strong>
@@ -86,7 +92,7 @@
   </div>
 
   <footer class="paper-footer">
-    <span>Showing 1 to 7 of 24 papers</span>
+    <span>Showing 1 to {{ filteredPapers().length }} of {{ filteredPapers().length }} papers</span>
     <nav class="pagination" aria-label="Paper pages">
       <button type="button" aria-label="First page">≪</button>
       <button class="active" type="button">1</button>

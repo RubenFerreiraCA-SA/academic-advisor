@@ -69,6 +69,7 @@ export class DashboardPage {
       title: 'Synthetic Intelligence and Origination',
       featured: true,
       topic: 'AI · Creativity · Cognition',
+      category: 'mine',
       stage: {
         label: 'Revision',
         tone: 'revision',
@@ -94,6 +95,7 @@ export class DashboardPage {
     {
       title: 'Deep Learning for Medical Imaging',
       topic: 'AI · Medical Imaging · CNN',
+      category: 'mine',
       stage: {
         label: 'Drafting',
         tone: 'drafting',
@@ -120,6 +122,7 @@ export class DashboardPage {
     {
       title: 'Climate Change Policy Review',
       topic: 'Climate · Policy · Environment',
+      category: 'shared',
       stage: {
         label: 'Review',
         tone: 'review',
@@ -144,6 +147,7 @@ export class DashboardPage {
     {
       title: 'Quantum Networks Survey',
       topic: 'Quantum · Networks · Security',
+      category: 'shared',
       stage: {
         label: 'Outline',
         tone: 'outline',
@@ -169,6 +173,7 @@ export class DashboardPage {
     {
       title: 'Federated Learning in Healthcare',
       topic: 'AI · Privacy · Healthcare',
+      category: 'shared',
       stage: {
         label: 'Drafting',
         tone: 'drafting',
@@ -194,6 +199,7 @@ export class DashboardPage {
     {
       title: 'Robust Optimization for Supply Chains',
       topic: 'Operations · Optimization',
+      category: 'mine',
       stage: {
         label: 'Submitted',
         tone: 'submitted',
@@ -220,6 +226,7 @@ export class DashboardPage {
     {
       title: 'Explainable AI: A Systematic Review',
       topic: 'AI · Explainability · Survey',
+      category: 'archived',
       stage: {
         label: 'Complete',
         tone: 'complete',
