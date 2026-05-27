@@ -23,78 +23,21 @@
     </button>
 
     <nav class="nav-list">
-      <a routerLink="/platform/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/home.svg#home"></use>
-        </svg>
-        <span>Dashboard</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-text.svg#document-text"></use>
-        </svg>
-        <span>Papers</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-simple.svg#document-simple"></use>
-        </svg>
-        <span>Tasks</span>
-        <em>12</em>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-search.svg#document-search"></use>
-        </svg>
-        <span>Review Queue</span>
-        <em>7</em>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/collaborators.svg#collaborators"></use>
-        </svg>
-        <span>Collaborators</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/calendar.svg#calendar"></use>
-        </svg>
-        <span>Calendar</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/document-simple.svg#document-simple"></use>
-        </svg>
-        <span>Templates</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/submissions.svg#submissions"></use>
-        </svg>
-        <span>Submissions</span>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/analytics.svg#analytics"></use>
-        </svg>
-        <span>Analytics</span>
-        <b>New</b>
-      </a>
-
-      <a class="nav-item" href="#" aria-disabled="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/settings.svg#settings"></use>
-        </svg>
-        <span>Settings</span>
-      </a>
+      @for (item of navItems; track item.label) {
+        <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use [attr.href]="'/icons/' + item.icon + '.svg#' + item.icon"></use>
+          </svg>
+          <span>{{ item.label }}</span>
+          @if (item.badge) {
+            @if (item.badge.tone === 'highlight') {
+              <b>{{ item.badge.label }}</b>
+            } @else {
+              <em>{{ item.badge.label }}</em>
+            }
+          }
+        </a>
+      }
     </nav>
 
     <div class="nav-spacer"></div>
