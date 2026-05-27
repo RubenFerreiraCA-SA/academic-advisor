@@ -1,1 +1,271 @@
-<p>dashboard-page works!</p>
+<section class="dashboard-page" aria-label="Paper dashboard">
+  <div class="stats-grid" aria-label="Paper status summary">
+    <article class="stat-card total">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 3.8h7l3 3v13.4H7z" />
+          <path d="M14 3.8v3h3" />
+          <path d="M9.8 11.5h4.4" />
+          <path d="M9.8 15h3.2" />
+        </svg>
+      </span>
+      <span class="stat-label">Total Papers</span>
+      <strong>24</strong>
+      <small><b>↗</b> 3 this month</small>
+    </article>
+
+    <article class="stat-card drafting">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 3.8h7l3 3v13.4H7z" />
+          <path d="M14 3.8v3h3" />
+          <path d="m11 15.8 5.2-5.2 2.2 2.2-5.2 5.2H11z" />
+        </svg>
+      </span>
+      <span class="stat-label">Drafting</span>
+      <strong>7</strong>
+      <small>29% of total</small>
+    </article>
+
+    <article class="stat-card review">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4h10v16H7z" />
+          <circle cx="12" cy="11" r="2.2" />
+          <path d="m15.3 15.3 2 2" />
+        </svg>
+      </span>
+      <span class="stat-label">Under Review</span>
+      <strong>5</strong>
+      <small>21% of total</small>
+    </article>
+
+    <article class="stat-card revision">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4h10v16H7z" />
+          <path d="M9.7 9h4.6" />
+          <path d="M9.7 12.5h3.2" />
+          <path d="m14 16 1.6 1.6 3-3" />
+        </svg>
+      </span>
+      <span class="stat-label">Revision</span>
+      <strong>6</strong>
+      <small>25% of total</small>
+    </article>
+
+    <article class="stat-card submitted">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4h10v16H7z" />
+          <path d="M10 8h4" />
+          <path d="M10 12h4" />
+          <path d="M9 16h6" />
+        </svg>
+      </span>
+      <span class="stat-label">Submitted</span>
+      <strong>3</strong>
+      <small>13% of total</small>
+    </article>
+
+    <article class="stat-card complete">
+      <span class="stat-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="7.5" />
+          <path d="m8.8 12.3 2.1 2.1 4.5-4.8" />
+        </svg>
+      </span>
+      <span class="stat-label">Completed</span>
+      <strong>3</strong>
+      <small>12% of total</small>
+    </article>
+  </div>
+
+  <section class="paper-panel" aria-label="Papers">
+    <header class="paper-toolbar">
+      <nav class="paper-tabs" aria-label="Paper filters">
+        <button class="active" type="button">All Papers <span>24</span></button>
+        <button type="button">Mine <span>12</span></button>
+        <button type="button">Shared <span>9</span></button>
+        <button type="button">Archived <span>3</span></button>
+      </nav>
+
+      <div class="paper-tools">
+        <button type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h10" />
+            <path d="M18 7h2" />
+            <path d="M15 5v4" />
+            <path d="M4 17h2" />
+            <path d="M10 17h10" />
+            <path d="M7 15v4" />
+          </svg>
+          Filter
+        </button>
+        <button type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5v14" />
+            <path d="m5 16 3 3 3-3" />
+            <path d="M16 5v14" />
+            <path d="m13 8 3-3 3 3" />
+          </svg>
+          Sort: Last Updated
+        </button>
+        <button class="icon-tool" type="button" aria-label="Grid view">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 5h5v5H5z" />
+            <path d="M14 5h5v5h-5z" />
+            <path d="M5 14h5v5H5z" />
+            <path d="M14 14h5v5h-5z" />
+          </svg>
+        </button>
+        <button class="icon-tool" type="button" aria-label="List view">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 6h12" />
+            <path d="M8 12h12" />
+            <path d="M8 18h12" />
+            <path d="M4 6h.1" />
+            <path d="M4 12h.1" />
+            <path d="M4 18h.1" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Paper / Topic</th>
+            <th scope="col">Stage</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Collaborators</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Synthetic Intelligence and Origination <span class="star">★</span></strong>
+              <small>AI · Creativity · Cognition</small>
+            </td>
+            <td><span class="stage revision">Revision</span></td>
+            <td>
+              <div class="progress"><span style="width: 73%"></span></div>
+              <em>73%</em>
+            </td>
+            <td><time datetime="2024-06-28">Jun 28, 2024</time><small class="danger">5 days left</small></td>
+            <td><span class="avatars"><i>AL</i><i>RN</i><i>MK</i><b>+2</b></span></td>
+            <td><time datetime="2024-05-23T10:42">May 23, 10:42 AM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Deep Learning for Medical Imaging</strong>
+              <small>AI · Medical Imaging · CNN</small>
+            </td>
+            <td><span class="stage drafting">Drafting</span></td>
+            <td>
+              <div class="progress blue"><span style="width: 65%"></span></div>
+              <em>65%</em>
+            </td>
+            <td><time datetime="2024-05-31">May 31, 2024</time><small class="danger">8 days left</small></td>
+            <td><span class="avatars"><i>SK</i><i>JM</i><i>AT</i><b>+3</b></span></td>
+            <td><time datetime="2024-05-22T15:15">May 22, 3:15 PM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Climate Change Policy Review</strong>
+              <small>Climate · Policy · Environment</small>
+            </td>
+            <td><span class="stage review">Review</span></td>
+            <td>
+              <div class="progress"><span style="width: 48%"></span></div>
+              <em>48%</em>
+            </td>
+            <td><time datetime="2024-06-10">Jun 10, 2024</time><small>21 days left</small></td>
+            <td><span class="avatars"><i>EV</i><i>BW</i><i>NO</i><b>+1</b></span></td>
+            <td><time datetime="2024-05-21T09:05">May 21, 9:05 AM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Quantum Networks Survey</strong>
+              <small>Quantum · Networks · Security</small>
+            </td>
+            <td><span class="stage outline">Outline</span></td>
+            <td>
+              <div class="progress green"><span style="width: 28%"></span></div>
+              <em>28%</em>
+            </td>
+            <td><time datetime="2024-07-01">Jul 1, 2024</time><small>42 days left</small></td>
+            <td><span class="avatars"><i>QC</i><i>LD</i><i>TS</i><b>+2</b></span></td>
+            <td><time datetime="2024-05-16T16:23">May 16, 4:23 PM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Federated Learning in Healthcare</strong>
+              <small>AI · Privacy · Healthcare</small>
+            </td>
+            <td><span class="stage drafting">Drafting</span></td>
+            <td>
+              <div class="progress blue"><span style="width: 35%"></span></div>
+              <em>35%</em>
+            </td>
+            <td><time datetime="2024-06-18">Jun 18, 2024</time><small>31 days left</small></td>
+            <td><span class="avatars"><i>HP</i><i>MA</i><i>JL</i><b>+1</b></span></td>
+            <td><time datetime="2024-05-18T13:10">May 18, 1:10 PM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Robust Optimization for Supply Chains</strong>
+              <small>Operations · Optimization</small>
+            </td>
+            <td><span class="stage submitted">Submitted</span></td>
+            <td>
+              <div class="progress cyan"><span style="width: 100%"></span></div>
+              <em>100%</em>
+            </td>
+            <td><time datetime="2024-05-10">May 10, 2024</time><small class="success">Submitted</small></td>
+            <td><span class="avatars"><i>OS</i><i>KV</i><i>TR</i><b>+4</b></span></td>
+            <td><time datetime="2024-05-10T10:20">May 10, 10:20 AM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Explainable AI: A Systematic Review</strong>
+              <small>AI · Explainability · Survey</small>
+            </td>
+            <td><span class="stage complete">Complete</span></td>
+            <td>
+              <div class="progress green"><span style="width: 100%"></span></div>
+              <em>100%</em>
+            </td>
+            <td><time datetime="2024-04-20">Apr 20, 2024</time><small class="success">Published</small></td>
+            <td><span class="avatars"><i>XA</i><i>SP</i><i>NU</i><b>+5</b></span></td>
+            <td><time datetime="2024-04-20T14:45">Apr 20, 2:45 PM</time></td>
+            <td><button class="row-menu" type="button" aria-label="More actions">⋮</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="paper-footer">
+      <span>Showing 1 to 7 of 24 papers</span>
+      <nav class="pagination" aria-label="Paper pages">
+        <button type="button" aria-label="First page">≪</button>
+        <button class="active" type="button">1</button>
+        <button type="button">2</button>
+        <button type="button">3</button>
+        <button type="button">4</button>
+        <button type="button" aria-label="Next page">›</button>
+        <button type="button" aria-label="Last page">≫</button>
+      </nav>
+    </footer>
+  </section>
+</section>

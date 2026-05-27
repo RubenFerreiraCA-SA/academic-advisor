@@ -160,7 +160,63 @@
     </section>
   </aside>
 
-  <main class="platform-content">
-    <router-outlet />
-  </main>
+  <section class="platform-main">
+    <header class="top-nav" aria-label="Platform toolbar">
+      <label class="search-box">
+        <span class="sr-only">Search papers, topics, collaborators</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="10.8" cy="10.8" r="5.8" />
+          <path d="m15.2 15.2 4.1 4.1" />
+        </svg>
+        <input type="search" placeholder="Search papers, topics, collaborators..." />
+        <kbd>⌘ K</kbd>
+      </label>
+
+      <div class="top-actions">
+        <button class="icon-button" type="button" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.5 16.8h11" />
+            <path d="M8.2 16.8v-5.1a3.9 3.9 0 0 1 7.8 0v5.1" />
+            <path d="M10.3 19.2a2 2 0 0 0 3.4 0" />
+          </svg>
+          <span>3</span>
+        </button>
+
+        <button class="icon-button" type="button" aria-label="Messages">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.8 7.2h14.4v10.1H4.8z" />
+            <path d="m5.2 7.7 6.8 5.2 6.8-5.2" />
+          </svg>
+          <span>5</span>
+        </button>
+
+        <button class="profile-button" type="button" aria-label="Open profile menu">
+          <span class="avatar" aria-hidden="true">AM</span>
+          <span class="profile-copy">
+            <strong>Dr. Alex Morgan</strong>
+            <small>Researcher</small>
+          </span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 10 4 4 4-4" />
+          </svg>
+        </button>
+
+        <button class="new-paper-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 5.5v13" />
+            <path d="M5.5 12h13" />
+          </svg>
+          <span>New Paper</span>
+          <span class="button-divider" aria-hidden="true"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 10 4 4 4-4" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="platform-content">
+      <router-outlet />
+    </main>
+  </section>
 </div>
