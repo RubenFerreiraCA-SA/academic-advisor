@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "go": "ng build --configuration production && firebase deploy"
   },
   "private": true,
   "packageManager": "pnpm@11.3.0",
