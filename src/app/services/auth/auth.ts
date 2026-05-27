@@ -37,6 +37,7 @@ export interface SignInWithEmailOptions {
 })
 export class Auth {
   private readonly auth: FirebaseAuth;
+  private readonly initialUserPromise: Promise<User | null>;
   private readonly userSubject = new BehaviorSubject<User | null>(null);
 
   readonly user$ = this.userSubject.asObservable();
@@ -50,6 +51,14 @@ export class Auth {
     this.auth = getAuth(app);
     this.userSubject.next(this.auth.currentUser);
 
+    this.initialUserPromise = new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(this.auth, (user) => {
+        this.userSubject.next(user);
+        resolve(user);
+        unsubscribe();
+      });
+    });
+
     onAuthStateChanged(this.auth, (user) => {
       this.userSubject.next(user);
     });
@@ -57,6 +66,10 @@ export class Auth {
 
   get currentUser(): User | null {
     return this.auth.currentUser;
+  }
+
+  authStateReady(): Promise<User | null> {
+    return this.initialUserPromise;
   }
 
   async signInWithEmail(
