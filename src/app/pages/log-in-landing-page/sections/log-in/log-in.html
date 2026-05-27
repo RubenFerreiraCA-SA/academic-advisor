@@ -66,32 +66,40 @@
           <input type="checkbox" formControlName="rememberMe" />
           <span>Remember me</span>
         </label>
-        <button class="link-button" type="button" (click)="sendPasswordReset()" aria-label="Reset your password">
+        <button
+          class="link-button"
+          type="button"
+          (click)="sendPasswordReset()"
+          [disabled]="loading()"
+          aria-label="Reset your password"
+        >
           Forgot password?
         </button>
       </div>
 
-      @if (errorMessage || successMessage) {
-        <p class="form-message" [class.success]="successMessage">
-          {{ errorMessage || successMessage }}
+      @if (errorMessage() || successMessage()) {
+        <p class="form-message" [class.success]="successMessage()">
+          {{ errorMessage() || successMessage() }}
         </p>
       }
 
-      <button class="primary-action" type="submit" [disabled]="loading">
-        {{ loading ? 'Signing in...' : 'Sign In' }}
+      <button class="primary-action" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Signing in...' : 'Sign In' }}
       </button>
     </form>
 
     <div class="divider"><span>or continue with</span></div>
 
-    <button class="google-action" type="button" (click)="signInWithGoogle()" [disabled]="loading">
+    <button class="google-action" type="button" (click)="signInWithGoogle()" [disabled]="loading()">
       <span class="google-mark" aria-hidden="true">G</span>
       <span>Continue with Google</span>
     </button>
 
     <p class="signup-copy">
       New here?
-      <a href="#">Create an account</a>
+      <button class="inline-link" type="button" (click)="createAccountRequested.emit()">
+        Create an account
+      </button>
     </p>
   </section>
 

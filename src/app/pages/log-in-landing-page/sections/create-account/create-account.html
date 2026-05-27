@@ -1,0 +1,186 @@
+<section class="create-shell" aria-labelledby="create-account-title">
+  <section class="create-card">
+    <div class="brand" aria-label="AcaPublish">
+      <svg class="brand-mark" viewBox="0 0 44 44" aria-hidden="true">
+        <path d="M7.4 31.6h6.4l8.2-22.1 8.2 22.1h6.4" />
+        <path d="M17.7 31.6h8.6" />
+        <path d="M14 25.4h5.5" />
+        <path d="M24.5 25.4H30" />
+        <path d="M18.3 19.7 22 9.5l3.7 10.2" />
+      </svg>
+      <span>AcaPublish</span>
+    </div>
+
+    <header class="create-header">
+      <h1 id="create-account-title">Create your account</h1>
+      <p>Set up your research workspace in minutes.</p>
+    </header>
+
+    <form
+      class="create-form"
+      [formGroup]="createAccountForm"
+      (ngSubmit)="createAccount()"
+      aria-label="Create account form"
+    >
+      <div class="name-grid">
+        <label class="field">
+          <span>First name</span>
+          <span class="input-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+              <path d="M4.8 20c.8-4 3.2-6 7.2-6s6.4 2 7.2 6" />
+            </svg>
+            <input type="text" formControlName="firstName" autocomplete="given-name" placeholder="First name" />
+          </span>
+        </label>
+
+        <label class="field">
+          <span>Last name</span>
+          <span class="input-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+              <path d="M4.8 20c.8-4 3.2-6 7.2-6s6.4 2 7.2 6" />
+            </svg>
+            <input type="text" formControlName="lastName" autocomplete="family-name" placeholder="Last name" />
+          </span>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Email address</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6.5h16v11H4z" />
+            <path d="m4.8 7.4 7.2 5.5 7.2-5.5" />
+          </svg>
+          <input type="email" formControlName="email" autocomplete="email" placeholder="you@example.com" />
+        </span>
+      </label>
+
+      <label class="field">
+        <span>Institution / Organization</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 10h16" />
+            <path d="m6 10 6-5 6 5" />
+            <path d="M6.5 10v7" />
+            <path d="M11.8 10v7" />
+            <path d="M17.1 10v7" />
+            <path d="M4.5 19h15" />
+          </svg>
+          <input
+            type="text"
+            formControlName="institution"
+            autocomplete="organization"
+            placeholder="Your university or organization"
+          />
+        </span>
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10.5V8.2a5 5 0 0 1 10 0v2.3" />
+            <path d="M6.3 10.5h11.4v8.7H6.3z" />
+            <path d="M12 14.2v2" />
+          </svg>
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="Create a strong password"
+          />
+          <button
+            class="icon-button"
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.8 12s2.8-5 8.2-5 8.2 5 8.2 5-2.8 5-8.2 5-8.2-5-8.2-5Z" />
+              <circle cx="12" cy="12" r="2.4" />
+            </svg>
+          </button>
+        </span>
+      </label>
+
+      <label class="field">
+        <span>Confirm password</span>
+        <span class="input-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10.5V8.2a5 5 0 0 1 10 0v2.3" />
+            <path d="M6.3 10.5h11.4v8.7H6.3z" />
+          </svg>
+          <input
+            [type]="confirmPasswordVisible ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Confirm your password"
+          />
+          <button
+            class="icon-button"
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="confirmPasswordVisible ? 'Hide password' : 'Show password'"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.8 12s2.8-5 8.2-5 8.2 5 8.2 5-2.8 5-8.2 5-8.2-5-8.2-5Z" />
+              <circle cx="12" cy="12" r="2.4" />
+            </svg>
+          </button>
+        </span>
+      </label>
+
+      <div class="check-list">
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="acceptedTerms" />
+          <span>
+            I agree to the
+            <a href="#">Terms of Service</a>
+            and
+            <a href="#">Privacy Policy</a>
+          </span>
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="productUpdates" />
+          <span>Send me product updates, tips, and research insights</span>
+        </label>
+      </div>
+
+      @if (errorMessage() || successMessage()) {
+        <p class="form-message" [class.success]="successMessage()">
+          {{ errorMessage() || successMessage() }}
+        </p>
+      }
+
+      <button class="primary-action" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Creating account...' : 'Create Account' }}
+      </button>
+    </form>
+
+    <div class="divider"><span>or continue with</span></div>
+
+    <button class="google-action" type="button" (click)="signUpWithGoogle()" [disabled]="loading()">
+      <span class="google-mark" aria-hidden="true">G</span>
+      <span>Continue with Google</span>
+    </button>
+
+    <p class="signin-copy">
+      Already have an account?
+      <button class="inline-link" type="button" (click)="signInRequested.emit()">Sign in</button>
+    </p>
+  </section>
+
+  <footer class="create-footer">
+    <span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 10.5V8a5 5 0 0 1 10 0v2.5" />
+        <path d="M6 10.5h12v9H6z" />
+      </svg>
+      Your data is secure and encrypted
+    </span>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+  </footer>
+</section>

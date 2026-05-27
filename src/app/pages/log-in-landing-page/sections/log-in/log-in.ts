@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth } from '../../../../services/auth/auth';
 
@@ -9,10 +9,12 @@ import { Auth } from '../../../../services/auth/auth';
   styleUrl: './log-in.scss',
 })
 export class LogIn {
+  readonly createAccountRequested = output<void>();
+
   protected passwordVisible = false;
-  protected loading = false;
-  protected errorMessage = '';
-  protected successMessage = '';
+  protected readonly loading = signal(false);
+  protected readonly errorMessage = signal('');
+  protected readonly successMessage = signal('');
 
   protected readonly loginForm;
 
@@ -32,73 +34,77 @@ export class LogIn {
   }
 
   protected async signIn(): Promise<void> {
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
 
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.errorMessage = 'Enter a valid email address and password.';
+      this.errorMessage.set('Enter a valid email address and password.');
       return;
     }
 
     const { email, password, rememberMe } = this.loginForm.getRawValue();
-    this.loading = true;
+    this.loading.set(true);
 
     try {
       await this.auth.signInWithEmail(email, password, {
         persistence: rememberMe ? 'local' : 'session',
       });
-      this.successMessage = 'Signed in successfully.';
+      this.successMessage.set('Signed in successfully.');
     } catch (error) {
-      this.errorMessage = this.getAuthErrorMessage(error);
+      this.errorMessage.set(await this.getEmailSignInErrorMessage(email, error));
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 
   protected async signInWithGoogle(): Promise<void> {
-    this.errorMessage = '';
-    this.successMessage = '';
-    this.loading = true;
+    this.clearMessages();
+    this.loading.set(true);
 
     try {
       await this.auth.signInWithGoogle(this.loginForm.controls.rememberMe.value ? 'local' : 'session');
-      this.successMessage = 'Signed in successfully.';
+      this.successMessage.set('Signed in successfully.');
     } catch (error) {
-      this.errorMessage = this.getAuthErrorMessage(error);
+      this.errorMessage.set(this.getAuthErrorMessage(error));
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 
   protected async sendPasswordReset(): Promise<void> {
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
 
     const emailControl = this.loginForm.controls.email;
 
     if (emailControl.invalid) {
       emailControl.markAsTouched();
-      this.errorMessage = 'Enter your email address first.';
+      this.errorMessage.set('Enter your email address first.');
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
 
     try {
       await this.auth.sendPasswordReset(emailControl.value);
-      this.successMessage = 'Password reset email sent.';
+      this.successMessage.set('Password reset email sent.');
     } catch (error) {
-      this.errorMessage = this.getAuthErrorMessage(error);
+      this.errorMessage.set(this.getAuthErrorMessage(error));
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
+  }
+
+  private clearMessages(): void {
+    this.errorMessage.set('');
+    this.successMessage.set('');
   }
 
   private getAuthErrorMessage(error: unknown): string {
     const code = typeof error === 'object' && error !== null && 'code' in error ? error.code : '';
 
     switch (code) {
+      case 'auth/account-exists-with-different-credential':
+        return 'This email is already connected to another sign-in method. Try Google sign-in.';
       case 'auth/invalid-credential':
       case 'auth/user-not-found':
       case 'auth/wrong-password':
@@ -112,5 +118,33 @@ export class LogIn {
       default:
         return 'Something went wrong. Please try again.';
     }
+  }
+
+  private async getEmailSignInErrorMessage(email: string, error: unknown): Promise<string> {
+    const code = typeof error === 'object' && error !== null && 'code' in error ? error.code : '';
+
+    if (!['auth/invalid-credential', 'auth/user-not-found', 'auth/wrong-password'].includes(String(code))) {
+      return this.getAuthErrorMessage(error);
+    }
+
+    try {
+      const methods = await this.auth.getSignInMethodsForEmail(email);
+
+      if (methods.length === 0) {
+        return 'No account exists for this email address. Create an account first.';
+      }
+
+      if (methods.includes('google.com') && !methods.includes('password')) {
+        return 'This email uses Google sign-in. Continue with Google instead.';
+      }
+
+      if (methods.includes('password')) {
+        return 'The password is incorrect.';
+      }
+    } catch {
+      return 'The email or password is incorrect.';
+    }
+
+    return 'The email or password is incorrect.';
   }
 }
