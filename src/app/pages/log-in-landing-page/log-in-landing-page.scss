@@ -81,9 +81,17 @@
 }
 
 app-marketing,
-app-log-in {
+app-log-in,
+app-create-account {
   display: block;
   min-width: 0;
+}
+
+.landing-grid.account-only {
+  grid-template-columns: minmax(0, 560px);
+  margin-top: 0;
+  min-height: calc(100dvh - 68px);
+  align-items: center;
 }
 
 @media (max-width: 960px) {
@@ -130,6 +138,14 @@ app-log-in {
     padding: 20px 48px 18px;
   }
 
+  .landing-shell.account-view {
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: auto;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
   .site-brand {
     gap: 10px;
     font-size: 22px;
@@ -143,6 +159,10 @@ app-log-in {
   .landing-grid {
     gap: clamp(34px, 5vw, 82px);
     margin-top: 18px;
+  }
+
+  .landing-grid.account-only {
+    min-height: 0;
   }
 }
 

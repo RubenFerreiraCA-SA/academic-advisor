@@ -4,6 +4,7 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -95,6 +96,10 @@ export class Auth {
 
   sendPasswordReset(email: string): Promise<void> {
     return sendPasswordResetEmail(this.auth, email.trim());
+  }
+
+  getSignInMethodsForEmail(email: string): Promise<string[]> {
+    return fetchSignInMethodsForEmail(this.auth, email.trim());
   }
 
   signOut(): Promise<void> {

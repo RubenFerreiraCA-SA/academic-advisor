@@ -1,17 +1,27 @@
-<main class="landing-shell" aria-label="AcaPublish sign in">
-  <div class="site-brand" aria-label="AcaPublish">
-    <svg viewBox="0 0 44 44" aria-hidden="true">
-      <path d="M7.4 31.6h6.4l8.2-22.1 8.2 22.1h6.4" />
-      <path d="M17.7 31.6h8.6" />
-      <path d="M14 25.4h5.5" />
-      <path d="M24.5 25.4H30" />
-      <path d="M18.3 19.7 22 9.5l3.7 10.2" />
-    </svg>
-    <span>AcaPublish</span>
-  </div>
+<main
+  class="landing-shell"
+  [class.account-view]="authView() === 'create-account'"
+  aria-label="AcaPublish sign in"
+>
+  @if (authView() === 'sign-in') {
+    <div class="site-brand" aria-label="AcaPublish">
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        <path d="M7.4 31.6h6.4l8.2-22.1 8.2 22.1h6.4" />
+        <path d="M17.7 31.6h8.6" />
+        <path d="M14 25.4h5.5" />
+        <path d="M24.5 25.4H30" />
+        <path d="M18.3 19.7 22 9.5l3.7 10.2" />
+      </svg>
+      <span>AcaPublish</span>
+    </div>
+  }
 
-  <div class="landing-grid">
-    <app-marketing />
-    <app-log-in />
+  <div class="landing-grid" [class.account-only]="authView() === 'create-account'">
+    @if (authView() === 'sign-in') {
+      <app-marketing />
+      <app-log-in (createAccountRequested)="authView.set('create-account')" />
+    } @else {
+      <app-create-account (signInRequested)="authView.set('sign-in')" />
+    }
   </div>
 </main>
