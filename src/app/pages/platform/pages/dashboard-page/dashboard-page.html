@@ -19,50 +19,5 @@
     }
   </div>
 
-  <app-custom-dynamic-table [data]="papers" [tabs]="paperTabs">
-    <ng-template appTableColumn key="title" header="Paper / Topic" let-row>
-      <strong>
-        {{ asPaper(row).title }}
-        @if (asPaper(row).featured) {
-          <span class="star">★</span>
-        }
-      </strong>
-      <small>{{ asPaper(row).topic }}</small>
-    </ng-template>
-
-    <ng-template appTableColumn key="stage" header="Stage" let-row>
-      <span [class]="'stage ' + asPaper(row).stage.tone">{{ asPaper(row).stage.label }}</span>
-    </ng-template>
-
-    <ng-template appTableColumn key="progress" header="Progress" let-row>
-      <div class="progress-cell">
-        <div [class]="asPaper(row).progress.tone ? 'progress ' + asPaper(row).progress.tone : 'progress'">
-          <span [style.width.%]="asPaper(row).progress.value"></span>
-        </div>
-        <em>{{ asPaper(row).progress.value }}%</em>
-      </div>
-    </ng-template>
-
-    <ng-template appTableColumn key="deadline" header="Deadline" let-row>
-      <time [attr.datetime]="asPaper(row).deadline.datetime">{{ asPaper(row).deadline.date }}</time>
-      <small [class]="asPaper(row).deadline.tone ?? ''">{{ asPaper(row).deadline.status }}</small>
-    </ng-template>
-
-    <ng-template appTableColumn key="collaborators" header="Collaborators" let-row>
-      <span class="avatars">
-        @for (initials of asPaper(row).collaborators.initials; track initials) {
-          <i>{{ initials }}</i>
-        }
-        <b>{{ asPaper(row).collaborators.extra }}</b>
-      </span>
-    </ng-template>
-
-    <ng-template appTableColumn key="updated" header="Last Updated" let-row>
-      <time [attr.datetime]="asPaper(row).updated.datetime">{{ asPaper(row).updated.label }}</time>
-    </ng-template>
-
-    <ng-template appTableColumn key="actions" header="Actions" [srOnly]="true" let-row>
-      <button class="row-menu" type="button" aria-label="More actions">⋮</button>
-    </ng-template>
-  </app-custom-dynamic-table>
+  <app-custom-dynamic-table [config]="tableConfig" />
 </section>

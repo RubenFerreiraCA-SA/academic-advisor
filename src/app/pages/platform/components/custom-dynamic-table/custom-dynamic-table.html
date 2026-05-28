@@ -1,7 +1,7 @@
-@if (tabs().length) {
-  <section class="paper-panel" aria-label="Table">
-    <header class="paper-toolbar">
-      <nav class="paper-tabs" aria-label="Table filters">
+@if (config.tabs?.length) {
+  <section class="panel" aria-label="Table">
+    <header class="toolbar">
+      <nav class="tabs" aria-label="Table filters">
         @for (tab of tabsWithCounts(); track tab.id) {
           <button
             type="button"
@@ -19,12 +19,12 @@
       <table>
         <thead>
           <tr>
-            @for (col of columns(); track col.key()) {
-              <th scope="col">
-                @if (col.srOnly()) {
-                  <span class="sr-only">{{ col.header() }}</span>
+            @for (col of config.columns; track col.key) {
+              <th scope="col" [style.width]="col.width ?? null">
+                @if (col.srOnly) {
+                  <span class="sr-only">{{ col.header }}</span>
                 } @else {
-                  {{ col.header() }}
+                  {{ col.header }}
                 }
               </th>
             }
@@ -33,19 +33,60 @@
         <tbody>
           @for (row of paginatedData(); track $index) {
             <tr>
-              @for (col of columns(); track col.key()) {
+              @for (col of config.columns; track col.key) {
                 <td>
-                  <ng-container
-                    [ngTemplateOutlet]="col.templateRef"
-                    [ngTemplateOutletContext]="{ $implicit: row }"
-                  />
+                  @switch (col.cell.type) {
+                    @case ('text') {
+                      <strong>
+                        {{ $any(col.cell).primary(row) }}
+                        @if ($any(col.cell).badge?.(row)) {
+                          <span class="badge">{{ $any(col.cell).badge(row) }}</span>
+                        }
+                      </strong>
+                      @if ($any(col.cell).secondary) {
+                        <small>{{ $any(col.cell).secondary(row) }}</small>
+                      }
+                    }
+                    @case ('badge') {
+                      <span [class]="'pill ' + $any(col.cell).tone(row)">
+                        {{ $any(col.cell).label(row) }}
+                      </span>
+                    }
+                    @case ('progress') {
+                      <div class="progress-cell">
+                        <div [class]="$any(col.cell).tone?.(row) ? 'progress ' + $any(col.cell).tone(row) : 'progress'">
+                          <span [style.width.%]="$any(col.cell).value(row)"></span>
+                        </div>
+                        <em>{{ $any(col.cell).value(row) }}%</em>
+                      </div>
+                    }
+                    @case ('date') {
+                      <time [attr.datetime]="$any(col.cell).datetime(row)">{{ $any(col.cell).label(row) }}</time>
+                      @if ($any(col.cell).secondary) {
+                        <small [class]="$any(col.cell).secondaryTone?.(row) ?? ''">
+                          {{ $any(col.cell).secondary(row) }}
+                        </small>
+                      }
+                    }
+                    @case ('avatars') {
+                      <span class="avatars">
+                        @for (initials of $any(col.cell).initials(row); track initials) {
+                          <i>{{ initials }}</i>
+                        }
+                        <b>{{ $any(col.cell).extra(row) }}</b>
+                      </span>
+                    }
+                    @case ('action') {
+                      <button class="row-action" type="button" [attr.aria-label]="$any(col.cell).ariaLabel">⋮</button>
+                    }
+                  }
                 </td>
               }
             </tr>
           }
           @for (_ of emptyRows(); track $index) {
             <tr class="empty-row" aria-hidden="true">
-              @for (col of columns(); track col.key()) {
+              @for (col of config.columns; track col.key) {
                 <td></td>
               }
             </tr>
@@ -54,22 +95,11 @@
       </table>
     </div>
 
-    <footer class="paper-footer">
+    <footer class="table-footer">
       <span>Showing {{ pageInfo().from }}–{{ pageInfo().to }} of {{ pageInfo().total }} rows</span>
       <nav class="pagination" aria-label="Table pages">
-        <button
-          type="button"
-          aria-label="First page"
-          [disabled]="currentPage() === 1"
-          (click)="goToPage(1)"
-        >≪</button>
-        <button
-          type="button"
-          aria-label="Previous page"
-          [disabled]="currentPage() === 1"
-          (click)="goToPage(currentPage() - 1)"
-        >‹</button>
-
+        <button type="button" aria-label="First page" [disabled]="currentPage() === 1" (click)="goToPage(1)">≪</button>
+        <button type="button" aria-label="Previous page" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)">‹</button>
         @for (page of visiblePages(); track $index) {
           @if (page === 'ellipsis') {
             <span class="page-ellipsis" aria-hidden="true">…</span>
@@ -82,19 +112,8 @@
             >{{ page }}</button>
           }
         }
-
-        <button
-          type="button"
-          aria-label="Next page"
-          [disabled]="currentPage() === totalPages()"
-          (click)="goToPage(currentPage() + 1)"
-        >›</button>
-        <button
-          type="button"
-          aria-label="Last page"
-          [disabled]="currentPage() === totalPages()"
-          (click)="goToPage(totalPages())"
-        >≫</button>
+        <button type="button" aria-label="Next page" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)">›</button>
+        <button type="button" aria-label="Last page" [disabled]="currentPage() === totalPages()" (click)="goToPage(totalPages())">≫</button>
       </nav>
     </footer>
   </section>

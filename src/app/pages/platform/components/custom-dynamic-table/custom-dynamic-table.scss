@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-.paper-panel {
+.panel {
   min-width: 0;
   overflow: hidden;
   border: 1px solid rgba(78, 122, 190, 0.24);
@@ -17,7 +17,7 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-.paper-toolbar {
+.toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,14 +27,13 @@
   padding: 0 18px;
 }
 
-.paper-tabs,
-.paper-tools,
+.tabs,
 .pagination {
   display: flex;
   align-items: center;
 }
 
-.paper-tabs {
+.tabs {
   gap: 20px;
 }
 
@@ -42,8 +41,7 @@ button {
   font: inherit;
 }
 
-.paper-tabs button,
-.paper-tools button,
+.tabs button,
 .pagination button {
   border: 0;
   color: #8fa2bf;
@@ -51,7 +49,7 @@ button {
   cursor: pointer;
 }
 
-.paper-tabs button {
+.tabs button {
   position: relative;
   min-height: 48px;
   padding: 0;
@@ -59,11 +57,11 @@ button {
   font-weight: 900;
 }
 
-.paper-tabs button.active {
+.tabs button.active {
   color: #6ca2ff;
 }
 
-.paper-tabs button.active::after {
+.tabs button.active::after {
   position: absolute;
   right: 0;
   bottom: -1px;
@@ -74,7 +72,7 @@ button {
   content: "";
 }
 
-.paper-tabs span {
+.tabs button span {
   display: inline-grid;
   min-width: 21px;
   height: 17px;
@@ -84,43 +82,6 @@ button {
   color: #a7b6cf;
   background: rgba(105, 127, 165, 0.2);
   font-size: 9px;
-}
-
-.paper-tools {
-  gap: 8px;
-}
-
-.paper-tools button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 30px;
-  border-radius: 6px;
-  padding: 0 8px;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.paper-tools button:hover,
-.pagination button:hover {
-  color: #e7f0ff;
-  background: rgba(80, 116, 182, 0.13);
-}
-
-.paper-tools svg {
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.9;
-}
-
-.paper-tools .icon-tool {
-  width: 28px;
-  padding: 0;
-  justify-content: center;
 }
 
 .table-wrap {
@@ -165,19 +126,184 @@ td {
   font-weight: 800;
 }
 
-td:first-child {
-  width: 30%;
+/* ── cell renderers ─────────────────────────────────────────────────────────── */
+
+td strong,
+td small,
+td time {
+  display: block;
 }
 
-td:nth-child(3) {
-  width: 210px;
+td strong {
+  color: #e8f1ff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
 }
 
-td:nth-child(5) {
-  width: 170px;
+td small {
+  margin-top: 5px;
+  color: #7f91ad;
+  font-size: 9px;
+  font-weight: 800;
 }
 
-.paper-footer {
+td time {
+  color: #98aac4;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+td em {
+  color: #9aadc7;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.badge {
+  color: #ffcb45;
+}
+
+.pill {
+  display: inline-grid;
+  min-width: 72px;
+  min-height: 28px;
+  place-items: center;
+  border: 1px solid rgba(140, 81, 255, 0.38);
+  border-radius: 6px;
+  color: #b391ff;
+  background: rgba(112, 58, 226, 0.2);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.pill.drafting {
+  border-color: rgba(50, 128, 255, 0.42);
+  color: #6da8ff;
+  background: rgba(41, 113, 226, 0.2);
+}
+
+.pill.outline,
+.pill.complete {
+  border-color: rgba(83, 207, 113, 0.4);
+  color: #78d88e;
+  background: rgba(53, 165, 86, 0.2);
+}
+
+.pill.submitted {
+  border-color: rgba(42, 206, 216, 0.4);
+  color: #3fd5dd;
+  background: rgba(37, 179, 191, 0.2);
+}
+
+.progress-cell {
+  display: grid;
+  grid-template-columns: minmax(105px, 1fr) 42px;
+  align-items: center;
+  gap: 14px;
+}
+
+.progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(5, 18, 39, 0.9);
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8a4dff, #b450ff);
+}
+
+.progress.blue span {
+  background: linear-gradient(90deg, #2d7bff, #4ba4ff);
+}
+
+.progress.green span {
+  background: linear-gradient(90deg, #66d586, #8cf39f);
+}
+
+.progress.cyan span {
+  background: linear-gradient(90deg, #26c7d4, #42e5ec);
+}
+
+.danger {
+  color: #ff6a5d;
+}
+
+.success {
+  color: #40d0b7;
+}
+
+.avatars {
+  display: flex;
+  align-items: center;
+}
+
+.avatars i,
+.avatars b {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 2px solid #07172f;
+  border-radius: 999px;
+  color: #12243d;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.64), transparent 45%),
+    linear-gradient(135deg, #f0b68c, #6c9cef);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.avatars i + i,
+.avatars b {
+  margin-left: -8px;
+}
+
+.avatars i:nth-child(2) {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 45%),
+    linear-gradient(135deg, #8be0cc, #f0b66f);
+}
+
+.avatars i:nth-child(3) {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 45%),
+    linear-gradient(135deg, #c98cff, #5ed6ea);
+}
+
+.avatars b {
+  color: #a9b9d0;
+  background: #0b203f;
+  font-size: 9px;
+}
+
+.row-action {
+  border: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  color: #8fa2bf;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.row-action:hover {
+  color: #e7f0ff;
+  background: rgba(80, 116, 182, 0.13);
+}
+
+/* ── footer / pagination ────────────────────────────────────────────────────── */
+
+.table-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -200,6 +326,11 @@ td:nth-child(5) {
   border-radius: 5px;
   font-size: 11px;
   font-weight: 900;
+}
+
+.pagination button:hover {
+  color: #e7f0ff;
+  background: rgba(80, 116, 182, 0.13);
 }
 
 .pagination button.active {
@@ -232,24 +363,23 @@ td:nth-child(5) {
 }
 
 @media (max-width: 760px) {
-  .paper-toolbar,
-  .paper-footer {
+  .toolbar,
+  .table-footer {
     align-items: stretch;
     flex-direction: column;
     padding: 12px;
   }
 
-  .paper-tabs,
-  .paper-tools,
+  .tabs,
   .pagination {
     overflow-x: auto;
   }
 
-  .paper-tabs {
+  .tabs {
     gap: 16px;
   }
 
-  .paper-tabs button {
+  .tabs button {
     min-height: 32px;
     flex: 0 0 auto;
   }

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CustomDynamicTable, TabConfig } from '../../components/custom-dynamic-table/custom-dynamic-table';
-import { TableColumnDirective } from '../../components/custom-dynamic-table/table-column.directive';
+import { CustomDynamicTable, DynamicTableConfig, TabConfig } from '../../components/custom-dynamic-table/custom-dynamic-table';
 
 type DashboardStat = {
   label: string;
@@ -44,7 +43,7 @@ export type PaperRow = {
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CustomDynamicTable, TableColumnDirective],
+  imports: [CustomDynamicTable],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -96,7 +95,7 @@ export class DashboardPage {
     },
   ];
 
-  protected readonly paperTabs: TabConfig[] = [
+  private readonly paperTabs: TabConfig[] = [
     { id: 'all', label: 'All Papers' },
     { id: 'mine', label: 'Mine', filter: (row) => (row as PaperRow).category === 'mine' },
     { id: 'shared', label: 'Shared', filter: (row) => (row as PaperRow).category === 'shared' },
@@ -247,7 +246,76 @@ export class DashboardPage {
     },
   ];
 
-  protected asPaper(row: unknown): PaperRow {
-    return row as PaperRow;
-  }
+  protected readonly tableConfig: DynamicTableConfig = {
+    data: this.papers,
+    tabs: this.paperTabs,
+    columns: [
+      {
+        key: 'title',
+        header: 'Paper / Topic',
+        width: '30%',
+        cell: {
+          type: 'text',
+          primary: (row) => (row as PaperRow).title,
+          secondary: (row) => (row as PaperRow).topic,
+          badge: (row) => (row as PaperRow).featured ? '★' : '',
+        },
+      },
+      {
+        key: 'stage',
+        header: 'Stage',
+        cell: {
+          type: 'badge',
+          label: (row) => (row as PaperRow).stage.label,
+          tone: (row) => (row as PaperRow).stage.tone,
+        },
+      },
+      {
+        key: 'progress',
+        header: 'Progress',
+        width: '210px',
+        cell: {
+          type: 'progress',
+          value: (row) => (row as PaperRow).progress.value,
+          tone: (row) => (row as PaperRow).progress.tone,
+        },
+      },
+      {
+        key: 'deadline',
+        header: 'Deadline',
+        cell: {
+          type: 'date',
+          label: (row) => (row as PaperRow).deadline.date,
+          datetime: (row) => (row as PaperRow).deadline.datetime,
+          secondary: (row) => (row as PaperRow).deadline.status,
+          secondaryTone: (row) => (row as PaperRow).deadline.tone,
+        },
+      },
+      {
+        key: 'collaborators',
+        header: 'Collaborators',
+        width: '170px',
+        cell: {
+          type: 'avatars',
+          initials: (row) => (row as PaperRow).collaborators.initials,
+          extra: (row) => (row as PaperRow).collaborators.extra,
+        },
+      },
+      {
+        key: 'updated',
+        header: 'Last Updated',
+        cell: {
+          type: 'date',
+          label: (row) => (row as PaperRow).updated.label,
+          datetime: (row) => (row as PaperRow).updated.datetime,
+        },
+      },
+      {
+        key: 'actions',
+        header: 'Actions',
+        srOnly: true,
+        cell: { type: 'action', ariaLabel: 'More actions' },
+      },
+    ],
+  };
 }
