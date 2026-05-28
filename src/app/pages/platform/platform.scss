@@ -38,20 +38,31 @@
   overflow: auto;
 }
 
+
+.platform-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.platform-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.platform-content::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(91, 128, 184, 0.3);
+}
+
+.platform-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 128, 184, 0.55);
+}
+
+
 @media (max-width: 860px) {
   .platform-shell {
     grid-template-columns: 1fr;
   }
 
-  .platform-main {
-    height: auto;
-    min-height: 0;
-  }
-
   .platform-content {
-    height: auto;
-    overflow: visible;
     padding: 16px 18px 24px;
   }
-
 }

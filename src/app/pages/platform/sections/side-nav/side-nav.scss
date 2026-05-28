@@ -110,10 +110,32 @@
 }
 
 .nav-list {
+  padding: 16px 0;
   display: grid;
-  flex: 0 1 auto;
+  flex: 1 1 0;
   gap: clamp(4px, 0.9vh, 8px);
   min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(91, 128, 184, 0.3) transparent;
+}
+
+.nav-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nav-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(91, 128, 184, 0.3);
+}
+
+.nav-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 128, 184, 0.55);
 }
 
 .nav-list a,
@@ -173,8 +195,7 @@
 }
 
 .nav-spacer {
-  flex: 1 1 auto;
-  min-height: clamp(6px, 1.6vh, 16px);
+  display: none;
 }
 
 .storage-card,
@@ -185,6 +206,7 @@
 }
 
 .storage-card {
+  margin-top: clamp(6px, 1.6vh, 16px);
   padding: 15px 14px;
 }
 
