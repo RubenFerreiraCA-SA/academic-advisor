@@ -1,0 +1,90 @@
+:host {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  column-gap: 12px;
+  min-height: 104px;
+  border: 1px solid rgba(78, 122, 190, 0.28);
+  border-radius: 8px;
+  padding: 18px 16px 14px;
+  background:
+    linear-gradient(135deg, rgba(12, 38, 78, 0.86), rgba(7, 27, 58, 0.76)),
+    rgba(7, 27, 58, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
+}
+
+.icon {
+  display: grid;
+  grid-row: 1 / span 3;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: #4d8dff;
+  background: rgba(51, 125, 255, 0.16);
+}
+
+svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.label {
+  align-self: end;
+  color: #97a8c1;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+strong {
+  margin-top: 4px;
+  color: #eef5ff;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.95;
+}
+
+small {
+  margin-top: 9px;
+  color: #91a3bd;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+small b {
+  color: #62d68b;
+  font-weight: 900;
+}
+
+:host.review .icon {
+  color: #ffb545;
+  background: rgba(255, 167, 38, 0.17);
+}
+
+:host.revision .icon {
+  color: #a273ff;
+  background: rgba(147, 85, 255, 0.19);
+}
+
+:host.submitted .icon {
+  color: #2fd0d8;
+  background: rgba(33, 202, 213, 0.16);
+}
+
+:host.complete .icon {
+  color: #5cdb82;
+  background: rgba(72, 208, 113, 0.16);
+}
+
+@media (max-width: 760px) {
+  :host {
+    min-height: 94px;
+    padding: 14px 12px;
+  }
+}
