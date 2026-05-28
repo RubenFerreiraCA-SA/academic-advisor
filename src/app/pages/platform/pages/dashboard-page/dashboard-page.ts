@@ -1,14 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CustomDynamicTable, DynamicTableConfig, TabConfig } from '../../components/custom-dynamic-table/custom-dynamic-table';
-
-type DashboardStat = {
-  label: string;
-  value: string;
-  detail: string;
-  icon: string;
-  tone: 'total' | 'drafting' | 'review' | 'revision' | 'submitted' | 'complete';
-  trendIcon?: string;
-};
+import { StatCard, StatCardData } from '../../components/stat-card/stat-card';
 
 export type PaperCategory = 'mine' | 'shared' | 'archived';
 
@@ -43,13 +35,13 @@ export type PaperRow = {
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CustomDynamicTable],
+  imports: [CustomDynamicTable, StatCard],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardPage {
-  protected readonly stats: DashboardStat[] = [
+  protected readonly stats: StatCardData[] = [
     {
       label: 'Total Papers',
       value: '24',

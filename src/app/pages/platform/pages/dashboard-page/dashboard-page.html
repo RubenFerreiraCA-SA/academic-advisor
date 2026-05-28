@@ -1,21 +1,7 @@
 <section class="dashboard-page" aria-label="Paper dashboard">
   <div class="stats-grid" aria-label="Paper status summary">
     @for (stat of stats; track stat.label) {
-      <article [class]="'stat-card ' + stat.tone">
-        <span class="stat-icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <use [attr.href]="'/icons/' + stat.icon + '.svg#' + stat.icon"></use>
-          </svg>
-        </span>
-        <span class="stat-label">{{ stat.label }}</span>
-        <strong>{{ stat.value }}</strong>
-        <small>
-          @if (stat.trendIcon) {
-            <b>{{ stat.trendIcon }}</b>
-          }
-          {{ stat.detail }}
-        </small>
-      </article>
+      <app-stat-card [stat]="stat" />
     }
   </div>
 
