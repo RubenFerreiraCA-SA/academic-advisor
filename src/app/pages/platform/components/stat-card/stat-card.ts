@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-export type StatCardData = {
+export interface StatCardData {
   label: string;
   value: string;
   detail: string;

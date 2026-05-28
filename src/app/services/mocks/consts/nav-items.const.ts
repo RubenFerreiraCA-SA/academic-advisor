@@ -1,6 +1,6 @@
 import { PlatformNavItem } from "../../../pages/platform/sections/side-nav/side-nav";
 
-export const SideNavItems: PlatformNavItem[] = [
+export const SIDE_NAV_ITEMS: PlatformNavItem[] = [
     {
         label: 'Dashboard',
         icon: 'home',

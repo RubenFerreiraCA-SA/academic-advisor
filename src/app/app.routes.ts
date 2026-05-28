@@ -4,6 +4,7 @@ import { DashboardPage } from './pages/platform/pages/dashboard-page/dashboard-p
 import { PlatformSectionPage } from './pages/platform/pages/platform-section-page/platform-section-page';
 import { Platform } from './pages/platform/platform';
 import { redirectSignedInToPlatform, requireSignedIn } from './services/auth/auth.guard';
+import { PapersPage } from './pages/platform/pages/papers-page/papers-page';
 
 export const routes: Routes = [
   {
@@ -32,11 +33,7 @@ export const routes: Routes = [
       },
       {
         path: 'papers',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Papers',
-          description: 'Browse, organize, and manage research papers across every stage of the publishing workflow.',
-        },
+        component: PapersPage,
       },
       {
         path: 'tasks',
