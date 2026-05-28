@@ -200,29 +200,38 @@
   stroke-width: 2;
 }
 
-.new-paper-button {
+.new-button {
   display: grid;
-  grid-template-columns: 17px auto 1px 16px;
+  grid-template-columns: auto 16px;
+  min-width: 138px;
   align-items: center;
   gap: 9px;
-  min-height: 42px;
+  min-height: 36px;
   flex: 0 0 auto;
   border-radius: 8px;
   padding: 0 10px 0 18px;
   background: linear-gradient(135deg, #306cff, #7b2fe1);
   box-shadow: 0 14px 28px rgba(52, 90, 255, 0.26);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 900;
+  border: 0;
+
 }
 
-.new-paper-button:hover {
+.new-button:hover {
   filter: brightness(1.06);
+  cursor: pointer;
 }
 
-.new-paper-button svg {
+.new-button svg {
   width: 16px;
   height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   stroke-width: 2.2;
+  color: #000;
 }
 
 .button-divider {
