@@ -1,4 +1,4 @@
-import { StatCardData } from "../../../pages/platform/components/stat-card/stat-card";
+import { StatCardData } from "../../../pages/platform/shared-components/stat-card/stat-card";
 
 export const STAT_CARDS: StatCardData[] = [
     {

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CustomDynamicTable } from '../../components/custom-dynamic-table/custom-dynamic-table';
-import { StatCard, StatCardData } from '../../components/stat-card/stat-card';
+import { CustomDynamicTable } from '../../shared-components/custom-dynamic-table/custom-dynamic-table';
+import { StatCard, StatCardData } from '../../shared-components/stat-card/stat-card';
 import { PaperData } from '../papers-page/papers-model';
 import { MockContentService } from '../../../../services/mocks/content.service.mock';
-import { DynamicTableConfig, TabConfig } from '../../components/custom-dynamic-table/custom-dynamic-table.model';
+import { DynamicTableConfig, TabConfig } from '../../shared-components/custom-dynamic-table/custom-dynamic-table.model';
 
 @Component({
   selector: 'app-dashboard-page',

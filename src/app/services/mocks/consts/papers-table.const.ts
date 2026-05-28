@@ -1,4 +1,4 @@
-import { ColumnDef, TabConfig } from "../../../pages/platform/components/custom-dynamic-table/custom-dynamic-table.model";
+import { ColumnDef, TabConfig } from "../../../pages/platform/shared-components/custom-dynamic-table/custom-dynamic-table.model";
 import { PaperData } from "../../../pages/platform/pages/papers-page/papers-model";
 
   export  const PAPER_TABS: TabConfig[] = [
@@ -159,9 +159,9 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         width: '30%',
         cell: {
           type: 'text',
-          primary: (row) => (row as PaperData).title,
-          secondary: (row) => (row as PaperData).topic,
-          badge: (row) => (row as PaperData).featured ? '★' : '',
+          primary: (row: unknown) => (row as PaperData).title,
+          secondary: (row: unknown) => (row as PaperData).topic,
+          badge: (row: unknown) => (row as PaperData).featured ? '★' : '',
         },
       },
       {
@@ -169,8 +169,8 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         header: 'Stage',
         cell: {
           type: 'badge',
-          label: (row) => (row as PaperData).stage.label,
-          tone: (row) => (row as PaperData).stage.tone,
+          label: (row: unknown) => (row as PaperData).stage.label,
+          tone: (row: unknown) => (row as PaperData).stage.tone,
         },
       },
       {
@@ -179,8 +179,8 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         width: '210px',
         cell: {
           type: 'progress',
-          value: (row) => (row as PaperData).progress.value,
-          tone: (row) => (row as PaperData).progress.tone,
+          value: (row: unknown) => (row as PaperData).progress.value,
+          tone: (row: unknown) => (row as PaperData).progress.tone,
         },
       },
       {
@@ -188,10 +188,10 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         header: 'Deadline',
         cell: {
           type: 'date',
-          label: (row) => (row as PaperData).deadline.date,
-          datetime: (row) => (row as PaperData).deadline.datetime,
-          secondary: (row) => (row as PaperData).deadline.status,
-          secondaryTone: (row) => (row as PaperData).deadline.tone,
+          label: (row: unknown) => (row as PaperData).deadline.date,
+          datetime: (row: unknown) => (row as PaperData).deadline.datetime,
+          secondary: (row: unknown) => (row as PaperData).deadline.status,
+          secondaryTone: (row: unknown) => (row as PaperData).deadline.tone,
         },
       },
       {
@@ -200,8 +200,8 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         width: '170px',
         cell: {
           type: 'avatars',
-          initials: (row) => (row as PaperData).collaborators.initials,
-          extra: (row) => (row as PaperData).collaborators.extra,
+          initials: (row: unknown) => (row as PaperData).collaborators.initials,
+          extra: (row: unknown) => (row as PaperData).collaborators.extra,
         },
       },
       {
@@ -209,8 +209,8 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
         header: 'Last Updated',
         cell: {
           type: 'date',
-          label: (row) => (row as PaperData).updated.label,
-          datetime: (row) => (row as PaperData).updated.datetime,
+          label: (row: unknown) => (row as PaperData).updated.label,
+          datetime: (row: unknown) => (row as PaperData).updated.datetime,
         },
       },
       {

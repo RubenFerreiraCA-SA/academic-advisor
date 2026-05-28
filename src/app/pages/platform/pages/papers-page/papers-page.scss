@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.papers-page {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  h1 {
+    margin: 0;
+    color: #e8f2ff;
+    font-size: 18px;
+    font-weight: 900;
+  }
+}
+
+.paper-count {
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #7b9abf;
+  background: rgba(91, 128, 184, 0.14);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  border: 1px solid rgba(78, 122, 190, 0.22);
+  border-radius: 8px;
+  padding: 3px;
+  background: rgba(7, 27, 58, 0.6);
+}
+
+.toggle-btn {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  color: #5b80b4;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #aac4e8;
+    background: rgba(78, 122, 190, 0.12);
+  }
+
+  &.active {
+    color: #9fb3ff;
+    background: rgba(105, 64, 255, 0.3);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

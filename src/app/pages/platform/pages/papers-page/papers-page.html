@@ -1,1 +1,38 @@
-  <app-custom-dynamic-table [config]="tableConfig" />
+<section class="papers-page" aria-label="Papers">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>Papers</h1>
+      <span class="paper-count">{{ papers.length }}</span>
+    </div>
+    <div class="view-toggle" role="group" aria-label="View mode">
+      <button type="button"
+              class="toggle-btn"
+              [class.active]="viewMode() === 'table'"
+              (click)="setView('table')"
+              aria-label="Table view">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/list-view.svg#list-view"></use>
+        </svg>
+      </button>
+      <button type="button"
+              class="toggle-btn"
+              [class.active]="viewMode() === 'card'"
+              (click)="setView('card')"
+              aria-label="Card view">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/grid-view.svg#grid-view"></use>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  @if (viewMode() === 'table') {
+    <app-custom-dynamic-table [config]="tableConfig" />
+  } @else {
+    <div class="card-grid">
+      @for (paper of papers; track paper.title) {
+        <app-info-card [paper]="paper" />
+      }
+    </div>
+  }
+</section>

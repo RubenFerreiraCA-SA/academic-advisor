@@ -1,0 +1,55 @@
+<article class="paper-card">
+  <header class="card-header">
+    <div class="title-row">
+      @if (paper.featured) {
+        <span class="featured-badge" aria-label="Featured">★</span>
+      }
+      <h3 class="title">{{ paper.title }}</h3>
+    </div>
+    <ul class="topic-tags" aria-label="Topics">
+      @for (tag of topicTags(); track tag) {
+        <li>{{ tag }}</li>
+      }
+    </ul>
+  </header>
+
+  <div class="card-body">
+    <div class="stage-row">
+      <span class="pill {{ paper.stage.tone }}" role="status">{{ paper.stage.label }}</span>
+      <div class="progress-track" role="progressbar"
+           [attr.aria-valuenow]="paper.progress.value"
+           aria-valuemin="0" aria-valuemax="100"
+           [attr.aria-label]="'Progress: ' + paper.progress.value + '%'">
+        <div class="progress-fill" [style]="progressStyle()"></div>
+      </div>
+      <span class="progress-value">{{ paper.progress.value }}%</span>
+    </div>
+
+    <div class="deadline-row">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="/icons/calendar.svg#calendar"></use>
+      </svg>
+      <time [attr.datetime]="paper.deadline.datetime">{{ paper.deadline.date }}</time>
+      <span class="deadline-status" [class]="paper.deadline.tone ?? ''">
+        {{ paper.deadline.status }}
+      </span>
+    </div>
+  </div>
+
+  <footer class="card-footer">
+    <div class="collaborators" aria-label="Collaborators">
+      @for (initial of paper.collaborators.initials; track initial) {
+        <span class="avatar" aria-hidden="true">{{ initial }}</span>
+      }
+      @if (paper.collaborators.extra) {
+        <span class="avatar extra">{{ paper.collaborators.extra }}</span>
+      }
+    </div>
+    <div class="updated">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="/icons/clock.svg#clock"></use>
+      </svg>
+      <time [attr.datetime]="paper.updated.datetime">{{ paper.updated.label }}</time>
+    </div>
+  </footer>
+</article>
