@@ -1,7 +1,7 @@
 <section class="dashboard-page" aria-label="Paper dashboard">
   <div class="stats-grid" aria-label="Paper status summary">
-    @for (stat of stats; track stat.label) {
-      <app-stat-card [stat]="stat" />
+    @for (statCard of statCards; track statCard.label) {
+      <app-stat-card [stat]="statCard" />
     }
   </div>
 
