@@ -59,4 +59,8 @@ export class PapersPage {
     this.router.navigate(['/platform/papers', row.uid]);
   }
 
+  onCardClicked(paperUid: string): void {
+    this.router.navigate(['/platform/papers', paperUid]);
+  }
+
 }

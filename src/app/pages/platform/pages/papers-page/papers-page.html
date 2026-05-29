@@ -29,7 +29,7 @@
   @if (viewMode() === 'table') {
     <app-custom-dynamic-table [config]="tableConfig" (rowClick)="onRowClick($event)" />
   } @else {
-    <div class="card-view">
+    <div class="card-view" >
       <nav class="category-chips" aria-label="Filter by category">
         @for (chip of categoryChips(); track chip.id) {
           <button type="button"
@@ -45,7 +45,7 @@
 
       <div class="card-grid">
         @for (paper of filteredPapers(); track paper.title) {
-          <app-info-card [paper]="paper" />
+          <app-info-card [paper]="paper" (cardClicked)="onCardClicked($event)" />
         }
       </div>
     </div>
