@@ -1,12 +1,18 @@
 import { Routes } from '@angular/router';
 import { LogInLandingPage } from './pages/log-in-landing-page/log-in-landing-page';
 import { DashboardPage } from './pages/platform/pages/dashboard-page/dashboard-page';
-import { PlatformSectionPage } from './pages/platform/pages/platform-section-page/platform-section-page';
 import { Platform } from './pages/platform/platform';
 import { redirectSignedInToPlatform, requireSignedIn } from './services/auth/auth.guard';
 import { PapersPage } from './pages/platform/pages/papers-page/papers-page';
 import { PaperDetailPage } from './pages/platform/pages/paper-detail-page/paper-detail-page';
 import { TasksPage } from './pages/platform/pages/tasks-page/tasks-page';
+import { ReviewQueuePage } from './pages/platform/pages/review-queue-page/review-queue-page';
+import { CollaboratorsPage } from './pages/platform/pages/collaborators-page/collaborators-page';
+import { CalendarPage } from './pages/platform/pages/calendar-page/calendar-page';
+import { TemplatesPage } from './pages/platform/pages/templates-page/templates-page';
+import { SubmissionsPage } from './pages/platform/pages/submissions-page/submissions-page';
+import { AnalyticsPage } from './pages/platform/pages/analytics-page/analytics-page';
+import { SettingsPage } from './pages/platform/pages/settings-page/settings-page';
 
 export const routes: Routes = [
   {
@@ -44,62 +50,13 @@ export const routes: Routes = [
         path: 'tasks',
         component: TasksPage,
       },
-      {
-        path: 'review-queue',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Review Queue',
-          description: 'Prioritize papers that need peer review, editorial feedback, or approval before submission.',
-        },
-      },
-      {
-        path: 'collaborators',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Collaborators',
-          description: 'Manage coauthors, reviewers, advisors, and shared research responsibilities.',
-        },
-      },
-      {
-        path: 'calendar',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Calendar',
-          description: 'See deadlines, meetings, review windows, and submission milestones by date.',
-        },
-      },
-      {
-        path: 'templates',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Templates',
-          description: 'Access reusable manuscript, review, outline, and submission templates.',
-        },
-      },
-      {
-        path: 'submissions',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Submissions',
-          description: 'Monitor journal submissions, publication statuses, and response timelines.',
-        },
-      },
-      {
-        path: 'analytics',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Analytics',
-          description: 'Review publication progress, workload distribution, and research output trends.',
-        },
-      },
-      {
-        path: 'settings',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Settings',
-          description: 'Configure workspace preferences, account details, notifications, and integrations.',
-        },
-      },
+      { path: 'review-queue', component: ReviewQueuePage },
+      { path: 'collaborators', component: CollaboratorsPage },
+      { path: 'calendar', component: CalendarPage },
+      { path: 'templates', component: TemplatesPage },
+      { path: 'submissions', component: SubmissionsPage },
+      { path: 'analytics', component: AnalyticsPage },
+      { path: 'settings', component: SettingsPage },
     ],
   },
   {

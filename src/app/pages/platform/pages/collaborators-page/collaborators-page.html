@@ -1,0 +1,75 @@
+<section class="collaborators-page" aria-label="Collaborators">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Collaborators</h1>
+        <span class="count-badge">{{ collaborators.length }}</span>
+      </div>
+      <p class="page-subtitle">Manage coauthors, reviewers, advisors, and shared research responsibilities.</p>
+    </div>
+    <button type="button" class="invite-btn" aria-label="Invite collaborator">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
+      Invite
+    </button>
+  </header>
+
+  <div class="stats-grid" aria-label="Collaborator summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <div class="panel">
+    <div class="filter-row">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/search.svg#search"></use></svg>
+        <input type="search" class="search-input" placeholder="Search collaborators..."
+               (input)="setSearch($any($event.target).value)" aria-label="Search collaborators" />
+      </div>
+      <div class="role-chips" role="group" aria-label="Filter by role">
+        <button type="button" class="chip" [class.active]="roleFilter() === 'all'" (click)="setRole('all')">All</button>
+        <button type="button" class="chip" [class.active]="roleFilter() === 'co-author'" (click)="setRole('co-author')">Co-Authors</button>
+        <button type="button" class="chip" [class.active]="roleFilter() === 'reviewer'" (click)="setRole('reviewer')">Reviewers</button>
+        <button type="button" class="chip" [class.active]="roleFilter() === 'advisor'" (click)="setRole('advisor')">Advisors</button>
+        <button type="button" class="chip" [class.active]="roleFilter() === 'editor'" (click)="setRole('editor')">Editors</button>
+      </div>
+      <div class="status-chips" role="group" aria-label="Filter by status">
+        <button type="button" class="chip" [class.active]="statusFilter() === 'all'" (click)="setStatus('all')">All Status</button>
+        <button type="button" class="chip status-active" [class.active]="statusFilter() === 'active'" (click)="setStatus('active')">Active</button>
+        <button type="button" class="chip status-pending" [class.active]="statusFilter() === 'pending'" (click)="setStatus('pending')">Pending</button>
+        <button type="button" class="chip status-inactive" [class.active]="statusFilter() === 'inactive'" (click)="setStatus('inactive')">Inactive</button>
+      </div>
+    </div>
+
+    <div class="collab-grid" aria-label="Collaborator cards">
+      @for (c of filtered(); track c.uid) {
+        <article class="collab-card" [class]="'tone-' + c.avatarTone">
+          <div class="card-top">
+            <div [class]="'avatar tone-' + c.avatarTone" aria-hidden="true">{{ c.initials }}</div>
+            <span [class]="'status-dot ' + c.status" [attr.aria-label]="c.status"></span>
+          </div>
+          <h3 class="name">{{ c.name }}</h3>
+          <span [class]="'role-tag ' + c.role">{{ ROLE_LABELS[c.role] }}</span>
+          <div class="institution">
+            <span class="inst-name">{{ c.institution }}</span>
+            <span class="dept">{{ c.department }}</span>
+          </div>
+          <div class="card-meta">
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/document-text.svg#document-text"></use></svg>
+              <span>{{ c.papersCount }} paper{{ c.papersCount !== 1 ? 's' : '' }}</span>
+            </div>
+            <div class="meta-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/document-pencil.svg#document-pencil"></use></svg>
+              <span>{{ c.lastActive }}</span>
+            </div>
+          </div>
+          <a [href]="'mailto:' + c.email" class="email-link">{{ c.email }}</a>
+        </article>
+      }
+      @empty {
+        <p class="empty-state">No collaborators match your filters.</p>
+      }
+    </div>
+  </div>
+</section>

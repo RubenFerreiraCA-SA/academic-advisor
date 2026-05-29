@@ -1,0 +1,121 @@
+<section class="analytics-page" aria-label="Analytics">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Analytics</h1>
+        <span class="badge-new">New</span>
+      </div>
+      <p class="page-subtitle">Review publication progress, workload distribution, and research output trends.</p>
+    </div>
+  </header>
+
+  <div class="stats-grid" aria-label="Research metrics">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <div class="charts-grid">
+
+    <!-- Publications by year -->
+    <div class="chart-panel" aria-label="Publications by year">
+      <h2 class="chart-title">Publications by Year</h2>
+      <div class="bar-chart" role="img" aria-label="Bar chart: publications and citations by year">
+        @for (year of data.publicationsByYear; track year.year) {
+          <div class="bar-group">
+            <div class="bars">
+              <div class="bar papers" [style.height.%]="(year.count / maxCount) * 100"
+                   [attr.aria-label]="year.count + ' papers'">
+                <span class="bar-val">{{ year.count }}</span>
+              </div>
+              <div class="bar citations" [style.height.%]="(year.citations / maxCitations) * 100"
+                   [attr.aria-label]="year.citations + ' citations'">
+                <span class="bar-val">{{ year.citations }}</span>
+              </div>
+            </div>
+            <span class="bar-label">{{ year.year }}</span>
+          </div>
+        }
+      </div>
+      <div class="chart-legend">
+        <span class="legend-item papers">Papers published</span>
+        <span class="legend-item citations">Citations</span>
+      </div>
+    </div>
+
+    <!-- Research topics breakdown -->
+    <div class="chart-panel" aria-label="Research topics">
+      <h2 class="chart-title">Research Topics</h2>
+      <div class="topic-list">
+        @for (topic of data.topics; track topic.topic) {
+          <div class="topic-row">
+            <span class="topic-name">{{ topic.topic }}</span>
+            <div class="topic-bar-wrap">
+              <div class="topic-bar" [class]="topic.tone" [style.width.%]="topic.percentage">
+              </div>
+            </div>
+            <span class="topic-count">{{ topic.count }} papers</span>
+            <span class="topic-pct">{{ topic.percentage }}%</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Venue breakdown -->
+    <div class="chart-panel" aria-label="Publishing venues">
+      <h2 class="chart-title">Publishing Venues</h2>
+      <div class="venue-list">
+        @for (venue of data.venues; track venue.name) {
+          <div class="venue-row">
+            <span class="venue-name">{{ venue.name }}</span>
+            <div class="venue-bar-wrap">
+              <div class="venue-bar" [class]="venue.tone"
+                   [style.width.%]="(venue.count / 7) * 100">
+              </div>
+            </div>
+            <span class="venue-count">{{ venue.count }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Submission funnel -->
+    <div class="chart-panel" aria-label="Submission funnel">
+      <h2 class="chart-title">Submission Funnel</h2>
+      <div class="funnel">
+        <div class="funnel-stage">
+          <div class="funnel-bar" style="width: 100%">
+            <span class="funnel-label">Submitted</span>
+            <span class="funnel-count">11</span>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar under-review" style="width: 82%">
+            <span class="funnel-label">Under Review</span>
+            <span class="funnel-count">9</span>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar revision" style="width: 55%">
+            <span class="funnel-label">Revision</span>
+            <span class="funnel-count">6</span>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar accepted" style="width: 36%">
+            <span class="funnel-label">Accepted</span>
+            <span class="funnel-count">4</span>
+          </div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-bar published" style="width: 27%">
+            <span class="funnel-label">Published</span>
+            <span class="funnel-count">3</span>
+          </div>
+        </div>
+      </div>
+      <p class="funnel-note">Overall acceptance rate: <strong>64%</strong></p>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,19 @@
+<section class="submissions-page" aria-label="Submissions">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Submissions</h1>
+        <span class="count-badge">{{ tableConfig.data.length }}</span>
+      </div>
+      <p class="page-subtitle">Monitor journal submissions, publication statuses, and response timelines.</p>
+    </div>
+  </header>
+
+  <div class="stats-grid" aria-label="Submission status summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <app-custom-dynamic-table [config]="tableConfig" />
+</section>

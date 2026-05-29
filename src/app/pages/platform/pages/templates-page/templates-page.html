@@ -1,0 +1,81 @@
+<section class="templates-page" aria-label="Templates">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Templates</h1>
+        <span class="count-badge">{{ templates.length }}</span>
+      </div>
+      <p class="page-subtitle">Access reusable manuscript, review, outline, and submission templates.</p>
+    </div>
+    <button type="button" class="new-btn" aria-label="Create new template">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
+      New Template
+    </button>
+  </header>
+
+  <div class="stats-grid" aria-label="Template summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <div class="panel">
+    <div class="filter-row">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/search.svg#search"></use></svg>
+        <input type="search" class="search-input" placeholder="Search templates..."
+               (input)="setSearch($any($event.target).value)" aria-label="Search templates" />
+      </div>
+      <div class="chip-group" role="group" aria-label="Filter by category">
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'all'" (click)="setCategory('all')">All</button>
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'manuscript'" (click)="setCategory('manuscript')">Manuscript</button>
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'outline'" (click)="setCategory('outline')">Outline</button>
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'review'" (click)="setCategory('review')">Review</button>
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'submission'" (click)="setCategory('submission')">Submission</button>
+        <button type="button" class="chip" [class.active]="categoryFilter() === 'cover-letter'" (click)="setCategory('cover-letter')">Cover Letter</button>
+      </div>
+      <div class="chip-group vis-group" role="group" aria-label="Filter by visibility">
+        <button type="button" class="chip" [class.active]="visibilityFilter() === 'all'" (click)="setVisibility('all')">All</button>
+        <button type="button" class="chip" [class.active]="visibilityFilter() === 'personal'" (click)="setVisibility('personal')">Personal</button>
+        <button type="button" class="chip" [class.active]="visibilityFilter() === 'shared'" (click)="setVisibility('shared')">Shared</button>
+      </div>
+    </div>
+
+    <div class="template-grid" aria-label="Template cards">
+      @for (tpl of filtered(); track tpl.uid) {
+        <article class="template-card">
+          <div class="card-header">
+            <div class="cat-icon" [class]="tpl.category" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><use [attr.href]="'/icons/document-text.svg#document-text'"></use></svg>
+            </div>
+            <div class="card-badges">
+              <span [class]="'cat-badge ' + tpl.category">{{ CATEGORY_LABELS[tpl.category] }}</span>
+              <span [class]="'vis-badge ' + tpl.visibility">{{ tpl.visibility }}</span>
+            </div>
+          </div>
+          <h3 class="tpl-title">{{ tpl.title }}</h3>
+          <p class="tpl-desc">{{ tpl.description }}</p>
+          <div class="tpl-tags">
+            @for (tag of tpl.tags; track tag) {
+              <span class="tag">{{ tag }}</span>
+            }
+          </div>
+          <footer class="card-footer">
+            <div class="usage">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/document-pencil.svg#document-pencil"></use></svg>
+              Used {{ tpl.usageCount }}×
+            </div>
+            <time [attr.datetime]="tpl.lastUsedDatetime">{{ tpl.lastUsed }}</time>
+          </footer>
+          <div class="card-actions">
+            <button type="button" class="action-btn primary">Use Template</button>
+            <button type="button" class="action-btn">Preview</button>
+          </div>
+        </article>
+      }
+      @empty {
+        <p class="empty-state">No templates match your filters.</p>
+      }
+    </div>
+  </div>
+</section>

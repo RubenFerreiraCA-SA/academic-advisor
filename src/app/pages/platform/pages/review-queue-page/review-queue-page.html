@@ -1,0 +1,19 @@
+<section class="review-queue-page" aria-label="Review Queue">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Review Queue</h1>
+        <span class="count-badge">{{ tableConfig.data.length }}</span>
+      </div>
+      <p class="page-subtitle">Prioritize papers that need peer review, editorial feedback, or approval before submission.</p>
+    </div>
+  </header>
+
+  <div class="stats-grid" aria-label="Review status summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <app-custom-dynamic-table [config]="tableConfig" />
+</section>

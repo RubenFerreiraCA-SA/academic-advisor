@@ -1,0 +1,69 @@
+<section class="calendar-page" aria-label="Calendar">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Calendar</h1>
+        <span class="count-badge">{{ events.length }} events</span>
+      </div>
+      <p class="page-subtitle">See deadlines, meetings, review windows, and submission milestones by date.</p>
+    </div>
+  </header>
+
+  <div class="stats-grid" aria-label="Calendar summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  <div class="panel">
+    <header class="panel-toolbar">
+      <nav class="type-chips" role="group" aria-label="Filter by event type">
+        <button type="button" class="chip" [class.active]="typeFilter() === 'all'" (click)="setType('all')">All Events</button>
+        <button type="button" class="chip" [class.active]="typeFilter() === 'deadline'" (click)="setType('deadline')">Deadlines</button>
+        <button type="button" class="chip" [class.active]="typeFilter() === 'meeting'" (click)="setType('meeting')">Meetings</button>
+        <button type="button" class="chip" [class.active]="typeFilter() === 'milestone'" (click)="setType('milestone')">Milestones</button>
+        <button type="button" class="chip" [class.active]="typeFilter() === 'submission'" (click)="setType('submission')">Submissions</button>
+      </nav>
+      <span class="event-count">{{ filtered().length }} events</span>
+    </header>
+
+    <div class="timeline">
+      @for (group of groupedByDate(); track group.date) {
+        <div class="date-group">
+          <div class="date-label" role="heading" aria-level="3">
+            <time [attr.datetime]="group.events[0].datetime">{{ group.date }}</time>
+            <span class="dot-line" aria-hidden="true"></span>
+          </div>
+          <div class="event-list">
+            @for (event of group.events; track event.uid) {
+              <article class="event-card" [class]="event.tone">
+                <div class="event-type-dot" [class]="event.type" aria-hidden="true"></div>
+                <div class="event-body">
+                  <div class="event-top">
+                    <span [class]="'type-tag ' + event.type">{{ TYPE_LABELS[event.type] }}</span>
+                    @if (event.time) {
+                      <span class="event-time">{{ event.time }}</span>
+                    }
+                  </div>
+                  <p class="event-title">{{ event.title }}</p>
+                  @if (event.description) {
+                    <p class="event-desc">{{ event.description }}</p>
+                  }
+                  @if (event.relatedPaper) {
+                    <span class="related-paper">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/document-text.svg#document-text"></use></svg>
+                      {{ event.relatedPaper }}
+                    </span>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      }
+      @empty {
+        <p class="empty-state">No events match your filter.</p>
+      }
+    </div>
+  </div>
+</section>

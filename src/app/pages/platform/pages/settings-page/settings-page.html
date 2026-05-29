@@ -1,0 +1,240 @@
+<section class="settings-page" aria-label="Settings">
+  <header class="page-header">
+    <div class="page-title"><h1>Settings</h1></div>
+    <p class="page-subtitle">Configure workspace preferences, account details, notifications, and integrations.</p>
+  </header>
+
+  <div class="settings-layout">
+    <!-- Sidebar nav -->
+    <nav class="settings-nav" aria-label="Settings sections">
+      <button type="button" class="nav-item" [class.active]="activeSection() === 'profile'" (click)="setSection('profile')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/collaborators.svg#collaborators"></use></svg>
+        Profile
+      </button>
+      <button type="button" class="nav-item" [class.active]="activeSection() === 'notifications'" (click)="setSection('notifications')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/bell.svg#bell"></use></svg>
+        Notifications
+      </button>
+      <button type="button" class="nav-item" [class.active]="activeSection() === 'integrations'" (click)="setSection('integrations')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/workspace.svg#workspace"></use></svg>
+        Integrations
+      </button>
+      <button type="button" class="nav-item" [class.active]="activeSection() === 'appearance'" (click)="setSection('appearance')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/settings.svg#settings"></use></svg>
+        Appearance
+      </button>
+    </nav>
+
+    <!-- Content panel -->
+    <div class="settings-content">
+
+      @if (activeSection() === 'profile') {
+        <div class="section-panel">
+          <h2 class="section-heading">Profile</h2>
+          <div class="profile-avatar-row">
+            <div class="profile-avatar" aria-hidden="true">RF</div>
+            <div>
+              <p class="avatar-name">Ruben F.</p>
+              <button type="button" class="link-btn">Change photo</button>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label class="field-label" for="full-name">Full Name</label>
+              <input id="full-name" type="text" class="field-input" value="Ruben F." />
+            </div>
+            <div class="field">
+              <label class="field-label" for="email">Email</label>
+              <input id="email" type="email" class="field-input" value="rubenf85@gmail.com" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="institution">Institution</label>
+              <input id="institution" type="text" class="field-input" value="University of Cape Town" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="department">Department</label>
+              <input id="department" type="text" class="field-input" value="Computer Science" />
+            </div>
+            <div class="field field-full">
+              <label class="field-label" for="bio">Bio</label>
+              <textarea id="bio" class="field-input field-textarea" rows="3">Researcher focused on AI, machine learning, and academic knowledge systems.</textarea>
+            </div>
+            <div class="field">
+              <label class="field-label" for="orcid">ORCID</label>
+              <input id="orcid" type="text" class="field-input" placeholder="0000-0000-0000-0000" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="scholar">Google Scholar ID</label>
+              <input id="scholar" type="text" class="field-input" placeholder="e.g. aBcDeFgH" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-primary">Save Changes</button>
+            <button type="button" class="btn-ghost">Cancel</button>
+          </div>
+        </div>
+      }
+
+      @if (activeSection() === 'notifications') {
+        <div class="section-panel">
+          <h2 class="section-heading">Notifications</h2>
+          <p class="section-desc">Choose what you want to be notified about.</p>
+          <div class="toggle-list">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Task Deadlines</span>
+                <span class="toggle-desc">Get reminded when tasks are approaching their due date</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().taskDeadlines"
+                      [attr.aria-pressed]="notifications().taskDeadlines"
+                      (click)="toggleNotification('taskDeadlines')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Review Requests</span>
+                <span class="toggle-desc">Notify when papers are assigned for review</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().reviewRequests"
+                      [attr.aria-pressed]="notifications().reviewRequests"
+                      (click)="toggleNotification('reviewRequests')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Collaborator Invites</span>
+                <span class="toggle-desc">Alert when someone invites you to collaborate</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().collaboratorInvites"
+                      [attr.aria-pressed]="notifications().collaboratorInvites"
+                      (click)="toggleNotification('collaboratorInvites')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Submission Updates</span>
+                <span class="toggle-desc">Receive updates on journal submission decisions</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().submissionUpdates"
+                      [attr.aria-pressed]="notifications().submissionUpdates"
+                      (click)="toggleNotification('submissionUpdates')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Weekly Digest</span>
+                <span class="toggle-desc">Summary of your research activity every Monday</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().weeklyDigest"
+                      [attr.aria-pressed]="notifications().weeklyDigest"
+                      (click)="toggleNotification('weeklyDigest')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Mention Alerts</span>
+                <span class="toggle-desc">Alert when collaborators mention you in comments</span>
+              </div>
+              <button type="button" class="toggle-btn"
+                      [class.on]="notifications().mentionAlerts"
+                      [attr.aria-pressed]="notifications().mentionAlerts"
+                      (click)="toggleNotification('mentionAlerts')">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </button>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-primary">Save Preferences</button>
+          </div>
+        </div>
+      }
+
+      @if (activeSection() === 'integrations') {
+        <div class="section-panel">
+          <h2 class="section-heading">Integrations</h2>
+          <p class="section-desc">Connect external tools to enhance your research workflow.</p>
+          <div class="integration-list">
+            @for (intg of integrations; track intg.id) {
+              <div class="integration-row">
+                <div class="intg-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><use [attr.href]="'/icons/' + intg.icon + '.svg#' + intg.icon"></use></svg>
+                </div>
+                <div class="intg-info">
+                  <span class="intg-name">{{ intg.name }}</span>
+                  <span class="intg-desc">{{ intg.desc }}</span>
+                </div>
+                <button type="button" [class]="intg.connected ? 'btn-disconnect' : 'btn-connect'">
+                  {{ intg.connected ? 'Disconnect' : 'Connect' }}
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (activeSection() === 'appearance') {
+        <div class="section-panel">
+          <h2 class="section-heading">Appearance</h2>
+          <p class="section-desc">Customize your workspace look and feel.</p>
+          <div class="appearance-section">
+            <h3 class="sub-heading">Theme</h3>
+            <div class="theme-options">
+              <label class="theme-option active">
+                <input type="radio" name="theme" value="dark" checked />
+                <div class="theme-preview dark-preview" aria-hidden="true">
+                  <div class="preview-sidebar"></div>
+                  <div class="preview-content"></div>
+                </div>
+                <span>Dark</span>
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="theme" value="light" />
+                <div class="theme-preview light-preview" aria-hidden="true">
+                  <div class="preview-sidebar"></div>
+                  <div class="preview-content"></div>
+                </div>
+                <span>Light</span>
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="theme" value="system" />
+                <div class="theme-preview system-preview" aria-hidden="true">
+                  <div class="preview-sidebar"></div>
+                  <div class="preview-content"></div>
+                </div>
+                <span>System</span>
+              </label>
+            </div>
+          </div>
+          <div class="appearance-section">
+            <h3 class="sub-heading">Density</h3>
+            <div class="density-options">
+              <label class="density-option">
+                <input type="radio" name="density" value="compact" />
+                <span>Compact</span>
+              </label>
+              <label class="density-option active">
+                <input type="radio" name="density" value="default" checked />
+                <span>Default</span>
+              </label>
+              <label class="density-option">
+                <input type="radio" name="density" value="comfortable" />
+                <span>Comfortable</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</section>

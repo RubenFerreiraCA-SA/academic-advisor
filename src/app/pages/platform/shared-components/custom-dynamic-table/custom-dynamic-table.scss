@@ -262,6 +262,68 @@ td em {
   background: rgba(53, 165, 86, 0.2);
 }
 
+/* review queue */
+.pill.urgent {
+  border-color: rgba(255, 60, 60, 0.5);
+  color: #ff5555;
+  background: rgba(200, 30, 30, 0.2);
+}
+
+.pill.normal {
+  border-color: rgba(100, 140, 190, 0.3);
+  color: #7b9abf;
+  background: rgba(80, 120, 175, 0.12);
+}
+
+.pill.awaiting-decision {
+  border-color: rgba(140, 81, 255, 0.38);
+  color: #b391ff;
+  background: rgba(112, 58, 226, 0.2);
+}
+
+.pill.approved {
+  border-color: rgba(83, 207, 113, 0.4);
+  color: #78d88e;
+  background: rgba(53, 165, 86, 0.2);
+}
+
+.pill.rejected {
+  border-color: rgba(255, 80, 80, 0.42);
+  color: #ff7070;
+  background: rgba(220, 50, 50, 0.18);
+}
+
+.pill.pending {
+  border-color: rgba(100, 130, 170, 0.25);
+  color: #6b87a8;
+  background: rgba(60, 100, 150, 0.1);
+}
+
+/* submissions */
+.pill.under-review {
+  border-color: rgba(255, 167, 38, 0.42);
+  color: #ffb545;
+  background: rgba(215, 135, 20, 0.18);
+}
+
+.pill.revision-requested {
+  border-color: rgba(140, 81, 255, 0.38);
+  color: #b391ff;
+  background: rgba(112, 58, 226, 0.2);
+}
+
+.pill.accepted {
+  border-color: rgba(83, 207, 113, 0.4);
+  color: #78d88e;
+  background: rgba(53, 165, 86, 0.2);
+}
+
+.pill.withdrawn {
+  border-color: rgba(100, 130, 170, 0.25);
+  color: #6b87a8;
+  background: rgba(60, 100, 150, 0.1);
+}
+
 .progress-cell {
   display: grid;
   grid-template-columns: minmax(105px, 1fr) 42px;
