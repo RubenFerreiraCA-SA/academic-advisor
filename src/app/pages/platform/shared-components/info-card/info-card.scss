@@ -13,10 +13,29 @@
     linear-gradient(135deg, rgba(12, 38, 78, 0.86), rgba(7, 27, 58, 0.76)),
     rgba(7, 27, 58, 0.78);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 
   &:hover {
     border-color: rgba(78, 122, 190, 0.52);
+  }
+
+  &.featured {
+    border-color: rgba(212, 170, 40, 0.45);
+    background:
+      linear-gradient(135deg, rgba(18, 42, 80, 0.9), rgba(7, 27, 58, 0.82)),
+      rgba(7, 27, 58, 0.78);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 220, 100, 0.06),
+      0 0 18px rgba(210, 165, 30, 0.18),
+      0 0 48px rgba(210, 165, 30, 0.08);
+
+    &:hover {
+      border-color: rgba(212, 170, 40, 0.7);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 220, 100, 0.08),
+        0 0 24px rgba(210, 165, 30, 0.28),
+        0 0 56px rgba(210, 165, 30, 0.12);
+    }
   }
 }
 

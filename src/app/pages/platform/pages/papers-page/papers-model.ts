@@ -1,6 +1,7 @@
 export type PaperCategory = 'mine' | 'shared' | 'archived';
 
 export type PaperData = {
+  uid: string;
   title: string;
   featured?: boolean;
   topic: string;

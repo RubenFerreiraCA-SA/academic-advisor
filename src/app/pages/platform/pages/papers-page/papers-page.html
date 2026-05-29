@@ -29,10 +29,25 @@
   @if (viewMode() === 'table') {
     <app-custom-dynamic-table [config]="tableConfig" />
   } @else {
-    <div class="card-grid">
-      @for (paper of papers; track paper.title) {
-        <app-info-card [paper]="paper" />
-      }
+    <div class="card-view">
+      <nav class="category-chips" aria-label="Filter by category">
+        @for (chip of categoryChips(); track chip.id) {
+          <button type="button"
+                  class="chip"
+                  [class.active]="activeCategory() === chip.id"
+                  (click)="setCategory(chip.id)"
+                  [attr.aria-pressed]="activeCategory() === chip.id">
+            {{ chip.label }}
+            <span class="chip-count">{{ chip.count }}</span>
+          </button>
+        }
+      </nav>
+
+      <div class="card-grid">
+        @for (paper of filteredPapers(); track paper.title) {
+          <app-info-card [paper]="paper" />
+        }
+      </div>
     </div>
   }
 </section>

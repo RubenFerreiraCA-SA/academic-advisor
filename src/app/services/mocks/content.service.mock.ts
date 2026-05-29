@@ -24,6 +24,7 @@ export class MockContentService {
             data: PAPER_DATA,
             columns: PAPER_COLUMNS,
             tabs: PAPER_TABS,
+            featured: (row) => !!(row as PaperData).featured,
         };
     };
 

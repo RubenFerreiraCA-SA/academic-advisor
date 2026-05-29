@@ -10,6 +10,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
 
    export  const  PAPER_DATA: PaperData[] = [
     {
+      uid: 'HJlk39na9e',
       title: 'Synthetic Intelligence and Origination',
       featured: true,
       topic: 'AI · Creativity · Cognition',
@@ -21,6 +22,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 23, 10:42 AM', datetime: '2024-05-23T10:42' },
     },
     {
+      uid: '9sdf8s7df',
       title: 'Deep Learning for Medical Imaging',
       topic: 'AI · Medical Imaging · CNN',
       category: 'mine',
@@ -31,6 +33,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 22, 3:15 PM', datetime: '2024-05-22T15:15' },
     },
     {
+      uid: '8sdf7sdf8',
       title: 'Climate Change Policy Review',
       topic: 'Climate · Policy · Environment',
       category: 'shared',
@@ -41,6 +44,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 21, 9:05 AM', datetime: '2024-05-21T09:05' },
     },
     {
+      uid: '7sdf8sdf7',
       title: 'Quantum Networks Survey',
       topic: 'Quantum · Networks · Security',
       category: 'shared',
@@ -51,6 +55,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 16, 4:23 PM', datetime: '2024-05-16T16:23' },
     },
     {
+      uid: '6sdf8sdf6',
       title: 'Federated Learning in Healthcare',
       topic: 'AI · Privacy · Healthcare',
       category: 'shared',
@@ -61,6 +66,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 18, 1:10 PM', datetime: '2024-05-18T13:10' },
     },
     {
+      uid: '5sdf8sdf5',
       title: 'Robust Optimization for Supply Chains',
       topic: 'Operations · Optimization',
       category: 'mine',
@@ -71,6 +77,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 10, 10:20 AM', datetime: '2024-05-10T10:20' },
     },
     {
+      uid: '4sdf8sdf4',
       title: 'Explainable AI: A Systematic Review',
       topic: 'AI · Explainability · Survey',
       category: 'archived',
@@ -81,6 +88,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'Apr 20, 2:45 PM', datetime: '2024-04-20T14:45' },
     },
     {
+      uid: '3sdf8sdf3',
       title: 'Graph Neural Networks for Drug Discovery',
       topic: 'AI · Drug Discovery · GNN',
       category: 'mine',
@@ -91,6 +99,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 25, 11:00 AM', datetime: '2024-05-25T11:00' },
     },
     {
+      uid: '2sdf8sdf2',
       title: 'Ethical Implications of LLMs in Education',
       topic: 'AI · Ethics · Education',
       category: 'shared',
@@ -101,6 +110,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 24, 9:30 AM', datetime: '2024-05-24T09:30' },
     },
     {
+      uid: '1sdf8sdf1',
       title: 'Transformer Architectures: A Survey',
       topic: 'AI · NLP · Transformers',
       category: 'archived',
@@ -111,6 +121,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'Mar 5, 3:00 PM', datetime: '2024-03-05T15:00' },
     },
     {
+      uid: '0sdf8sdf0',
       title: 'Reinforcement Learning for Robotics',
       topic: 'AI · Robotics · RL',
       category: 'mine',
@@ -121,6 +132,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 20, 4:15 PM', datetime: '2024-05-20T16:15' },
     },
     {
+      uid: '9sdf8sdf0',
       title: 'Privacy-Preserving Machine Learning',
       topic: 'AI · Privacy · Cryptography',
       category: 'shared',
@@ -131,6 +143,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'May 23, 2:00 PM', datetime: '2024-05-23T14:00' },
     },
     {
+      uid: '8sdf8sdf0',
       title: 'Causal Inference in Observational Studies',
       topic: 'Statistics · Causal AI',
       category: 'archived',
@@ -141,6 +154,7 @@ import { PaperData } from "../../../pages/platform/pages/papers-page/papers-mode
       updated: { label: 'Feb 14, 10:00 AM', datetime: '2024-02-14T10:00' },
     },
     {
+      uid: '7sdf8sdf0',
       title: 'Multi-Modal Learning for Vision-Language',
       topic: 'AI · Vision · NLP',
       category: 'shared',

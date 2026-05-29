@@ -32,7 +32,7 @@
         </thead>
         <tbody>
           @for (row of paginatedData(); track $index) {
-            <tr>
+            <tr [class.featured]="config.featured?.(row)">
               @for (col of config.columns; track col.key) {
                 <td>
                   @switch (col.cell.type) {

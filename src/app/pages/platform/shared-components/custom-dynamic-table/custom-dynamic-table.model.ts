@@ -57,4 +57,5 @@ export type DynamicTableConfig = {
   columns: ColumnDef[];
   tabs?: TabConfig[];
   pageSize?: number;
+  featured?: (row: unknown) => boolean;
 };

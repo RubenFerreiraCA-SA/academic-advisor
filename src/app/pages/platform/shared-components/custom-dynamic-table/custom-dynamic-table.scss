@@ -116,6 +116,18 @@ tbody tr:hover {
   background: rgba(51, 88, 148, 0.08);
 }
 
+tbody tr.featured td {
+  background: rgba(200, 155, 20, 0.05);
+}
+
+tbody tr.featured td:first-child {
+  box-shadow: inset 3px 0 0 rgba(212, 170, 40, 0.55);
+}
+
+tbody tr.featured:hover td {
+  background: rgba(200, 155, 20, 0.1);
+}
+
 .empty-row td {
   height: 48px;
 }
