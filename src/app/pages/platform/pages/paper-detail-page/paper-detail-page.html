@@ -1,0 +1,204 @@
+@if (paperData(); as paper) {
+  <div class="paper-detail">
+
+    <!-- Header -->
+    <header class="detail-header">
+      <a class="back-link" routerLink="/platform/papers" aria-label="Back to Papers">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/chevron-left.svg#chevron-left"></use>
+        </svg>
+        Papers
+      </a>
+
+      <div class="header-main">
+        <div class="title-block">
+          @if (paper.featured) {
+            <span class="featured-badge" aria-label="Featured">★</span>
+          }
+          <h1>{{ paper.title }}</h1>
+        </div>
+
+        <div class="header-actions">
+          <span [class]="'pill ' + paper.stage.tone">{{ paper.stage.label }}</span>
+          <div class="progress-wrap" role="progressbar"
+               [attr.aria-valuenow]="paper.progress.value"
+               aria-valuemin="0" aria-valuemax="100"
+               [attr.aria-label]="'Progress: ' + paper.progress.value + '%'">
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="paper.progress.value"></div>
+            </div>
+            <span class="progress-label">{{ paper.progress.value }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-meta">
+        <ul class="topic-tags" aria-label="Topics">
+          @for (tag of paper.topic.split(' · '); track tag) {
+            <li>{{ tag }}</li>
+          }
+        </ul>
+        <div class="meta-divider" aria-hidden="true"></div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/calendar.svg#calendar"></use></svg>
+          <time [attr.datetime]="paper.deadline.datetime">{{ paper.deadline.date }}</time>
+          <span class="deadline-status" [class]="paper.deadline.tone ?? ''">{{ paper.deadline.status }}</span>
+        </div>
+        <div class="meta-divider" aria-hidden="true"></div>
+        <div class="collaborators" aria-label="Collaborators">
+          @for (initial of paper.collaborators.initials; track initial) {
+            <span class="avatar" aria-hidden="true">{{ initial }}</span>
+          }
+          @if (paper.collaborators.extra) {
+            <span class="avatar extra">{{ paper.collaborators.extra }}</span>
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    @if (paperContent(); as content) {
+      <div class="paper-body" [class.toc-collapsed]="!tocOpen()">
+
+        <!-- Table of contents -->
+        <nav class="toc" [class.collapsed]="!tocOpen()" aria-label="Table of contents">
+          <div class="toc-header">
+            @if (tocOpen()) {
+              <span class="toc-heading">Contents</span>
+            }
+            <button type="button" class="toc-toggle" (click)="toggleToc()"
+                    [attr.aria-label]="tocOpen() ? 'Hide contents' : 'Show contents'"
+                    [attr.aria-expanded]="tocOpen()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <use href="/icons/list-view.svg#list-view"></use>
+              </svg>
+            </button>
+          </div>
+
+          @if (tocOpen()) {
+            <ol class="toc-list">
+              <li><button type="button" (click)="navigateTo('abstract')">Abstract</button></li>
+              @for (chapter of content.chapters; track chapter.id; let ci = $index) {
+                <li>
+                  <button type="button" (click)="navigateTo(chapter.id)">{{ ci + 1 }}. {{ chapter.title }}</button>
+                  <ol class="toc-sections">
+                    @for (section of chapter.sections; track section.id; let si = $index) {
+                      <li>
+                        <button type="button" (click)="navigateTo(section.id)">
+                          {{ ci + 1 }}.{{ si + 1 }} {{ section.title }}
+                        </button>
+                      </li>
+                    }
+                  </ol>
+                </li>
+              }
+              <li><button type="button" (click)="navigateTo('references')">References</button></li>
+            </ol>
+          }
+        </nav>
+
+        <!-- Main content -->
+        <article class="content" aria-label="Paper content">
+
+          <!-- Abstract -->
+          <section id="abstract" class="content-section" aria-labelledby="abstract-heading">
+            <button type="button" class="section-toggle"
+                    (click)="toggleSection('abstract')"
+                    [attr.aria-expanded]="isOpen('abstract')"
+                    aria-controls="abstract-body">
+              <h2 id="abstract-heading" class="section-heading">Abstract</h2>
+              <svg class="chevron" [class.open]="isOpen('abstract')" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="/icons/chevron-down.svg#chevron-down"></use>
+              </svg>
+            </button>
+            @if (isOpen('abstract')) {
+              <div id="abstract-body" class="section-body">
+                <p class="abstract-text">{{ content.abstract }}</p>
+              </div>
+            }
+          </section>
+
+          <!-- Chapters -->
+          @for (chapter of content.chapters; track chapter.id; let ci = $index) {
+            <section [id]="chapter.id" class="content-section" [attr.aria-labelledby]="chapter.id + '-heading'">
+              <button type="button" class="section-toggle"
+                      (click)="toggleSection(chapter.id)"
+                      [attr.aria-expanded]="isOpen(chapter.id)"
+                      [attr.aria-controls]="chapter.id + '-body'">
+                <h2 [id]="chapter.id + '-heading'" class="section-heading">
+                  <span class="chapter-number">{{ ci + 1 }}</span>
+                  {{ chapter.title }}
+                </h2>
+                <svg class="chevron" [class.open]="isOpen(chapter.id)" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="/icons/chevron-down.svg#chevron-down"></use>
+                </svg>
+              </button>
+
+              @if (isOpen(chapter.id)) {
+                <div [id]="chapter.id + '-body'" class="section-body">
+                  @for (section of chapter.sections; track section.id; let si = $index) {
+                    <div [id]="section.id" class="subsection" [class.collapsed]="!isOpen(section.id)">
+                      <button type="button" class="subsection-toggle"
+                              (click)="toggleSection(section.id)"
+                              [attr.aria-expanded]="isOpen(section.id)"
+                              [attr.aria-controls]="section.id + '-body'">
+                        <h3 class="subsection-heading">
+                          <span class="section-number">{{ ci + 1 }}.{{ si + 1 }}</span>
+                          {{ section.title }}
+                        </h3>
+                        <svg class="chevron small" [class.open]="isOpen(section.id)" viewBox="0 0 24 24" aria-hidden="true">
+                          <use href="/icons/chevron-down.svg#chevron-down"></use>
+                        </svg>
+                      </button>
+                      @if (isOpen(section.id)) {
+                        <p [id]="section.id + '-body'">{{ section.content }}</p>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </section>
+          }
+
+          <!-- References -->
+          <section id="references" class="content-section" aria-labelledby="references-heading">
+            <button type="button" class="section-toggle"
+                    (click)="toggleSection('references')"
+                    [attr.aria-expanded]="isOpen('references')"
+                    aria-controls="references-body">
+              <h2 id="references-heading" class="section-heading">References</h2>
+              <svg class="chevron" [class.open]="isOpen('references')" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="/icons/chevron-down.svg#chevron-down"></use>
+              </svg>
+            </button>
+            @if (isOpen('references')) {
+              <div id="references-body" class="section-body">
+                <ol class="references-list">
+                  @for (ref of content.references; track ref.id; let i = $index) {
+                    <li class="reference-item">
+                      <span class="ref-number">{{ i + 1 }}</span>
+                      <div class="ref-body">
+                        <strong class="ref-title">{{ ref.title }}</strong>
+                        <span class="ref-authors">{{ ref.authors.join(', ') }}</span>
+                        <span class="ref-meta">
+                          {{ ref.publicationYear }}
+                          @if (ref.doi) {
+                            · <a [href]="'https://doi.org/' + ref.doi" target="_blank" rel="noopener noreferrer">{{ ref.doi }}</a>
+                          }
+                        </span>
+                      </div>
+                    </li>
+                  }
+                </ol>
+              </div>
+            }
+          </section>
+
+        </article>
+      </div>
+    } @else {
+      <div class="loading" aria-live="polite">Loading content…</div>
+    }
+
+  </div>
+}

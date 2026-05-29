@@ -27,7 +27,7 @@
   </header>
 
   @if (viewMode() === 'table') {
-    <app-custom-dynamic-table [config]="tableConfig" />
+    <app-custom-dynamic-table [config]="tableConfig" (rowClick)="onRowClick($event)" />
   } @else {
     <div class="card-view">
       <nav class="category-chips" aria-label="Filter by category">
