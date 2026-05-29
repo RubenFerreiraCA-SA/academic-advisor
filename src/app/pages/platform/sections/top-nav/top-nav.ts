@@ -45,6 +45,7 @@ export class TopNav {
 
   protected readonly dropdownOpen = signal(false);
   protected readonly activeModal = signal<ActiveModal>(null);
+  protected readonly userMenuOpen = signal(false);
 
   protected readonly papers = computed(() => this.svc.papers());
   protected readonly collaborators = computed(() => this.svc.collaborators());
@@ -96,6 +97,24 @@ export class TopNav {
 
   protected closeDropdown(): void {
     this.dropdownOpen.set(false);
+  }
+
+  protected toggleUserMenu(): void {
+    this.userMenuOpen.update(v => !v);
+  }
+
+  protected closeUserMenu(): void {
+    this.userMenuOpen.set(false);
+  }
+
+  protected resetData(): void {
+    this.svc.resetData();
+    this.closeUserMenu();
+  }
+
+  protected wipeData(): void {
+    this.svc.wipeData();
+    this.closeUserMenu();
   }
 
   protected navigateNewPaper(): void {

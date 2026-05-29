@@ -100,8 +100,53 @@
       <strong>{{ topNavConfig.client.title }} {{ topNavConfig.client.firstName }} {{ topNavConfig.client.lastName }}</strong>
       <small>{{ topNavConfig.client.jobTitle }}</small>
     </span>
-    <span class="avatar" aria-hidden="true">{{ topNavConfig.client.firstName.charAt(0) }}{{ topNavConfig.client.lastName.charAt(0) }}</span>
+
+    <div class="avatar-wrapper">
+      <button type="button" class="avatar"
+              [class.menu-open]="userMenuOpen()"
+              (click)="toggleUserMenu()"
+              aria-haspopup="menu"
+              [attr.aria-expanded]="userMenuOpen()"
+              aria-label="User menu">
+        {{ topNavConfig.client.firstName.charAt(0) }}{{ topNavConfig.client.lastName.charAt(0) }}
+      </button>
+
+      @if (userMenuOpen()) {
+        <div class="user-menu" role="menu" aria-label="User options">
+          <div class="user-menu-header">
+            <span class="user-menu-name">{{ topNavConfig.client.title }} {{ topNavConfig.client.firstName }} {{ topNavConfig.client.lastName }}</span>
+            <span class="user-menu-role">{{ topNavConfig.client.jobTitle }}</span>
+          </div>
+          <div class="user-menu-divider" role="separator"></div>
+          <button type="button" class="user-menu-item" role="menuitem" (click)="resetData()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="1 4 1 10 7 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M3.51 15a9 9 0 1 0 .49-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <span>
+              <strong>Reset Data</strong>
+              <small>Restore all mock data to defaults</small>
+            </span>
+          </button>
+          <button type="button" class="user-menu-item danger" role="menuitem" (click)="wipeData()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <span>
+              <strong>Wipe Data</strong>
+              <small>Clear everything, keep structure</small>
+            </span>
+          </button>
+        </div>
+      }
+    </div>
   </div>
+
+  @if (userMenuOpen()) {
+    <div class="user-menu-backdrop" (click)="closeUserMenu()" aria-hidden="true"></div>
+  }
 </header>
 
 <!-- ── Modals rendered outside the header for semantic correctness ────────── -->

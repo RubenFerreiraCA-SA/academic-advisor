@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from "@angular/core";
+import { Injectable, computed, effect, signal } from "@angular/core";
 
 // ── Firestore-like collection documents ───────────────────────────────────────
 import { COLLABORATORS_DB, CollaboratorDoc } from "./db/collaborators.db";
@@ -54,17 +54,50 @@ const STAGE_LABELS: Record<string, string> = {
 
 const SELF = { initials: 'RF', name: 'Ruben F.' };
 
+// ── LocalStorage key registry ─────────────────────────────────────────────────
+const SK = {
+  papers:        'aca:papers',
+  tasks:         'aca:tasks',
+  reviewQueue:   'aca:review-queue',
+  submissions:   'aca:submissions',
+  collaborators: 'aca:collaborators',
+  templates:     'aca:templates',
+} as const;
+
+function fromStorage<T>(key: string, seed: T[]): T[] {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw !== null ? (JSON.parse(raw) as T[]) : [...seed];
+  } catch {
+    return [...seed];
+  }
+}
+
+function persist<T>(key: string, data: T[]): void {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* quota or private mode */ }
+}
+
 @Injectable({ providedIn: "root" })
 export class MockContentService {
 
-  // ── Writable signal stores ─────────────────────────────────────────────────
-  private readonly _papers = signal<PaperDoc[]>([...PAPERS_DB]);
-  private readonly _tasks = signal<TaskDoc[]>([...TASKS_DB]);
-  private readonly _reviewQueue = signal<ReviewQueueDoc[]>([...REVIEW_QUEUE_DB]);
-  private readonly _submissions = signal<SubmissionDoc[]>([...SUBMISSIONS_DB]);
-  private readonly _collaborators = signal<CollaboratorDoc[]>([...COLLABORATORS_DB]);
-  private readonly _calendarEvents = signal(CALENDAR_EVENTS_DB);
-  private readonly _templates = signal<TemplateDoc[]>([...TEMPLATES_DB]);
+  // ── Writable signal stores (seeded from localStorage, fallback to mock DB) ─
+  private readonly _papers        = signal<PaperDoc[]>(fromStorage(SK.papers, PAPERS_DB));
+  private readonly _tasks         = signal<TaskDoc[]>(fromStorage(SK.tasks, TASKS_DB));
+  private readonly _reviewQueue   = signal<ReviewQueueDoc[]>(fromStorage(SK.reviewQueue, REVIEW_QUEUE_DB));
+  private readonly _submissions   = signal<SubmissionDoc[]>(fromStorage(SK.submissions, SUBMISSIONS_DB));
+  private readonly _collaborators = signal<CollaboratorDoc[]>(fromStorage(SK.collaborators, COLLABORATORS_DB));
+  private readonly _calendarEvents = signal([...CALENDAR_EVENTS_DB]);
+  private readonly _templates     = signal<TemplateDoc[]>(fromStorage(SK.templates, TEMPLATES_DB));
+
+  constructor() {
+    // Auto-persist every collection on any signal change
+    effect(() => persist(SK.papers,        this._papers()));
+    effect(() => persist(SK.tasks,         this._tasks()));
+    effect(() => persist(SK.reviewQueue,   this._reviewQueue()));
+    effect(() => persist(SK.submissions,   this._submissions()));
+    effect(() => persist(SK.collaborators, this._collaborators()));
+    effect(() => persist(SK.templates,     this._templates()));
+  }
 
   // ── Reference resolution helpers ───────────────────────────────────────────
 
@@ -262,6 +295,28 @@ export class MockContentService {
 
   addReviewItem(doc: Omit<ReviewQueueDoc, 'uid'>): void {
     this._reviewQueue.update(list => [...list, { ...doc, uid: crypto.randomUUID() }]);
+  }
+
+  // ── Data management ───────────────────────────────────────────────────────
+
+  resetData(): void {
+    this._papers.set([...PAPERS_DB]);
+    this._tasks.set([...TASKS_DB]);
+    this._reviewQueue.set([...REVIEW_QUEUE_DB]);
+    this._submissions.set([...SUBMISSIONS_DB]);
+    this._collaborators.set([...COLLABORATORS_DB]);
+    this._calendarEvents.set([...CALENDAR_EVENTS_DB]);
+    this._templates.set([...TEMPLATES_DB]);
+  }
+
+  wipeData(): void {
+    this._papers.set([]);
+    this._tasks.set([]);
+    this._reviewQueue.set([]);
+    this._submissions.set([]);
+    this._collaborators.set([]);
+    this._calendarEvents.set([]);
+    this._templates.set([]);
   }
 
   // ── Public API (static/derived) ────────────────────────────────────────────
