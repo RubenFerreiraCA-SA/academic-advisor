@@ -19,10 +19,10 @@
 
 .new-btn {
   display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
-  padding: 8px 16px; border: 1px solid rgba(78, 122, 190, 0.35); border-radius: 8px;
-  color: #aac4e8; background: rgba(78, 122, 190, 0.1);
-  font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; transition: all 0.15s;
-  &:hover { background: rgba(78, 122, 190, 0.2); border-color: rgba(78, 122, 190, 0.55); }
+  padding: 8px 16px; border: 0; border-radius: 8px;
+  color: #e0d8ff; background: rgba(105, 64, 255, 0.5);
+  font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; transition: background 0.15s;
+  &:hover { background: rgba(105, 64, 255, 0.7); }
   svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
 }
 

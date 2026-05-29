@@ -49,6 +49,33 @@
   font-weight: 700;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 8px;
+  color: #e0d8ff;
+  background: rgba(105, 64, 255, 0.5);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(105, 64, 255, 0.7); }
+
+  svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+}
+
 .view-toggle {
   display: flex;
   gap: 4px;

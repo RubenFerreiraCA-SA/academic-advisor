@@ -3,10 +3,14 @@
     <div class="header-content">
       <div class="page-title">
         <h1>Review Queue</h1>
-        <span class="count-badge">{{ tableConfig.data.length }}</span>
+        <span class="count-badge">{{ tableConfig().data.length }}</span>
       </div>
       <p class="page-subtitle">Prioritize papers that need peer review, editorial feedback, or approval before submission.</p>
     </div>
+    <button type="button" class="primary-btn" (click)="openNewReview()" aria-label="Assign a review">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
+      Assign Review
+    </button>
   </header>
 
   <div class="stats-grid" aria-label="Review status summary">
@@ -15,5 +19,55 @@
     }
   </div>
 
-  <app-custom-dynamic-table [config]="tableConfig" />
+  <app-custom-dynamic-table [config]="tableConfig()" />
 </section>
+
+<app-modal [open]="showNewReview()" title="Assign Review" (closed)="closeNewReview()">
+  <form [formGroup]="newReviewForm" (ngSubmit)="submitNewReview()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="rv-paper">Paper <span aria-hidden="true">*</span></label>
+      <select id="rv-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— Select paper —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label" for="rv-reviewer">Reviewer</label>
+      <select id="rv-reviewer" class="field-input field-select" formControlName="reviewerId">
+        <option value="self">Me (Ruben F.)</option>
+        @for (c of collaborators(); track c.uid) {
+          <option [value]="c.uid">{{ c.name }}</option>
+        }
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="rv-type">Review Type</label>
+        <select id="rv-type" class="field-input field-select" formControlName="reviewType">
+          <option value="peer-review">Peer Review</option>
+          <option value="editorial">Editorial</option>
+          <option value="internal">Internal</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="rv-priority">Priority</label>
+        <select id="rv-priority" class="field-input field-select" formControlName="priority">
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="rv-deadline">Deadline</label>
+      <input id="rv-deadline" type="date" class="field-input" formControlName="deadlineDate" />
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeNewReview()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="newReviewForm.invalid">Assign</button>
+    </div>
+  </form>
+</app-modal>

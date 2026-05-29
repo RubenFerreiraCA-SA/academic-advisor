@@ -3,28 +3,34 @@
     <div class="header-content">
       <div class="page-title">
         <h1>Tasks</h1>
-        <span class="task-count">{{ tableConfig.data.length }}</span>
+        <span class="task-count">{{ tableConfig().data.length }}</span>
       </div>
       <p class="page-subtitle">Track writing, review, submission, and collaboration work across all papers.</p>
     </div>
-    <div class="view-toggle" role="group" aria-label="View mode">
-      <button type="button"
-              class="toggle-btn"
-              [class.active]="viewMode() === 'list'"
-              (click)="setView('list')"
-              aria-label="List view">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/list-view.svg#list-view"></use>
-        </svg>
-      </button>
-      <button type="button"
-              class="toggle-btn"
-              [class.active]="viewMode() === 'board'"
-              (click)="setView('board')"
-              aria-label="Board view">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <use href="/icons/grid-view.svg#grid-view"></use>
-        </svg>
+    <div class="header-actions">
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button type="button"
+                class="toggle-btn"
+                [class.active]="viewMode() === 'list'"
+                (click)="setView('list')"
+                aria-label="List view">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/list-view.svg#list-view"></use>
+          </svg>
+        </button>
+        <button type="button"
+                class="toggle-btn"
+                [class.active]="viewMode() === 'board'"
+                (click)="setView('board')"
+                aria-label="Board view">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/grid-view.svg#grid-view"></use>
+          </svg>
+        </button>
+      </div>
+      <button type="button" class="primary-btn" (click)="openNewTask()" aria-label="Create new task">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
+        New Task
       </button>
     </div>
   </header>
@@ -36,10 +42,55 @@
   </div>
 
   @if (viewMode() === 'list') {
-    <app-custom-dynamic-table [config]="tableConfig" />
+    <app-custom-dynamic-table [config]="tableConfig()" />
   } @else {
     <div class="board-placeholder" role="status">
       <p>Board view coming soon</p>
     </div>
   }
 </section>
+
+<app-modal [open]="showNewTask()" title="New Task" (closed)="closeNewTask()">
+  <form [formGroup]="newTaskForm" (ngSubmit)="submitNewTask()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="task-title">Title <span aria-hidden="true">*</span></label>
+      <input id="task-title" type="text" class="field-input" formControlName="title" placeholder="Task title" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="task-paper">Linked Paper</label>
+      <select id="task-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— None —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="task-priority">Priority</label>
+        <select id="task-priority" class="field-input field-select" formControlName="priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="task-due">Due Date</label>
+        <input id="task-due" type="date" class="field-input" formControlName="dueDate" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="task-assignee">Assignee</label>
+      <select id="task-assignee" class="field-input field-select" formControlName="assigneeId">
+        <option value="self">Me (Ruben F.)</option>
+        @for (c of collaborators(); track c.uid) {
+          <option [value]="c.uid">{{ c.name }}</option>
+        }
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeNewTask()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="newTaskForm.invalid">Add Task</button>
+    </div>
+  </form>
+</app-modal>

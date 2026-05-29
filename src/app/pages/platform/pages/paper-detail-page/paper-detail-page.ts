@@ -25,7 +25,7 @@ export class PaperDetailPage implements OnInit {
 
   ngOnInit(): void {
     const uid = this.route.snapshot.paramMap.get('id') ?? '';
-    const paper = this.mockContentService.PapersData.find(p => p.uid === uid) ?? null;
+    const paper = this.mockContentService.papers().find((p: { uid: string }) => p.uid === uid) ?? null;
     this.paperData.set(paper);
 
     this.mockContentService.getPaperContentById(uid).then(content => {

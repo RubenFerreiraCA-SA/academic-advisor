@@ -1,13 +1,76 @@
 <header class="top-nav" aria-label="Platform toolbar">
-  <button class="new-button" type="button">
-    <!-- <svg viewBox="0 0 24 24" aria-hidden="true">
-      <use href="/icons/plus.svg#plus"></use>
-    </svg> -->
-    <span>New</span>
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <use href="/icons/chevron-down.svg#chevron-down"></use>
-    </svg>
-  </button>
+  <div class="new-btn-wrapper" [class.is-open]="dropdownOpen()">
+    <button class="new-button" type="button"
+            [attr.aria-expanded]="dropdownOpen()"
+            aria-haspopup="menu"
+            (click)="toggleDropdown()">
+      <span>New</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="/icons/chevron-down.svg#chevron-down"></use>
+      </svg>
+    </button>
+
+    @if (dropdownOpen()) {
+      <div class="dropdown-backdrop" (click)="closeDropdown()" aria-hidden="true"></div>
+      <div class="new-dropdown" role="menu" aria-label="Create new item">
+        <button type="button" class="dropdown-item" role="menuitem" (click)="navigateNewPaper()">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/document-text.svg#document-text"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">New Paper</span>
+            <span class="item-desc">Start a manuscript or outline</span>
+          </span>
+        </button>
+        <button type="button" class="dropdown-item" role="menuitem" (click)="openModal('task')">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/check-circle.svg#check-circle"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">New Task</span>
+            <span class="item-desc">Add a writing or review task</span>
+          </span>
+        </button>
+        <button type="button" class="dropdown-item" role="menuitem" (click)="openModal('collaborator')">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/collaborators.svg#collaborators"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">Invite Collaborator</span>
+            <span class="item-desc">Add a coauthor, advisor, or reviewer</span>
+          </span>
+        </button>
+        <div class="dropdown-divider" role="separator"></div>
+        <button type="button" class="dropdown-item" role="menuitem" (click)="openModal('submission')">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/submissions.svg#submissions"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">New Submission</span>
+            <span class="item-desc">Track a journal submission</span>
+          </span>
+        </button>
+        <button type="button" class="dropdown-item" role="menuitem" (click)="openModal('review')">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/review-search.svg#review-search"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">Assign Review</span>
+            <span class="item-desc">Queue a peer or editorial review</span>
+          </span>
+        </button>
+        <button type="button" class="dropdown-item" role="menuitem" (click)="openModal('template')">
+          <svg class="item-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <use href="/icons/document-lines.svg#document-lines"></use>
+          </svg>
+          <span class="item-text">
+            <span class="item-label">New Template</span>
+            <span class="item-desc">Create a reusable document template</span>
+          </span>
+        </button>
+      </div>
+    }
+  </div>
 
   <label class="search-box">
     <span class="sr-only">Search papers, topics, collaborators</span>
@@ -34,13 +97,224 @@
     </button>
 
     <span class="profile-copy">
-      <strong>{{ topNavConfig.client.title }} {{ topNavConfig.client.firstName }} {{ topNavConfig.client.lastName
-        }}</strong>
+      <strong>{{ topNavConfig.client.title }} {{ topNavConfig.client.firstName }} {{ topNavConfig.client.lastName }}</strong>
       <small>{{ topNavConfig.client.jobTitle }}</small>
     </span>
-    <span class="avatar" aria-hidden="true">{{ topNavConfig.client.firstName.charAt(0) }}{{
-      topNavConfig.client.lastName.charAt(0) }}</span>
-
-
+    <span class="avatar" aria-hidden="true">{{ topNavConfig.client.firstName.charAt(0) }}{{ topNavConfig.client.lastName.charAt(0) }}</span>
   </div>
 </header>
+
+<!-- ── Modals rendered outside the header for semantic correctness ────────── -->
+
+<app-modal [open]="activeModal() === 'task'" title="New Task" (closed)="closeModal()">
+  <form [formGroup]="taskForm" (ngSubmit)="submitTask()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="nav-task-title">Title <span aria-hidden="true">*</span></label>
+      <input id="nav-task-title" type="text" class="field-input" formControlName="title" placeholder="Task title" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-task-paper">Linked Paper</label>
+      <select id="nav-task-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— None —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-task-priority">Priority</label>
+        <select id="nav-task-priority" class="field-input field-select" formControlName="priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-task-due">Due Date</label>
+        <input id="nav-task-due" type="date" class="field-input" formControlName="dueDate" />
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-task-assignee">Assignee</label>
+      <select id="nav-task-assignee" class="field-input field-select" formControlName="assigneeId">
+        <option value="self">Me (Ruben F.)</option>
+        @for (c of collaborators(); track c.uid) {
+          <option [value]="c.uid">{{ c.name }}</option>
+        }
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="taskForm.invalid">Add Task</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [open]="activeModal() === 'collaborator'" title="Invite Collaborator" (closed)="closeModal()">
+  <form [formGroup]="inviteForm" (ngSubmit)="submitInvite()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="nav-inv-name">Name <span aria-hidden="true">*</span></label>
+      <input id="nav-inv-name" type="text" class="field-input" formControlName="name" placeholder="e.g. Dr. Alex Lambert" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-inv-email">Email <span aria-hidden="true">*</span></label>
+      <input id="nav-inv-email" type="email" class="field-input" formControlName="email" placeholder="name@institution.edu" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-inv-role">Role</label>
+      <select id="nav-inv-role" class="field-input field-select" formControlName="role">
+        <option value="co-author">Co-Author</option>
+        <option value="reviewer">Reviewer</option>
+        <option value="advisor">Advisor</option>
+        <option value="editor">Editor</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-inv-inst">Institution</label>
+        <input id="nav-inv-inst" type="text" class="field-input" formControlName="institution" placeholder="e.g. MIT" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-inv-dept">Department</label>
+        <input id="nav-inv-dept" type="text" class="field-input" formControlName="department" placeholder="e.g. Computer Science" autocomplete="off" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="inviteForm.invalid">Send Invite</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [open]="activeModal() === 'template'" title="New Template" (closed)="closeModal()">
+  <form [formGroup]="templateForm" (ngSubmit)="submitTemplate()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="nav-tpl-title">Title <span aria-hidden="true">*</span></label>
+      <input id="nav-tpl-title" type="text" class="field-input" formControlName="title" placeholder="Template name" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-tpl-desc">Description</label>
+      <textarea id="nav-tpl-desc" class="field-input field-textarea" formControlName="description" placeholder="Brief description..."></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-tpl-cat">Category</label>
+        <select id="nav-tpl-cat" class="field-input field-select" formControlName="category">
+          <option value="manuscript">Manuscript</option>
+          <option value="review">Review</option>
+          <option value="outline">Outline</option>
+          <option value="submission">Submission</option>
+          <option value="cover-letter">Cover Letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-tpl-vis">Visibility</label>
+        <select id="nav-tpl-vis" class="field-input field-select" formControlName="visibility">
+          <option value="personal">Personal</option>
+          <option value="shared">Shared</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-tpl-tags">Tags <span class="field-hint">(comma-separated)</span></label>
+      <input id="nav-tpl-tags" type="text" class="field-input" formControlName="tags" placeholder="e.g. ieee, latex, review" autocomplete="off" />
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="templateForm.invalid">Create Template</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [open]="activeModal() === 'submission'" title="New Submission" (closed)="closeModal()">
+  <form [formGroup]="submissionForm" (ngSubmit)="submitSubmission()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="nav-sub-paper">Paper <span aria-hidden="true">*</span></label>
+      <select id="nav-sub-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— Select a paper —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-sub-journal">Journal <span aria-hidden="true">*</span></label>
+      <input id="nav-sub-journal" type="text" class="field-input" formControlName="journal" placeholder="e.g. Nature Machine Intelligence" autocomplete="off" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-sub-short">Journal Short</label>
+        <input id="nav-sub-short" type="text" class="field-input" formControlName="journalShort" placeholder="e.g. Nat. Mach. Intell." autocomplete="off" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-sub-if">Impact Factor</label>
+        <input id="nav-sub-if" type="number" class="field-input" formControlName="impactFactor" min="0" step="0.1" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-sub-round">Round</label>
+        <input id="nav-sub-round" type="number" class="field-input" formControlName="round" min="1" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-sub-date">Submitted Date</label>
+        <input id="nav-sub-date" type="date" class="field-input" formControlName="submittedDate" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="submissionForm.invalid">Add Submission</button>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal [open]="activeModal() === 'review'" title="Assign Review" (closed)="closeModal()">
+  <form [formGroup]="reviewForm" (ngSubmit)="submitReview()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="nav-rv-paper">Paper <span aria-hidden="true">*</span></label>
+      <select id="nav-rv-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— Select a paper —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-rv-reviewer">Reviewer</label>
+      <select id="nav-rv-reviewer" class="field-input field-select" formControlName="reviewerId">
+        <option value="self">Me (Ruben F.)</option>
+        @for (c of collaborators(); track c.uid) {
+          <option [value]="c.uid">{{ c.name }}</option>
+        }
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="nav-rv-type">Review Type</label>
+        <select id="nav-rv-type" class="field-input field-select" formControlName="reviewType">
+          <option value="peer-review">Peer Review</option>
+          <option value="editorial">Editorial</option>
+          <option value="internal">Internal</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="nav-rv-priority">Priority</label>
+        <select id="nav-rv-priority" class="field-input field-select" formControlName="priority">
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="nav-rv-deadline">Deadline</label>
+      <input id="nav-rv-deadline" type="date" class="field-input" formControlName="deadlineDate" />
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="reviewForm.invalid">Assign Review</button>
+    </div>
+  </form>
+</app-modal>

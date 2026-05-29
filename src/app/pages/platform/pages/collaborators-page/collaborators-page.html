@@ -3,11 +3,11 @@
     <div class="header-content">
       <div class="page-title">
         <h1>Collaborators</h1>
-        <span class="count-badge">{{ collaborators.length }}</span>
+        <span class="count-badge">{{ collaborators().length }}</span>
       </div>
       <p class="page-subtitle">Manage coauthors, reviewers, advisors, and shared research responsibilities.</p>
     </div>
-    <button type="button" class="invite-btn" aria-label="Invite collaborator">
+    <button type="button" class="invite-btn" (click)="openInvite()" aria-label="Invite collaborator">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
       Invite
     </button>
@@ -73,3 +73,39 @@
     </div>
   </div>
 </section>
+
+<app-modal [open]="showInvite()" title="Invite Collaborator" (closed)="closeInvite()">
+  <form [formGroup]="inviteForm" (ngSubmit)="submitInvite()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="inv-name">Name <span aria-hidden="true">*</span></label>
+      <input id="inv-name" type="text" class="field-input" formControlName="name" placeholder="e.g. Dr. Alex Lambert" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="inv-email">Email <span aria-hidden="true">*</span></label>
+      <input id="inv-email" type="email" class="field-input" formControlName="email" placeholder="name@institution.edu" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="inv-role">Role</label>
+      <select id="inv-role" class="field-input field-select" formControlName="role">
+        <option value="co-author">Co-Author</option>
+        <option value="reviewer">Reviewer</option>
+        <option value="advisor">Advisor</option>
+        <option value="editor">Editor</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="inv-inst">Institution</label>
+        <input id="inv-inst" type="text" class="field-input" formControlName="institution" placeholder="e.g. MIT" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="inv-dept">Department</label>
+        <input id="inv-dept" type="text" class="field-input" formControlName="department" placeholder="e.g. Computer Science" autocomplete="off" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeInvite()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="inviteForm.invalid">Send Invite</button>
+    </div>
+  </form>
+</app-modal>

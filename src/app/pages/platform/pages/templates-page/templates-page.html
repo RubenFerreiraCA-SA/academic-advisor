@@ -3,11 +3,11 @@
     <div class="header-content">
       <div class="page-title">
         <h1>Templates</h1>
-        <span class="count-badge">{{ templates.length }}</span>
+        <span class="count-badge">{{ templates().length }}</span>
       </div>
       <p class="page-subtitle">Access reusable manuscript, review, outline, and submission templates.</p>
     </div>
-    <button type="button" class="new-btn" aria-label="Create new template">
+    <button type="button" class="new-btn" (click)="openNewTemplate()" aria-label="Create new template">
       <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
       New Template
     </button>
@@ -79,3 +79,49 @@
     </div>
   </div>
 </section>
+
+<app-modal [open]="showNewTemplate()" title="New Template" (closed)="closeNewTemplate()">
+  <form [formGroup]="newTemplateForm" (ngSubmit)="submitNewTemplate()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="tpl-title">Title <span aria-hidden="true">*</span></label>
+      <input id="tpl-title" type="text" class="field-input" formControlName="title" placeholder="Template title" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="tpl-desc">Description</label>
+      <textarea id="tpl-desc" class="field-input field-textarea" formControlName="description" rows="3" placeholder="Brief description of this template..."></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="tpl-cat">Category</label>
+        <select id="tpl-cat" class="field-input field-select" formControlName="category">
+          <option value="manuscript">Manuscript</option>
+          <option value="outline">Outline</option>
+          <option value="review">Review</option>
+          <option value="submission">Submission</option>
+          <option value="cover-letter">Cover Letter</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Visibility</label>
+        <div class="radio-group" role="group" aria-label="Visibility">
+          <label class="radio-label">
+            <input type="radio" formControlName="visibility" value="personal" />
+            <span>Personal</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" formControlName="visibility" value="shared" />
+            <span>Shared</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" for="tpl-tags">Tags <span class="field-hint">(comma-separated)</span></label>
+      <input id="tpl-tags" type="text" class="field-input" formControlName="tags" placeholder="e.g. IEEE, conference, two-column" autocomplete="off" />
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeNewTemplate()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="newTemplateForm.invalid">Create Template</button>
+    </div>
+  </form>
+</app-modal>

@@ -3,10 +3,14 @@
     <div class="header-content">
       <div class="page-title">
         <h1>Submissions</h1>
-        <span class="count-badge">{{ tableConfig.data.length }}</span>
+        <span class="count-badge">{{ tableConfig().data.length }}</span>
       </div>
       <p class="page-subtitle">Monitor journal submissions, publication statuses, and response timelines.</p>
     </div>
+    <button type="button" class="primary-btn" (click)="openNewSubmission()" aria-label="Add new submission">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/plus.svg#plus"></use></svg>
+      New Submission
+    </button>
   </header>
 
   <div class="stats-grid" aria-label="Submission status summary">
@@ -15,5 +19,47 @@
     }
   </div>
 
-  <app-custom-dynamic-table [config]="tableConfig" />
+  <app-custom-dynamic-table [config]="tableConfig()" />
 </section>
+
+<app-modal [open]="showNewSubmission()" title="New Submission" (closed)="closeNewSubmission()">
+  <form [formGroup]="newSubmissionForm" (ngSubmit)="submitNewSubmission()" class="modal-form">
+    <div class="field">
+      <label class="field-label" for="sub-paper">Paper <span aria-hidden="true">*</span></label>
+      <select id="sub-paper" class="field-input field-select" formControlName="paperUid">
+        <option value="">— Select paper —</option>
+        @for (p of papers(); track p.uid) {
+          <option [value]="p.uid">{{ p.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label" for="sub-journal">Journal <span aria-hidden="true">*</span></label>
+      <input id="sub-journal" type="text" class="field-input" formControlName="journal" placeholder="e.g. Nature Machine Intelligence" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="sub-short">Short Name</label>
+        <input id="sub-short" type="text" class="field-input" formControlName="journalShort" placeholder="e.g. Nature MI" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="sub-if">Impact Factor</label>
+        <input id="sub-if" type="number" class="field-input" formControlName="impactFactor" min="0" step="0.1" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label" for="sub-round">Round</label>
+        <input id="sub-round" type="number" class="field-input" formControlName="round" min="1" />
+      </div>
+      <div class="field">
+        <label class="field-label" for="sub-date">Submitted Date</label>
+        <input id="sub-date" type="date" class="field-input" formControlName="submittedDate" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="closeNewSubmission()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="newSubmissionForm.invalid">Add Submission</button>
+    </div>
+  </form>
+</app-modal>

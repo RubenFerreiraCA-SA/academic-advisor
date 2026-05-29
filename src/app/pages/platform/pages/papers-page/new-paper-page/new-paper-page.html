@@ -1,0 +1,84 @@
+<section class="new-paper-page" aria-label="Create new paper">
+  <header class="page-header">
+    <div class="page-title">
+      <button type="button" class="back-btn" (click)="cancel()" aria-label="Back to papers">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/chevron-left.svg#chevron-left"></use></svg>
+      </button>
+      <h1>New Paper</h1>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="paper-form">
+    <div class="form-section">
+      <h2 class="section-title">Paper Details</h2>
+      <div class="form-grid">
+        <div class="field span-2">
+          <label class="field-label" for="np-title">Title <span aria-hidden="true">*</span></label>
+          <input id="np-title" type="text" class="field-input" formControlName="title"
+                 placeholder="e.g. Synthetic Intelligence and Origination" autocomplete="off" />
+        </div>
+        <div class="field span-2">
+          <label class="field-label" for="np-topic">Topic / Keywords</label>
+          <input id="np-topic" type="text" class="field-input" formControlName="topic"
+                 placeholder="e.g. AI · Machine Learning" autocomplete="off" />
+        </div>
+        <div class="field">
+          <fieldset class="field-fieldset">
+            <legend class="field-label">Category</legend>
+            <div class="radio-chips" role="group">
+              <label class="radio-chip" [class.active]="form.controls.category.value === 'mine'">
+                <input type="radio" formControlName="category" value="mine" />
+                Mine
+              </label>
+              <label class="radio-chip" [class.active]="form.controls.category.value === 'shared'">
+                <input type="radio" formControlName="category" value="shared" />
+                Shared
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="field">
+          <fieldset class="field-fieldset">
+            <legend class="field-label">Stage</legend>
+            <div class="radio-chips" role="group">
+              <label class="radio-chip" [class.active]="form.controls.stage.value === 'outline'">
+                <input type="radio" formControlName="stage" value="outline" />
+                Outline
+              </label>
+              <label class="radio-chip" [class.active]="form.controls.stage.value === 'drafting'">
+                <input type="radio" formControlName="stage" value="drafting" />
+                Drafting
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="field">
+          <label class="field-label" for="np-deadline">Deadline <span class="field-hint">(optional)</span></label>
+          <input id="np-deadline" type="date" class="field-input" formControlName="deadline" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2 class="section-title">Collaborators</h2>
+      <p class="section-hint">Select collaborators to associate with this paper.</p>
+      <div class="collab-checkboxes" role="group" aria-label="Select collaborators">
+        @for (c of collaborators(); track c.uid) {
+          <label class="collab-check-item" [class.selected]="isCollabSelected(c.uid)">
+            <input type="checkbox"
+                   [checked]="isCollabSelected(c.uid)"
+                   (change)="toggleCollaborator(c.uid)"
+                   [attr.aria-label]="c.name" />
+            <span class="collab-avatar" aria-hidden="true">{{ c.initials }}</span>
+            <span class="collab-name">{{ c.name }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-primary" [disabled]="form.invalid">Create Paper</button>
+    </div>
+  </form>
+</section>

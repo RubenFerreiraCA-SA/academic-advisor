@@ -4,6 +4,7 @@ import { DashboardPage } from './pages/platform/pages/dashboard-page/dashboard-p
 import { Platform } from './pages/platform/platform';
 import { redirectSignedInToPlatform, requireSignedIn } from './services/auth/auth.guard';
 import { PapersPage } from './pages/platform/pages/papers-page/papers-page';
+import { NewPaperPage } from './pages/platform/pages/papers-page/new-paper-page/new-paper-page';
 import { PaperDetailPage } from './pages/platform/pages/paper-detail-page/paper-detail-page';
 import { TasksPage } from './pages/platform/pages/tasks-page/tasks-page';
 import { ReviewQueuePage } from './pages/platform/pages/review-queue-page/review-queue-page';
@@ -42,6 +43,10 @@ export const routes: Routes = [
       {
         path: 'papers',
         component: PapersPage,
+      },
+      {
+        path: 'papers/new',
+        component: NewPaperPage,
       },
       {
         path: 'papers/:id', component: PaperDetailPage

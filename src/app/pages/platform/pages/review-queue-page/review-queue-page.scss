@@ -34,6 +34,16 @@
 
 .page-subtitle { margin: 0; color: #6b87a8; font-size: 12px; font-weight: 700; }
 
+.primary-btn {
+  display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+  padding: 8px 16px; border: 0; border-radius: 8px;
+  color: #e0d8ff; background: rgba(105, 64, 255, 0.5);
+  font: inherit; font-size: 12px; font-weight: 800; cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: rgba(105, 64, 255, 0.7); }
+  svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(128px, 1fr));

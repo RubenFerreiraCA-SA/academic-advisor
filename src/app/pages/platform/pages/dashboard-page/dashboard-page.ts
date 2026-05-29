@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CustomDynamicTable } from '../../shared-components/custom-dynamic-table/custom-dynamic-table';
 import { StatCard, StatCardData } from '../../shared-components/stat-card/stat-card';
-import { PaperData } from '../papers-page/papers-model';
 import { MockContentService } from '../../../../services/mocks/content.service.mock';
-import { DynamicTableConfig, TabConfig } from '../../shared-components/custom-dynamic-table/custom-dynamic-table.model';
+import { DynamicTableConfig } from '../../shared-components/custom-dynamic-table/custom-dynamic-table.model';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -14,7 +13,7 @@ import { DynamicTableConfig, TabConfig } from '../../shared-components/custom-dy
 })
 export class DashboardPage {
   private readonly mockContentService = inject(MockContentService);
-  
-  readonly statCards: StatCardData[] = this.mockContentService.StatCards
-  readonly tableConfig: DynamicTableConfig = this.mockContentService.PapersTableConfig;
+
+  readonly statCards: StatCardData[] = this.mockContentService.StatCards;
+  readonly tableConfig = this.mockContentService.papersTableConfig;
 }

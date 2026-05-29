@@ -1,0 +1,198 @@
+:host { display: contents; }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  border: 1px solid rgba(78, 122, 190, 0.35);
+  border-radius: 12px;
+  background: rgba(6, 22, 50, 0.98);
+  padding: 28px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  margin: 0;
+  color: #e8f2ff;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.close-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 6px;
+  color: #6b87a8;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #aac4e8;
+    background: rgba(78, 122, 190, 0.14);
+  }
+}
+
+/* ── Shared form styles used by all modal forms ─────────────────────────── */
+
+:host ::ng-deep .modal-form {
+  display: grid;
+  gap: 16px;
+}
+
+:host ::ng-deep .field {
+  display: grid;
+  gap: 6px;
+}
+
+:host ::ng-deep .field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+:host ::ng-deep .field-label {
+  color: #7b9abf;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .field-hint {
+  color: #4e6685;
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+:host ::ng-deep .field-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid rgba(78, 122, 190, 0.28);
+  border-radius: 7px;
+  color: #dce8fb;
+  background: rgba(4, 17, 38, 0.85);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+  box-sizing: border-box;
+
+  &::placeholder { color: #3e5575; }
+  &:focus { border-color: rgba(105, 64, 255, 0.5); }
+}
+
+:host ::ng-deep .field-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b87a8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+:host ::ng-deep .field-textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+:host ::ng-deep .radio-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 9px 0;
+}
+
+:host ::ng-deep .radio-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #aac4e8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  input[type="radio"] { accent-color: #6940ff; cursor: pointer; }
+}
+
+:host ::ng-deep .checkbox-group {
+  display: grid;
+  gap: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+:host ::ng-deep .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #aac4e8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+
+  input[type="checkbox"] { accent-color: #6940ff; cursor: pointer; }
+}
+
+:host ::ng-deep .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(78, 122, 190, 0.18);
+}
+
+:host ::ng-deep .btn-cancel {
+  padding: 8px 18px;
+  border: 1px solid rgba(78, 122, 190, 0.28);
+  border-radius: 7px;
+  color: #6b87a8;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover { background: rgba(78, 122, 190, 0.1); color: #aac4e8; }
+}
+
+:host ::ng-deep .btn-primary {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 7px;
+  color: #e0d8ff;
+  background: rgba(105, 64, 255, 0.5);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: rgba(105, 64, 255, 0.7); }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+}
