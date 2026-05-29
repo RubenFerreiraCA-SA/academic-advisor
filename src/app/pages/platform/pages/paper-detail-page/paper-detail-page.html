@@ -1,7 +1,7 @@
 @if (paperData(); as paper) {
   <div class="paper-detail">
 
-    <!-- Header -->
+    <!-- ── Header ─────────────────────────────────────────────────────────── -->
     <header class="detail-header">
       <a class="back-link" routerLink="/platform/papers" aria-label="Back to Papers">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -56,7 +56,106 @@
       </div>
     </header>
 
-    <!-- Body -->
+    <!-- ── Workflow Panel ─────────────────────────────────────────────────── -->
+    <section class="workflow-panel" aria-label="Paper workflow">
+
+      <!-- Timeline -->
+      <div class="workflow-timeline" role="list" aria-label="Workflow stages">
+        @for (s of WORKFLOW_STAGES; track s.id; let isLast = $last) {
+          <div class="stage-step"
+               role="listitem"
+               [class.is-done]="isStepDone(s.step)"
+               [class.is-current]="isStepCurrent(s.step)"
+               [class.is-future]="isStepFuture(s.step)"
+               [attr.aria-current]="isStepCurrent(s.step) ? 'step' : null"
+               [attr.aria-label]="s.label + (isStepDone(s.step) ? ' — completed' : isStepCurrent(s.step) ? ' — current' : ' — upcoming')">
+            <div class="step-dot">
+              @if (isStepDone(s.step)) {
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="check-icon">
+                  <use href="/icons/check-circle.svg#check-circle"></use>
+                </svg>
+              } @else {
+                {{ s.step }}
+              }
+            </div>
+            <span class="step-label">{{ s.shortLabel }}</span>
+          </div>
+          @if (!isLast) {
+            <div class="step-connector"
+                 [class.is-done]="isStepDone(s.step)"
+                 [class.is-current]="isStepCurrent(s.step)"
+                 aria-hidden="true"></div>
+          }
+        }
+      </div>
+
+      <!-- Advisory Cards -->
+      <div class="advisory-grid">
+
+        <!-- Where am I -->
+        <article class="advisory-card where-card">
+          <header class="card-head">
+            <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="/icons/document-status.svg#document-status"></use>
+            </svg>
+            <span class="card-eyebrow">Where am I in the process?</span>
+          </header>
+          <div class="card-body">
+            <div class="step-badge" aria-label="Step {{ currentStageInfo().step }} of 12">
+              Step {{ currentStageInfo().step }} / 12
+            </div>
+            <strong class="card-stage-name">{{ currentStageInfo().label }}</strong>
+            <p class="card-desc">{{ currentStageInfo().description }}</p>
+            @if (currentStageInfo().isAiStage) {
+              <span class="ai-badge" aria-label="AI-powered feature">AI-powered</span>
+            }
+          </div>
+        </article>
+
+        <!-- What's next -->
+        <article class="advisory-card next-card">
+          <header class="card-head">
+            <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="/icons/check-circle.svg#check-circle"></use>
+            </svg>
+            <span class="card-eyebrow">What should I do next?</span>
+          </header>
+          <div class="card-body">
+            <ol class="next-steps" aria-label="Recommended next steps">
+              @for (step of currentStageInfo().nextSteps; track step) {
+                <li>{{ step }}</li>
+              }
+            </ol>
+          </div>
+        </article>
+
+        <!-- Submit readiness (visible from revision stage onwards) -->
+        @if (showReadiness()) {
+          <article class="advisory-card readiness-card" [class]="'tone-' + readiness().tone">
+            <header class="card-head">
+              <svg class="card-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <use href="/icons/document-search.svg#document-search"></use>
+              </svg>
+              <span class="card-eyebrow">Am I ready to submit?</span>
+            </header>
+            <div class="card-body">
+              <strong class="readiness-label">{{ readiness().label }}</strong>
+              <ul class="readiness-items" aria-label="Readiness checklist">
+                @for (item of readiness().items; track item.label) {
+                  <li [class.pass]="item.pass" [class.fail]="!item.pass">
+                    <span class="check-mark" aria-hidden="true">{{ item.pass ? '✓' : '✗' }}</span>
+                    {{ item.label }}
+                  </li>
+                }
+              </ul>
+            </div>
+          </article>
+        }
+
+      </div>
+    </section>
+
+    <!-- ── Paper Body ─────────────────────────────────────────────────────── -->
     @if (paperContent(); as content) {
       <div class="paper-body" [class.toc-collapsed]="!tocOpen()">
 
@@ -100,7 +199,6 @@
         <!-- Main content -->
         <article class="content" aria-label="Paper content">
 
-          <!-- Abstract -->
           <section id="abstract" class="content-section" aria-labelledby="abstract-heading">
             <button type="button" class="section-toggle"
                     (click)="toggleSection('abstract')"
@@ -118,7 +216,6 @@
             }
           </section>
 
-          <!-- Chapters -->
           @for (chapter of content.chapters; track chapter.id; let ci = $index) {
             <section [id]="chapter.id" class="content-section" [attr.aria-labelledby]="chapter.id + '-heading'">
               <button type="button" class="section-toggle"
@@ -160,7 +257,6 @@
             </section>
           }
 
-          <!-- References -->
           <section id="references" class="content-section" aria-labelledby="references-heading">
             <button type="button" class="section-toggle"
                     (click)="toggleSection('references')"

@@ -1,5 +1,10 @@
 export type PaperCategory = 'mine' | 'shared' | 'archived';
 
+export type PaperStage =
+  | 'concept' | 'positioning' | 'blueprint' | 'drafting'
+  | 'peer-review' | 'game-plan' | 'revision' | 'submission-ready'
+  | 'submitted' | 'external-review' | 'revise-resubmit' | 'published';
+
 export type PaperData = {
   uid: string;
   title: string;
@@ -8,7 +13,7 @@ export type PaperData = {
   category: PaperCategory;
   stage: {
     label: string;
-    tone: 'revision' | 'drafting' | 'review' | 'outline' | 'submitted' | 'complete';
+    tone: PaperStage;
   };
   progress: {
     value: number;

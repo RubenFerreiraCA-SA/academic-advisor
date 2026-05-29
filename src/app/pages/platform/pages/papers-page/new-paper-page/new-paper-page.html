@@ -1,84 +1,318 @@
-<section class="new-paper-page" aria-label="Create new paper">
-  <header class="page-header">
-    <div class="page-title">
-      <button type="button" class="back-btn" (click)="cancel()" aria-label="Back to papers">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="/icons/chevron-left.svg#chevron-left"></use></svg>
-      </button>
-      <h1>New Paper</h1>
-    </div>
+<section class="wizard-page" aria-label="Create new paper">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="wizard-header">
+    <button type="button" class="back-btn" (click)="cancel()"
+            aria-label="Cancel and return to papers">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="/icons/chevron-left.svg#chevron-left"></use>
+      </svg>
+      Papers
+    </button>
+    <span class="step-counter" aria-live="polite">Step {{ currentStep() }} of 5</span>
   </header>
 
-  <form [formGroup]="form" (ngSubmit)="submit()" class="paper-form">
-    <div class="form-section">
-      <h2 class="section-title">Paper Details</h2>
-      <div class="form-grid">
-        <div class="field span-2">
-          <label class="field-label" for="np-title">Title <span aria-hidden="true">*</span></label>
-          <input id="np-title" type="text" class="field-input" formControlName="title"
-                 placeholder="e.g. Synthetic Intelligence and Origination" autocomplete="off" />
+  <!-- ── Step indicator ───────────────────────────────────────────────────── -->
+  <nav class="step-indicator" aria-label="Paper creation steps">
+    @for (s of STEPS; track s.num; let isLast = $last) {
+      <div class="step-pip"
+           [class.done]="currentStep() > s.num"
+           [class.active]="currentStep() === s.num"
+           [attr.aria-current]="currentStep() === s.num ? 'step' : null"
+           [attr.aria-label]="s.label + (currentStep() > s.num ? ' — completed' : currentStep() === s.num ? ' — current' : ' — upcoming')">
+        <div class="pip-dot">
+          @if (currentStep() > s.num) {
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="pip-check">
+              <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          } @else {
+            {{ s.num }}
+          }
         </div>
-        <div class="field span-2">
-          <label class="field-label" for="np-topic">Topic / Keywords</label>
-          <input id="np-topic" type="text" class="field-input" formControlName="topic"
-                 placeholder="e.g. AI · Machine Learning" autocomplete="off" />
-        </div>
-        <div class="field">
-          <fieldset class="field-fieldset">
-            <legend class="field-label">Category</legend>
-            <div class="radio-chips" role="group">
-              <label class="radio-chip" [class.active]="form.controls.category.value === 'mine'">
-                <input type="radio" formControlName="category" value="mine" />
-                Mine
-              </label>
-              <label class="radio-chip" [class.active]="form.controls.category.value === 'shared'">
-                <input type="radio" formControlName="category" value="shared" />
-                Shared
-              </label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="field">
-          <fieldset class="field-fieldset">
-            <legend class="field-label">Stage</legend>
-            <div class="radio-chips" role="group">
-              <label class="radio-chip" [class.active]="form.controls.stage.value === 'outline'">
-                <input type="radio" formControlName="stage" value="outline" />
-                Outline
-              </label>
-              <label class="radio-chip" [class.active]="form.controls.stage.value === 'drafting'">
-                <input type="radio" formControlName="stage" value="drafting" />
-                Drafting
-              </label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="field">
-          <label class="field-label" for="np-deadline">Deadline <span class="field-hint">(optional)</span></label>
-          <input id="np-deadline" type="date" class="field-input" formControlName="deadline" />
-        </div>
+        <span class="pip-label">{{ s.label }}</span>
       </div>
-    </div>
+      @if (!isLast) {
+        <div class="pip-line" [class.done]="currentStep() > s.num" aria-hidden="true"></div>
+      }
+    }
+  </nav>
 
-    <div class="form-section">
-      <h2 class="section-title">Collaborators</h2>
-      <p class="section-hint">Select collaborators to associate with this paper.</p>
-      <div class="collab-checkboxes" role="group" aria-label="Select collaborators">
-        @for (c of collaborators(); track c.uid) {
-          <label class="collab-check-item" [class.selected]="isCollabSelected(c.uid)">
-            <input type="checkbox"
-                   [checked]="isCollabSelected(c.uid)"
-                   (change)="toggleCollaborator(c.uid)"
-                   [attr.aria-label]="c.name" />
-            <span class="collab-avatar" aria-hidden="true">{{ c.initials }}</span>
-            <span class="collab-name">{{ c.name }}</span>
+  <!-- ── Step 1: Concept ──────────────────────────────────────────────────── -->
+  @if (currentStep() === 1) {
+    <div class="step-panel">
+      <div class="step-intro">
+        <h2 class="step-title">Describe your concept</h2>
+        <p class="step-desc">What's the research idea, question, or hypothesis you want to explore? Be as specific or as open as you like — this guides everything that follows.</p>
+      </div>
+      <form [formGroup]="conceptForm" class="step-fields">
+        <div class="field">
+          <label class="field-label" for="np-concept">Research concept <span aria-hidden="true">*</span></label>
+          <textarea id="np-concept" class="field-input field-textarea tall" formControlName="concept"
+                    placeholder="e.g. I want to investigate how transformer attention mechanisms model long-range dependencies, and whether biological neural circuits exhibit similar computational properties. The goal is to find architectural principles that generalise across both domains..."></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label" id="np-topics-label">
+            Topics / Keywords
+            <span class="field-hint">(type &amp; press comma or Enter)</span>
           </label>
+          <div class="chip-input-field" role="group" aria-labelledby="np-topics-label">
+            @for (chip of topicChips(); track chip) {
+              <span class="topic-chip">
+                {{ chip }}
+                <button type="button" class="chip-remove"
+                        (click)="removeTopicChip(chip)"
+                        [attr.aria-label]="'Remove topic: ' + chip">×</button>
+              </span>
+            }
+            <input type="text" class="chip-text-input"
+                   [value]="topicRawInput()"
+                   (input)="topicRawInput.set($any($event.target).value)"
+                   (keydown)="handleTopicKeydown($event)"
+                   (blur)="commitTopicInput()"
+                   [placeholder]="topicChips().length === 0 ? 'e.g. AI, Transformers, Neuroscience' : ''"
+                   aria-label="Add topic" autocomplete="off" />
+          </div>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- ── Step 2: Title ────────────────────────────────────────────────────── -->
+  @if (currentStep() === 2) {
+    <div class="step-panel">
+      <div class="step-intro">
+        <h2 class="step-title">Give your paper a working title</h2>
+        <p class="step-desc">This is just a starting point — you can refine the title at any stage of writing.</p>
+      </div>
+      @if (conceptForm.getRawValue().concept) {
+        <blockquote class="concept-preview" aria-label="Your concept">
+          <span class="preview-label">Your concept</span>
+          <p class="preview-text">{{ conceptForm.getRawValue().concept }}</p>
+        </blockquote>
+      }
+      <form [formGroup]="titleForm" class="step-fields">
+        <div class="field">
+          <label class="field-label" for="np-title">Working title <span aria-hidden="true">*</span></label>
+          <input id="np-title" type="text" class="field-input title-input" formControlName="title"
+                 placeholder="e.g. Attention Mechanisms in Biological Computation: A Comparative Analysis"
+                 autocomplete="off" />
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- ── Step 3: Team ─────────────────────────────────────────────────────── -->
+  @if (currentStep() === 3) {
+    <div class="step-panel">
+      <div class="step-intro">
+        <h2 class="step-title">Sole author or team project?</h2>
+        <p class="step-desc">This sets whether the paper appears under My Papers or Shared, and determines who has access.</p>
+      </div>
+
+      <div class="authorship-cards" role="radiogroup" aria-label="Authorship type">
+        <button type="button" class="authorship-card"
+                [class.selected]="authorType() === 'sole'"
+                (click)="setAuthorType('sole')"
+                role="radio"
+                [attr.aria-checked]="authorType() === 'sole'">
+          <div class="auth-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <use href="/icons/home.svg#home"></use>
+            </svg>
+          </div>
+          <strong class="auth-title">Sole author</strong>
+          <span class="auth-desc">Just you — appears under My Papers</span>
+        </button>
+
+        <button type="button" class="authorship-card"
+                [class.selected]="authorType() === 'team'"
+                (click)="setAuthorType('team')"
+                role="radio"
+                [attr.aria-checked]="authorType() === 'team'">
+          <div class="auth-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <use href="/icons/collaborators.svg#collaborators"></use>
+            </svg>
+          </div>
+          <strong class="auth-title">Collaborative work</strong>
+          <span class="auth-desc">Working with coauthors or advisors</span>
+        </button>
+      </div>
+
+      @if (authorType() === 'team') {
+        <div class="collaborator-picker">
+          <h3 class="picker-title">
+            Add collaborators
+            @if (selectedCollaborators().length > 0) {
+              <span class="picker-count">{{ selectedCollaborators().length }} selected</span>
+            }
+          </h3>
+          <div class="collab-grid" role="group" aria-label="Select collaborators">
+            @for (c of collaborators(); track c.uid) {
+              <button type="button" class="collab-card"
+                      [class.selected]="isCollabSelected(c.uid)"
+                      (click)="toggleCollaborator(c.uid)"
+                      [attr.aria-pressed]="isCollabSelected(c.uid)"
+                      [attr.aria-label]="c.name + ' — ' + c.role + (isCollabSelected(c.uid) ? ' — selected' : '')">
+                <span class="collab-avatar" aria-hidden="true">{{ c.initials }}</span>
+                <span class="collab-info">
+                  <span class="collab-name">{{ c.name }}</span>
+                  <span class="collab-role">{{ c.role }}</span>
+                </span>
+                @if (isCollabSelected(c.uid)) {
+                  <span class="collab-check" aria-hidden="true">✓</span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ── Step 4: Outline ──────────────────────────────────────────────────── -->
+  @if (currentStep() === 4) {
+    <div class="step-panel">
+      <div class="step-intro">
+        <h2 class="step-title">Build a basic outline</h2>
+        <p class="step-desc">Define the sections for your paper. Remove what you don't need, add sections from the presets, or type your own. You can adjust this at any time.</p>
+      </div>
+
+      <div class="outline-list" role="list" aria-label="Paper outline sections">
+        @for (section of outlineSections(); track section; let i = $index) {
+          <div class="outline-item"
+               role="listitem"
+               draggable="true"
+               [class.dragging]="dragIndex() === i"
+               [class.drag-over]="dragOverIndex() === i && dragIndex() !== i"
+               (dragstart)="onDragStart($event, i)"
+               (dragover)="onDragOver($event, i)"
+               (drop)="onDrop($event, i)"
+               (dragend)="onDragEnd()"
+               (dragleave)="onDragLeave($event)">
+            <span class="drag-handle" aria-hidden="true">
+              <svg viewBox="0 0 10 16" fill="currentColor">
+                <circle cx="3" cy="3" r="1.3"/><circle cx="7" cy="3" r="1.3"/>
+                <circle cx="3" cy="7" r="1.3"/><circle cx="7" cy="7" r="1.3"/>
+                <circle cx="3" cy="11" r="1.3"/><circle cx="7" cy="11" r="1.3"/>
+              </svg>
+            </span>
+            <span class="item-num" aria-hidden="true">{{ i + 1 }}</span>
+            <span class="item-name">{{ section }}</span>
+            <button type="button" class="item-remove" (click)="removeSection(i)"
+                    [attr.aria-label]="'Remove section: ' + section">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="remove-icon">
+                <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        }
+        @empty {
+          <p class="outline-empty" role="listitem">No sections yet — add one below or choose from presets.</p>
         }
       </div>
-    </div>
 
-    <div class="form-actions">
-      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
-      <button type="submit" class="btn-primary" [disabled]="form.invalid">Create Paper</button>
+      <div class="add-section-row">
+        <input type="text" class="field-input" placeholder="Add a custom section..."
+               [value]="newSectionInput()"
+               (input)="newSectionInput.set($any($event.target).value)"
+               (keydown)="handleSectionKeydown($event)"
+               aria-label="Custom section name" />
+        <button type="button" class="add-btn" (click)="addCustomSection()"
+                [disabled]="!newSectionInput().trim()">Add</button>
+      </div>
+
+      @if (availablePresets().length > 0) {
+        <div class="presets-row" aria-label="Preset sections">
+          <span class="presets-label">Presets:</span>
+          @for (preset of availablePresets(); track preset) {
+            <button type="button" class="preset-chip" (click)="addPreset(preset)">
+              + {{ preset }}
+            </button>
+          }
+        </div>
+      }
     </div>
-  </form>
+  }
+
+  <!-- ── Step 5: Review & Create ──────────────────────────────────────────── -->
+  @if (currentStep() === 5) {
+    <div class="step-panel">
+      <div class="step-intro">
+        <h2 class="step-title">Ready to create your paper</h2>
+        <p class="step-desc">Review your inputs below, then click Create Paper to open your new workspace.</p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Concept</span>
+          <p class="summary-value concept-value">{{ summary().concept }}</p>
+          @if (summary().topics) {
+            <p class="summary-topics">{{ summary().topics }}</p>
+          }
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Working title</span>
+          <p class="summary-value title-value">{{ summary().title }}</p>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Authorship</span>
+          <p class="summary-value">
+            @if (summary().authorType === 'sole') {
+              Sole author
+            } @else {
+              {{ summary().collaboratorCount }} collaborator{{ summary().collaboratorCount !== 1 ? 's' : '' }}
+              @if (summary().collaboratorNames.length > 0) {
+                <span class="collab-names">— {{ summary().collaboratorNames.join(', ') }}</span>
+              }
+            }
+          </p>
+        </div>
+
+        <div class="summary-card outline-summary">
+          <span class="summary-label">Outline — {{ summary().sections.length }} sections</span>
+          <ol class="summary-sections" aria-label="Paper outline">
+            @for (s of summary().sections; track s) {
+              <li>{{ s }}</li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ── Navigation ───────────────────────────────────────────────────────── -->
+  <div class="step-nav">
+    <button type="button" class="btn-back"
+            (click)="currentStep() > 1 ? goBack() : cancel()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <use href="/icons/chevron-left.svg#chevron-left"></use>
+      </svg>
+      {{ currentStep() > 1 ? 'Back' : 'Cancel' }}
+    </button>
+
+    @if (currentStep() < 5) {
+      <button type="button" class="btn-next" [disabled]="!canAdvance()" (click)="goNext()">
+        Next step
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/chevron-left.svg#chevron-left"
+               transform="scale(-1,1) translate(-24,0)"></use>
+        </svg>
+      </button>
+    } @else {
+      <button type="button" class="btn-create" (click)="createPaper()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/document-text.svg#document-text"></use>
+        </svg>
+        Create Paper
+      </button>
+    }
+  </div>
+
 </section>

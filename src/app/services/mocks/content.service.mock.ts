@@ -38,8 +38,18 @@ import { PaperContent } from "../../pages/platform/pages/paper-detail-page/paper
 
 // ── Display label maps ────────────────────────────────────────────────────────
 const STAGE_LABELS: Record<string, string> = {
-  drafting: 'Drafting', review: 'Review', revision: 'Revision',
-  submitted: 'Submitted', complete: 'Complete', outline: 'Outline',
+  concept: 'Concept',
+  positioning: 'Positioning',
+  blueprint: 'Blueprint',
+  drafting: 'Drafting',
+  'peer-review': 'Peer Review',
+  'game-plan': 'Game Plan',
+  revision: 'Revision',
+  'submission-ready': 'Submit Ready',
+  submitted: 'Submitted',
+  'external-review': 'Ext. Review',
+  'revise-resubmit': 'Revise & Resubmit',
+  published: 'Published',
 };
 
 const SELF = { initials: 'RF', name: 'Ruben F.' };
@@ -96,7 +106,7 @@ export class MockContentService {
       topic: doc.topic,
       featured: doc.featured,
       category: doc.category,
-      stage: { label: STAGE_LABELS[doc.stage] ?? doc.stage, tone: doc.stage as PaperData['stage']['tone'] },
+      stage: { label: STAGE_LABELS[doc.stage] ?? doc.stage, tone: doc.stage },
       progress: { value: doc.progress, tone: doc.progressTone as PaperData['progress']['tone'] },
       deadline: { date: doc.deadlineDate, datetime: doc.deadlineDatetime, status: doc.deadlineStatus, tone: doc.deadlineTone as PaperData['deadline']['tone'] },
       collaborators: this.paperAvatars(doc.collaboratorIds, doc.externalCollaboratorCount),
@@ -228,8 +238,10 @@ export class MockContentService {
 
   // ── Mutation methods ───────────────────────────────────────────────────────
 
-  addPaper(doc: Omit<PaperDoc, 'uid'>): void {
-    this._papers.update(list => [...list, { ...doc, uid: crypto.randomUUID() }]);
+  addPaper(doc: Omit<PaperDoc, 'uid'>): string {
+    const uid = crypto.randomUUID();
+    this._papers.update(list => [...list, { uid, ...doc }]);
+    return uid;
   }
 
   addTask(doc: Omit<TaskDoc, 'uid'>): void {
