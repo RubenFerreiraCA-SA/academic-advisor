@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, EventEmitter, Input, input, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
 import { DynamicTableConfig } from './custom-dynamic-table.model';
-
-
 
 @Component({
   selector: 'app-custom-dynamic-table',
@@ -14,13 +12,15 @@ export class CustomDynamicTable {
   @Input() config!: DynamicTableConfig;
   @Output() rowClick = new EventEmitter<any>();
 
-  onRowClick(row: any): void {
-    console.log('Row clicked:', row);
-    this.rowClick.emit(row);
-  }
-
   protected readonly activeTab = signal('');
   protected readonly currentPage = signal(1);
+  protected readonly searchQuery = signal('');
+  protected readonly activeFilters = signal<Record<string, string>>({});
+  protected readonly selectedKeys = signal<Set<string>>(new Set());
+
+  onRowClick(row: any): void {
+    this.rowClick.emit(row);
+  }
 
   protected readonly tabsWithCounts = computed(() => {
     const { data, tabs = [] } = this.config;
@@ -31,10 +31,25 @@ export class CustomDynamicTable {
   });
 
   protected readonly filteredData = computed(() => {
-    const { data, tabs = [] } = this.config;
+    const { data, tabs = [], searchFilter, filters: filterDefs = [] } = this.config;
     const id = this.activeTab() || tabs[0]?.id;
     const tab = tabs.find(t => t.id === id);
-    return tab?.filter ? data.filter(tab.filter) : data;
+    let result = tab?.filter ? data.filter(tab.filter) : data;
+
+    const query = this.searchQuery().trim().toLowerCase();
+    if (query && searchFilter) {
+      result = result.filter(row => searchFilter(row, query));
+    }
+
+    const active = this.activeFilters();
+    for (const def of filterDefs) {
+      const val = active[def.id];
+      if (val && val !== 'all') {
+        result = result.filter(row => def.filter(row, val));
+      }
+    }
+
+    return result;
   });
 
   protected readonly totalPages = computed(() => {
@@ -76,6 +91,30 @@ export class CustomDynamicTable {
     return pages;
   });
 
+  protected readonly hasActiveFilters = computed(() => {
+    const query = this.searchQuery().trim();
+    const filters = this.activeFilters();
+    return !!query || Object.values(filters).some(v => !!v && v !== 'all');
+  });
+
+  protected readonly allPageSelected = computed(() => {
+    const rowKey = this.config.rowKey;
+    if (!rowKey) return false;
+    const page = this.paginatedData();
+    if (!page.length) return false;
+    const sel = this.selectedKeys();
+    return page.every(r => sel.has(rowKey(r)));
+  });
+
+  protected readonly somePageSelected = computed(() => {
+    const rowKey = this.config.rowKey;
+    if (!rowKey) return false;
+    const page = this.paginatedData();
+    const sel = this.selectedKeys();
+    const count = page.filter(r => sel.has(rowKey(r))).length;
+    return count > 0 && count < page.length;
+  });
+
   protected selectTab(id: string): void {
     this.activeTab.set(id);
     this.currentPage.set(1);
@@ -88,5 +127,58 @@ export class CustomDynamicTable {
 
   protected goToPage(page: number): void {
     this.currentPage.set(Math.max(1, Math.min(page, this.totalPages())));
+  }
+
+  protected setSearch(query: string): void {
+    this.searchQuery.set(query);
+    this.currentPage.set(1);
+  }
+
+  protected setFilter(id: string, value: string): void {
+    this.activeFilters.update(f => ({ ...f, [id]: value }));
+    this.currentPage.set(1);
+  }
+
+  protected clearFilters(): void {
+    this.searchQuery.set('');
+    this.activeFilters.set({});
+    this.currentPage.set(1);
+  }
+
+  protected toggleAllRows(): void {
+    const { rowKey } = this.config;
+    if (!rowKey) return;
+    const page = this.paginatedData();
+    const allSelected = this.allPageSelected();
+    this.selectedKeys.update(set => {
+      const next = new Set(set);
+      if (allSelected) {
+        page.forEach(r => next.delete(rowKey(r)));
+      } else {
+        page.forEach(r => next.add(rowKey(r)));
+      }
+      return next;
+    });
+  }
+
+  protected toggleRow(row: unknown): void {
+    const { rowKey } = this.config;
+    if (!rowKey) return;
+    const key = rowKey(row);
+    this.selectedKeys.update(set => {
+      const next = new Set(set);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  }
+
+  protected isSelected(row: unknown): boolean {
+    const { rowKey } = this.config;
+    if (!rowKey) return false;
+    return this.selectedKeys().has(rowKey(row));
   }
 }

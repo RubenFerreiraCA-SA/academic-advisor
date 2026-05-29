@@ -1,0 +1,45 @@
+<section class="tasks-page" aria-label="Tasks">
+  <header class="page-header">
+    <div class="header-content">
+      <div class="page-title">
+        <h1>Tasks</h1>
+        <span class="task-count">{{ tableConfig.data.length }}</span>
+      </div>
+      <p class="page-subtitle">Track writing, review, submission, and collaboration work across all papers.</p>
+    </div>
+    <div class="view-toggle" role="group" aria-label="View mode">
+      <button type="button"
+              class="toggle-btn"
+              [class.active]="viewMode() === 'list'"
+              (click)="setView('list')"
+              aria-label="List view">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/list-view.svg#list-view"></use>
+        </svg>
+      </button>
+      <button type="button"
+              class="toggle-btn"
+              [class.active]="viewMode() === 'board'"
+              (click)="setView('board')"
+              aria-label="Board view">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <use href="/icons/grid-view.svg#grid-view"></use>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="stats-grid" aria-label="Task status summary">
+    @for (card of statCards; track card.label) {
+      <app-stat-card [stat]="card" />
+    }
+  </div>
+
+  @if (viewMode() === 'list') {
+    <app-custom-dynamic-table [config]="tableConfig" />
+  } @else {
+    <div class="board-placeholder" role="status">
+      <p>Board view coming soon</p>
+    </div>
+  }
+</section>

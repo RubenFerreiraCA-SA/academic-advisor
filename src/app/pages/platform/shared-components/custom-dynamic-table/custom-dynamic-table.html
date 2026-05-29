@@ -15,10 +15,58 @@
       </nav>
     </header>
 
+    @if (config.searchable || config.filters?.length) {
+      <div class="filter-bar" role="search">
+        @if (config.searchable) {
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="/icons/search.svg#search"></use>
+            </svg>
+            <input
+              type="search"
+              class="search-input"
+              [placeholder]="config.searchPlaceholder ?? 'Search...'"
+              [value]="searchQuery()"
+              (input)="setSearch($any($event.target).value)"
+              aria-label="Search"
+            />
+          </div>
+        }
+        @for (filter of config.filters; track filter.id) {
+          <select
+            class="filter-select"
+            [attr.aria-label]="filter.label"
+            (change)="setFilter(filter.id, $any($event.target).value)"
+          >
+            @for (opt of filter.options; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        }
+        @if (hasActiveFilters()) {
+          <button type="button" class="clear-filters-btn" (click)="clearFilters()">
+            Clear filters
+          </button>
+        }
+      </div>
+    }
+
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
+            @if (config.selectable) {
+              <th scope="col" class="select-col">
+                <input
+                  type="checkbox"
+                  [checked]="allPageSelected()"
+                  [indeterminate]="somePageSelected()"
+                  (change)="toggleAllRows()"
+                  (click)="$event.stopPropagation()"
+                  aria-label="Select all rows on this page"
+                />
+              </th>
+            }
             @for (col of config.columns; track col.key) {
               <th scope="col" [style.width]="col.width ?? null">
                 @if (col.srOnly) {
@@ -32,7 +80,21 @@
         </thead>
         <tbody>
           @for (row of paginatedData(); track $index) {
-            <tr [class.featured]="config.featured?.(row)" (click)="onRowClick(row)">
+            <tr
+              [class.featured]="config.featured?.(row)"
+              [class.selected]="isSelected(row)"
+              (click)="onRowClick(row)"
+            >
+              @if (config.selectable) {
+                <td class="select-col" (click)="$event.stopPropagation()">
+                  <input
+                    type="checkbox"
+                    [checked]="isSelected(row)"
+                    (change)="toggleRow(row)"
+                    aria-label="Select row"
+                  />
+                </td>
+              }
               @for (col of config.columns; track col.key) {
                 <td>
                   @switch (col.cell.type) {
@@ -43,7 +105,7 @@
                           <span class="badge">{{ $any(col.cell).badge(row) }}</span>
                         }
                       </strong>
-                      @if ($any(col.cell).secondary) {
+                      @if ($any(col.cell).secondary?.(row)) {
                         <small>{{ $any(col.cell).secondary(row) }}</small>
                       }
                     }
@@ -61,8 +123,11 @@
                       </div>
                     }
                     @case ('date') {
-                      <time [attr.datetime]="$any(col.cell).datetime(row)">{{ $any(col.cell).label(row) }}</time>
-                      @if ($any(col.cell).secondary) {
+                      <time
+                        [class]="$any(col.cell).labelTone?.(row) ?? ''"
+                        [attr.datetime]="$any(col.cell).datetime(row)"
+                      >{{ $any(col.cell).label(row) }}</time>
+                      @if ($any(col.cell).secondary?.(row)) {
                         <small [class]="$any(col.cell).secondaryTone?.(row) ?? ''">
                           {{ $any(col.cell).secondary(row) }}
                         </small>
@@ -76,6 +141,12 @@
                         <b>{{ $any(col.cell).extra(row) }}</b>
                       </span>
                     }
+                    @case ('avatar') {
+                      <span class="avatar-cell">
+                        <i>{{ $any(col.cell).initials(row) }}</i>
+                        <span>{{ $any(col.cell).name(row) }}</span>
+                      </span>
+                    }
                     @case ('action') {
                       <button class="row-action" type="button" [attr.aria-label]="$any(col.cell).ariaLabel">⋮</button>
                     }
@@ -86,6 +157,9 @@
           }
           @for (_ of emptyRows(); track $index) {
             <tr class="empty-row" aria-hidden="true">
+              @if (config.selectable) {
+                <td class="select-col"></td>
+              }
               @for (col of config.columns; track col.key) {
                 <td></td>
               }

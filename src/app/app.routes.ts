@@ -6,6 +6,7 @@ import { Platform } from './pages/platform/platform';
 import { redirectSignedInToPlatform, requireSignedIn } from './services/auth/auth.guard';
 import { PapersPage } from './pages/platform/pages/papers-page/papers-page';
 import { PaperDetailPage } from './pages/platform/pages/paper-detail-page/paper-detail-page';
+import { TasksPage } from './pages/platform/pages/tasks-page/tasks-page';
 
 export const routes: Routes = [
   {
@@ -41,11 +42,7 @@ export const routes: Routes = [
       },
       {
         path: 'tasks',
-        component: PlatformSectionPage,
-        data: {
-          title: 'Tasks',
-          description: 'Track writing, review, submission, and collaborator tasks in one focused workspace.',
-        },
+        component: TasksPage,
       },
       {
         path: 'review-queue',

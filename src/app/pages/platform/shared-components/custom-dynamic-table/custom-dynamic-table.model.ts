@@ -27,6 +27,7 @@ export type CellDate = {
   type: 'date';
   label: (row: unknown) => string;
   datetime: (row: unknown) => string;
+  labelTone?: (row: unknown) => string | undefined;
   secondary?: (row: unknown) => string;
   secondaryTone?: (row: unknown) => string | undefined;
 };
@@ -37,12 +38,18 @@ export type CellAvatars = {
   extra: (row: unknown) => string;
 };
 
+export type CellAvatar = {
+  type: 'avatar';
+  initials: (row: unknown) => string;
+  name: (row: unknown) => string;
+};
+
 export type CellAction = {
   type: 'action';
   ariaLabel: string;
 };
 
-export type CellDef = CellText | CellBadge | CellProgress | CellDate | CellAvatars | CellAction;
+export type CellDef = CellText | CellBadge | CellProgress | CellDate | CellAvatars | CellAvatar | CellAction;
 
 export type ColumnDef = {
   key: string;
@@ -52,10 +59,28 @@ export type ColumnDef = {
   cell: CellDef;
 };
 
+export type FilterOption = {
+  value: string;
+  label: string;
+};
+
+export type FilterDef = {
+  id: string;
+  label: string;
+  options: FilterOption[];
+  filter: (row: unknown, value: string) => boolean;
+};
+
 export type DynamicTableConfig = {
   data: unknown[];
   columns: ColumnDef[];
   tabs?: TabConfig[];
   pageSize?: number;
   featured?: (row: unknown) => boolean;
+  searchable?: boolean;
+  searchPlaceholder?: string;
+  searchFilter?: (row: unknown, query: string) => boolean;
+  filters?: FilterDef[];
+  selectable?: boolean;
+  rowKey?: (row: unknown) => string;
 };

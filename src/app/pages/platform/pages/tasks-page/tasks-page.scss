@@ -1,0 +1,132 @@
+:host {
+  display: block;
+}
+
+.tasks-page {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-content {
+  display: grid;
+  gap: 4px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  h1 {
+    margin: 0;
+    color: #e8f2ff;
+    font-size: 18px;
+    font-weight: 900;
+  }
+}
+
+.task-count {
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #7b9abf;
+  background: rgba(91, 128, 184, 0.14);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #6b87a8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  border: 1px solid rgba(78, 122, 190, 0.22);
+  border-radius: 8px;
+  padding: 3px;
+  background: rgba(7, 27, 58, 0.6);
+}
+
+.toggle-btn {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  color: #5b80b4;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+
+  &:hover {
+    color: #aac4e8;
+    background: rgba(78, 122, 190, 0.12);
+  }
+
+  &.active {
+    color: #9fb3ff;
+    background: rgba(105, 64, 255, 0.3);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(128px, 1fr));
+  gap: 16px;
+}
+
+.board-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+  border: 1px dashed rgba(78, 122, 190, 0.24);
+  border-radius: 8px;
+  color: #4e6685;
+  font-size: 13px;
+  font-weight: 700;
+
+  p {
+    margin: 0;
+  }
+}
+
+@media (max-width: 1280px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

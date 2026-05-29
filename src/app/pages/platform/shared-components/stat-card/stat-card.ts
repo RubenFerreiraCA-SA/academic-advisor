@@ -5,7 +5,7 @@ export interface StatCardData {
   value: string;
   detail: string;
   icon: string;
-  tone: 'total' | 'drafting' | 'review' | 'revision' | 'submitted' | 'complete';
+  tone: 'total' | 'drafting' | 'review' | 'revision' | 'submitted' | 'complete' | 'danger';
   trendIcon?: string;
 };
 
