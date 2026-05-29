@@ -5,6 +5,7 @@ import { PlatformSectionPage } from './pages/platform/pages/platform-section-pag
 import { Platform } from './pages/platform/platform';
 import { redirectSignedInToPlatform, requireSignedIn } from './services/auth/auth.guard';
 import { PapersPage } from './pages/platform/pages/papers-page/papers-page';
+import { PaperDetailPage } from './pages/platform/pages/paper-detail-page/paper-detail-page';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,9 @@ export const routes: Routes = [
       {
         path: 'papers',
         component: PapersPage,
+      },
+      {
+        path: 'papers/:id', component: PaperDetailPage
       },
       {
         path: 'tasks',

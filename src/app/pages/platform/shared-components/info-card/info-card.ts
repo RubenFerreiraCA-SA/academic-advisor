@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, Input, input, Output } from '@angular/core';
 import { PaperData } from '../../pages/papers-page/papers-model';
 
 @Component({
@@ -9,6 +9,7 @@ import { PaperData } from '../../pages/papers-page/papers-model';
 })
 export class InfoCard {
   @Input() paper!: PaperData;
+  @Output() cardClicked = new EventEmitter<string>();
 
   protected readonly topicTags = computed(() => this.paper.topic.split(' · '));
 
@@ -22,4 +23,8 @@ export class InfoCard {
     const defaultGradient = 'linear-gradient(90deg, #5b3de8, #337dff)';
     return { width: `${value}%`, background: tone ? gradients[tone] : defaultGradient };
   });
+
+  onCardClicked() {
+    this.cardClicked.emit(this.paper.uid);
+  }
 }

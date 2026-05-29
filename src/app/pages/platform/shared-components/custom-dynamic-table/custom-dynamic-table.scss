@@ -110,10 +110,15 @@ th {
 
 tbody tr {
   border-top: 1px solid rgba(78, 122, 190, 0.13);
+  transition: transform 0.12s ease, background 0.12s;
 }
 
 tbody tr:hover {
+  position: relative;
+  z-index: 1;
   background: rgba(51, 88, 148, 0.08);
+  transform: scaleY(1.1);
+  cursor: pointer;
 }
 
 tbody tr.featured td {

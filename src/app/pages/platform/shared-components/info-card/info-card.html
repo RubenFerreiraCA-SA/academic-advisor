@@ -1,4 +1,4 @@
-<article class="paper-card" [class.featured]="paper.featured">
+<article class="paper-card" [class.featured]="paper.featured" clickable (click)="onCardClicked()">
   <header class="card-header">
     <div class="title-row">
       @if (paper.featured) {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, Input, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, Input, input, Output, signal } from '@angular/core';
 import { DynamicTableConfig } from './custom-dynamic-table.model';
 
 
@@ -12,6 +12,12 @@ import { DynamicTableConfig } from './custom-dynamic-table.model';
 })
 export class CustomDynamicTable {
   @Input() config!: DynamicTableConfig;
+  @Output() rowClick = new EventEmitter<any>();
+
+  onRowClick(row: any): void {
+    console.log('Row clicked:', row);
+    this.rowClick.emit(row);
+  }
 
   protected readonly activeTab = signal('');
   protected readonly currentPage = signal(1);

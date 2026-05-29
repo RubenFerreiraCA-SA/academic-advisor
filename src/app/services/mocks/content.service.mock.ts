@@ -6,6 +6,8 @@ import { PlatformNavItem } from "../../pages/platform/sections/side-nav/side-nav
 import { DynamicTableConfig } from "../../pages/platform/shared-components/custom-dynamic-table/custom-dynamic-table.model";
 import { PAPER_COLUMNS, PAPER_DATA, PAPER_TABS } from "./consts/papers-table.const";
 import { PaperData } from "../../pages/platform/pages/papers-page/papers-model";
+import { MockPapersContent } from "./consts/paper-content";
+import { PaperContent } from "../../pages/platform/pages/paper-detail-page/paper-detail.model";
 
 @Injectable({
     providedIn: "root",
@@ -30,5 +32,9 @@ export class MockContentService {
 
     get PapersData(): PaperData[] {
         return PAPER_DATA;
+    }
+
+    getPaperContentById(id: string): Promise<PaperContent> {
+        return Promise.resolve(MockPapersContent);
     }
 }
